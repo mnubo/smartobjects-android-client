@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_user_profile">Profile</string>
+
+    <string name="lbl_user_firstname">First name :</string>
+    <string name="lbl_user_lastname">Last name :</string>
+    <string name="hint_user_firstname">First name</string>
+    <string name="hint_user_lastname">Last name</string>
+
+    <string name="btn_add_collection">+</string>
+    <string name="btn_update_profile">Update profile</string>
+
+</resources>

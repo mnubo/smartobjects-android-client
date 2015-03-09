@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mnubo.platform.android.demo.views.register.RegisterActivity">
+    <item
+        android:id="@+id/action_forgot_password"
+        android:title="@string/action_forgot_password"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_complete_password_reset"
+        android:title="@string/action_complete_password_reset"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_complete_registration"
+        android:title="@string/action_complete_registration"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+</menu>

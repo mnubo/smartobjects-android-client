@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="failed_complete_registration">Couldn\'t confirm your registration.</string>
+    <string name="failed_registration">User registration has failed. try again later.</string>
+    <string name="failed_password_reset">An error has occurred, password was not reset.</string>
+    <string name="failed_complete_password_reset">An error has occurred while changing password. Try again later.</string>
+    <string name="failed_phone_registration">Phone registration failed, please try again later.</string>
+    <string name="failed_phone_update">Phone information update failed, please try again later.</string>
+
+</resources>

@@ -1,0 +1,29 @@
+buildscript {
+    repositories {
+        jcenter()
+
+        maven {
+            url 'http://artifactory.mtl.mnubo.com:8081/artifactory/repo'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1.2'
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.0.1"
+
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+
+        maven {
+            url 'http://artifactory.mtl.mnubo.com:8081/artifactory/repo'
+        }
+        maven {
+            url 'http://repo.spring.io/milestone'
+        }
+    }
+
+    apply plugin: "com.jfrog.artifactory"
+}
