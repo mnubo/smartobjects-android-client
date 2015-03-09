@@ -1,0 +1,11 @@
+<resources>
+    <!-- User Objects Activity -->
+    <string name="title_activity_user_objects">Your objects</string>
+    <string name="action_change_password_activity">Change your password</string>
+    <string name="action_change_update_profile_activity">Update your profile</string>
+    <string name="action_start_collecting">Start collecting</string>
+
+    <string name="lbl_user_objects">User objects:</string>
+    <string name="lbl_user_collections">User collections:</string>
+
+</resources>

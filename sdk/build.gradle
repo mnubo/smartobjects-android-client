@@ -1,0 +1,200 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+    defaultConfig {
+        minSdkVersion 18
+        targetSdkVersion 21
+        versionCode = VERSION_CODE
+        versionName = VERSION_NAME
+    }
+
+    publishNonDefault true
+
+    productFlavors {
+        local {}
+        staging {}
+        production {}
+    }
+
+    sourceSets {
+        main.setRoot('src/main')
+        androidTest.setRoot('src/test')
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE' //jackson
+        exclude 'META-INF/LICENSE' //jackson
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/ASL2.0'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+configurations.compile {
+    exclude module: 'spring-core'
+    exclude module: 'spring-web'
+    exclude module: 'commons-logging'
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "org.apache.httpcomponents:httpclient-android:$HTTP_CLIENT_ANDROID"
+
+    compile "org.springframework.android:spring-android-rest-template:$SPRING_ANDROID_VERSION"
+    compile("org.springframework.android:spring-android-auth:$SPRING_ANDROID_VERSION") {
+        exclude group: 'org.springframework.social'
+        exclude group: 'org.springframework', module: 'spring-core'
+    }
+    compile("org.springframework.social:spring-social-core:$SPRING_SOCIAL_CORE_VERSION") {
+        exclude group: 'org.springframework', module: 'spring-web'
+    }
+    compile "org.apache.commons:commons-lang3:$COMMONS_LANG_VERSION"
+
+    //compile "com.cocoahero.android:geojson:$androidGeoJsonVersion@aar"\
+    compile "de.grundid.opendatalab:geojson-jackson:$GEOJSON_JACKSON_VERSION"
+    compile "joda-time:joda-time:$JODATIME_VERSION"
+
+    testCompile "junit:junit:$JUNIT_VERSION"
+    testCompile("org.springframework:spring-test:$SPRING_TEST_VERSION") {
+        exclude module: "spring-core"
+    }
+    testCompile "org.mockito:mockito-core:$MOCKITO_CORE_VERSION"
+}
+
+
+def isReleaseBuild() {
+    return !VERSION_NAME.contains("SNAPSHOT")
+}
+
+def sonatypeRepositoryUrl
+if (isReleaseBuild()) {
+    println 'RELEASE BUILD'
+    sonatypeRepositoryUrl = hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
+            : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+} else {
+    println 'SNAPSHOT BUILD'
+    sonatypeRepositoryUrl = hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
+            : "https://oss.sonatype.org/content/repositories/snapshots/"
+
+}
+
+def getRepositoryUsername() {
+    return hasProperty('REPO_USERNAME') ? REPO_USERNAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('REPO_PASSWORD') ? REPO_PASSWORD : ""
+}
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                pom.artifactId = POM_ARTIFACT_ID
+
+                repository(url: sonatypeRepositoryUrl) {
+                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                }
+
+                pom.project {
+                    name POM_NAME
+                    packaging POM_PACKAGING
+                    description POM_DESCRIPTION
+                    url POM_SCM_URL
+
+                    scm {
+                        url POM_SCM_URL
+                        connection POM_SCM_REPO
+                        developerConnection POM_SCM_REPO
+                    }
+
+                    licenses {
+                        license {
+                            name POM_LICENSE_NAME
+                            url POM_LICENSE_URL
+                            distribution POM_LICENCE_DIST
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id POM_DEVELOPER_ID
+                            name POM_DEVELOPER_NAME
+                            email POM_DEVELOPER_EMAIL
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+    task androidJavadocs(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+        classifier = 'javadoc'
+        //basename = artifact_id
+        from androidJavadocs.destinationDir
+    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        //basename = artifact_id
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    artifacts {
+        //archives packageReleaseJar
+        archives androidSourcesJar
+        archives androidJavadocsJar
+    }
+}
+
+
+artifactory {
+    contextUrl = "$ARTIFACTORY_CONTEXT_URL"
+    //The base Artifactory URL if not overridden by the publisher/resolver
+    publish {
+        repository {
+            repoKey = 'repo'
+            maven = true
+        }
+    }
+    resolve {
+        repository {
+            repoKey = 'repo'
+            maven = true
+        }
+    }
+}

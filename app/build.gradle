@@ -6,30 +6,57 @@ android {
 
     defaultConfig {
         applicationId "com.mnubo.platformandroiddemo"
-        minSdkVersion 15
+        minSdkVersion 18
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
 
+    defaultPublishConfig "localDebug"
+    productFlavors {
+        local {}
+        staging {}
+        production {}
+    }
+
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     packagingOptions {
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/license.txt'
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/ASL2.0'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON_VERSION"
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
+    compile 'com.google.android.gms:play-services:6.5.87'
+
+//    compile project(path: ':sdk')
+
+    localCompile project(path: ':sdk', configuration: 'localRelease')
+    stagingCompile project(path: ':sdk', configuration: 'stagingRelease')
+    productionCompile project(path: ':sdk', configuration: 'productionRelease')
+
 }

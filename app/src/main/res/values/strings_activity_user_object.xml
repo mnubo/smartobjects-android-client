@@ -1,0 +1,14 @@
+<resources>
+    <string name="title_activity_user_object">UserObjectActivity</string>
+
+    <string name="lbl_device_id">Device ID :</string>
+    <string name="lbl_model_name">Object Model Name :</string>
+    <string name="lbl_reg_date">Registration Date :</string>
+    <string name="lbl_sensors">Sensors :</string>
+    <string name="lbl_attributes">Attributes :</string>
+
+
+    <string name="btn_create_userobject">Create User Object</string>
+    <string name="btn_update_userobject">Create User Object</string>
+
+</resources>

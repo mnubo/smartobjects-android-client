@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_add_attribute">Add an Attribute</string>
+
+    <string name="lbl_attribute_name">Pick a name :</string>
+    <string name="lbl_attribute_value">Enter a value :</string>
+    <string name="hint_attribute_value">Value</string>
+
+</resources>

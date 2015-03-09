@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_sensor">SensorActivity</string>
+    <string name="lbl_samples">Samples :</string>
+    <string name="action_settings">Settings</string>
+</resources>
