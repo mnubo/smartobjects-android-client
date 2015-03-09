@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mnubo_consumer_key"><local limited consumer key></string>
+    <string name="mnubo_consumer_secret"><local limited consumer secret></string>
+    <string name="mnubo_hostname"><local mnubo platform hostname></string>
+</resources>
