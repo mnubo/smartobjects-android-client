@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="mnubo_consumer_key"><staging limited consumer key></string>
-    <string name="mnubo_consumer_secret"><staging limited consumer secret></string>
-    <string name="mnubo_hostname"><staging mnubo platform hostname></string>
-</resources>
