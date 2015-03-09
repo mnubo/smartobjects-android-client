@@ -2,8 +2,6 @@ package com.mnubo.platform.android.sdk;
 
 /**
  * Multiple Constants used by the SDK
- *
- * @see com.mnubo.platform.android.sdk.BuildConstants
  */
 public interface Constants {
 

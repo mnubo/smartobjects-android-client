@@ -8,7 +8,7 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 public interface AuthenticationOperations {
 
     /**
-     * Log in as a user to the mnubo API. The fetch an user access token along with it's
+     * Log in as a user to the mnubo API. It fetch an user access token along with it's
      * refresh token that will be persisted on the device.
      *
      * If the access token expires, the refresh token is used to refresh it. If both have expired,

@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * A list of {@link com.mnubo.platform.android.sdk.models.users.User}
- * <p/>
+ *
  * List implementation used is {@link java.util.LinkedList}
  *
  * @see com.mnubo.platform.android.sdk.models.users.User
