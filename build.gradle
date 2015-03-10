@@ -1,3 +1,4 @@
+// Required for the Android build tools
 buildscript {
     repositories {
         jcenter()
@@ -8,7 +9,7 @@ buildscript {
 
     }
 }
-
+// Repositories where dependencies are downloaded
 repositories {
     jcenter()
     maven {
@@ -32,6 +33,7 @@ android {
         versionName = VERSION_NAME
     }
 
+    // Build all possible build variants
     publishNonDefault true
 
     productFlavors {
@@ -70,12 +72,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-configurations.compile {
-    exclude module: 'spring-core'
-    exclude module: 'spring-web'
-    exclude module: 'commons-logging'
 }
 
 dependencies {

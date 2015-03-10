@@ -1,7 +1,7 @@
 # Mnubo Android SDK #
 This SDK provides you with a wrapper to use the Mnubo's service easily from your Android application.
- Basically this SDK sets up a connection with the Mnubo API and ensure oAuth2 headers are present in
- your calls to it.
+Basically this SDK sets up a connection with the Mnubo API and ensure oAuth2 headers are present in
+your calls to it.
 
 ## How to open this project ##
 This project can be opened with Android Studio or Eclipse (Note : Eclipse is not an Android supported IDE anymore). New Android build system is based on Gradle, so you'll need that too.
@@ -15,6 +15,29 @@ This project can be opened with Android Studio or Eclipse (Note : Eclipse is not
    2. Go to the cloned repository and select the build.gradle file in the top directory
    3. Keep the default options (Use gradle wrapper)
    4. Android Studio should detect an existing project, and ask you what do to about it. Select "Open existing project"
+
+## Gradle properties ##
+The build.gradle files depends on properties that are different from user to user. These properties
+should be defined in your $HOME/.gradle/gradle.properties file.
+
+
+```
+artifactory_user=MNUBO_ARTIFACTORY_USERNAME
+artifactory_password=MNUBO_ARTIFACTORY_PASSWORD
+
+REPO_USERNAME=YourSonatypeJiraUsername
+REPO_PASSWORD=YourSonatypeJiraPassword
+
+POM_DEVELOPER_ID=DEVELOPER_ID
+POM_DEVELOPER_NAME=YOUR_NAME
+POM_DEVELOPER_EMAIL=EMAIL
+
+//obtained with gpg --gen-key
+//to sign the artifact pushed to the Sonatype repository
+signing.keyId=94B86DB8
+signing.password=PrivateKeyPassword
+signing.secretKeyRingFile=/path/to/gpg/secring.gpg
+```
 
 
 ## Geting started ##
