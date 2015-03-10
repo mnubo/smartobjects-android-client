@@ -25,7 +25,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void findObject(final SdkId objectId, final CompletionCallBack<SmartObject> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<SmartObject>() {
+        executeWithRefresh(new MnuboOperation<SmartObject>() {
             @Override
             public SmartObject executeMnuboCall() {
                 return getUserApi().objectService().findOne(objectId);
@@ -35,7 +35,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void update(final SdkId objectId, final SmartObject object, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().update(objectId, object);
@@ -46,7 +46,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void searchSamples(final SdkId objectId, final String sensorName, final CompletionCallBack<Samples> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Samples>() {
+        executeWithRefresh(new MnuboOperation<Samples>() {
             @Override
             public Samples executeMnuboCall() {
                 return getUserApi().objectService().searchSamples(objectId, sensorName);
@@ -56,7 +56,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void addSamples(final SdkId objectId, final Samples samples, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().addSamples(objectId, samples);
@@ -67,7 +67,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void addSampleOnPublicSensor(final SdkId objectId, final String sensorName, final Sample sample, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().addSampleOnPublicSensor(objectId, sensorName, sample);
@@ -78,7 +78,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void createObject(final SmartObject smartObject, final Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().create(smartObject, updateIfExists);

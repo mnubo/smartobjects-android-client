@@ -24,7 +24,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
 
     @Override
     public void findUserObjects(final String username, final CompletionCallBack<SmartObjects> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<SmartObjects>() {
+        executeWithRefresh(new MnuboOperation<SmartObjects>() {
             @Override
             public SmartObjects executeMnuboCall() {
                 return getUserApi().userService().findUserObjects(username);
@@ -34,7 +34,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
 
     @Override
     public void findUserObjects(final String username, final Boolean details, final CompletionCallBack<SmartObjects> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<SmartObjects>() {
+        executeWithRefresh(new MnuboOperation<SmartObjects>() {
             @Override
             public SmartObjects executeMnuboCall() {
                 return getUserApi().userService().findUserObjects(username, details);
@@ -44,7 +44,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
 
     @Override
     public void findUserObjects(final String username, final Boolean details, final String objectModelName, final CompletionCallBack<SmartObjects> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<SmartObjects>() {
+        executeWithRefresh(new MnuboOperation<SmartObjects>() {
             @Override
             public SmartObjects executeMnuboCall() {
                 return getUserApi().userService().findUserObjects(username, details, objectModelName);
@@ -54,7 +54,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
 
     @Override
     public void getUser(final String username, final CompletionCallBack<User> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<User>() {
+        executeWithRefresh(new MnuboOperation<User>() {
             @Override
             public User executeMnuboCall() {
                 return getUserApi().userService().getUser(username);
@@ -64,7 +64,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
 
     @Override
     public void update(final String username, final User updatedUser, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().userService().update(username, updatedUser);
@@ -75,7 +75,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
 
     @Override
     public void updatePassword(final String username, final UpdatePassword newPassword, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().userService().updatePassword(username, newPassword);

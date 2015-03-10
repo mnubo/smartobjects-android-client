@@ -25,7 +25,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
 
     @Override
     public void createUser(final User user, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientSdkOperations().createUser(user);
@@ -36,7 +36,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
 
     @Override
     public void confirmUserCreation(final String username, final UserConfirmation confirmation, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientSdkOperations().confirmUserCreation(username, confirmation);
@@ -47,7 +47,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
 
     @Override
     public void resetPassword(final String username, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientSdkOperations().resetPassword(username);
@@ -58,7 +58,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
 
     @Override
     public void confirmPasswordReset(final String username, final ResetPassword resetPassword, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsyncWithRefresh(new MnuboOperation<Boolean>() {
+        executeWithRefresh(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientSdkOperations().confirmPasswordReset(username, resetPassword);

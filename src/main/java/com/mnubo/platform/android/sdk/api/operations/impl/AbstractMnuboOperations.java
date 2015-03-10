@@ -4,7 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mnubo.platform.android.sdk.Strings;
-import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboCancelledOperationException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboClientConnectionUnavailableException;
@@ -17,6 +18,7 @@ import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.api.MnuboApiFactory.ConnectionOperations;
+import static com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
 
 public abstract class AbstractMnuboOperations {
 
@@ -33,8 +35,18 @@ public abstract class AbstractMnuboOperations {
         this.clientConnection = clientConnection;
     }
 
+    @Deprecated
     public void refresh() {
-        this.userConnection = connectionOperations.refresh(this.userConnection);
+        userConnection = connectionOperations.refresh(userConnection);
+    }
+
+    public ConnectionRefresher getConnectionRefresher() {
+        return new ConnectionRefresher() {
+            @Override
+            public void refresh() {
+                userConnection = connectionOperations.refresh(userConnection);
+            }
+        };
     }
 
     public MnuboUserApi getUserApi() {
@@ -56,15 +68,25 @@ public abstract class AbstractMnuboOperations {
         throw new MnuboClientConnectionUnavailableException();
     }
 
-    protected <Result> void executeSync(final MnuboOperation<Result> operation) {
+    protected void execute(final Task task){
+        task.execute();
+    }
+
+    protected <Result> void execute(final Task task, final CompletionCallBack<Result> callback){
+
+    }
+
+    @Deprecated
+    protected <Result> void execute(final MnuboOperation<Result> operation) {
         try {
-            executeWithRefresh(operation);
+            operation.executeMnuboCall();
         } catch (Exception ex) {
             Log.e(getActivityTag(), "An error has occurred while executing the request", ex);
             throw new MnuboException(ex);
         }
     }
 
+    @Deprecated
     protected <Result> Result executeWithRefresh(final MnuboOperation<Result> operation) {
         try {
             return operation.executeMnuboCall();
@@ -77,9 +99,10 @@ public abstract class AbstractMnuboOperations {
         }
     }
 
-    protected <Result> void executeAsync(final MnuboOperation<Result> operation, final CompletionCallBack<Result> callback) {
+    @Deprecated
+    protected <Result> void execute(final MnuboOperation<Result> operation, final CompletionCallBack<Result> callback) {
         if (callback == null) {
-            executeSync(operation);
+            execute(operation);
         } else {
             new AsyncTask<Void, Void, MnuboResponse<Result>>() {
 
@@ -110,9 +133,10 @@ public abstract class AbstractMnuboOperations {
         }
     }
 
-    protected <Result> void executeAsyncWithRefresh(final MnuboOperation<Result> operation, final CompletionCallBack<Result> callback) {
+    @Deprecated
+    protected <Result> void executeWithRefresh(final MnuboOperation<Result> operation, final CompletionCallBack<Result> callback) {
         if (callback == null) {
-            executeSync(operation);
+            executeWithRefresh(operation);
         } else {
 
             new AsyncTask<Void, Void, MnuboResponse<Result>>() {

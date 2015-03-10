@@ -21,7 +21,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
 
     @Override
     public void logIn(final String username, final String password, final CompletionCallBack<Boolean> completionCallBack) {
-        executeAsync(new MnuboOperation<Boolean>() {
+        execute(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 return connectionOperations.logIn(username, password);

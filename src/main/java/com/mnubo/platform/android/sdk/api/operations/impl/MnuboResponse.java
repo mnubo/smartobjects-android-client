@@ -2,7 +2,7 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
-class MnuboResponse<Type> {
+public class MnuboResponse<Type> {
 
     private final Type result;
     private final MnuboException error;
