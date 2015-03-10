@@ -2,6 +2,7 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -15,7 +16,7 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class SmartObjectOperationsImpl extends AbstractMnuboOperations implements SmartObjectOperations {
 
-    private final static String ACTIVITY_TAG = SmartObjectOperationsImpl.class.getName();
+    private final static String OPERATION_TAG = SmartObjectOperationsImpl.class.getName();
 
     public SmartObjectOperationsImpl(MnuboApiFactory.ConnectionOperations connectionOperations,
                                      Connection<MnuboClientApi> clientConnection,
@@ -25,70 +26,70 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void findObject(final SdkId objectId, final CompletionCallBack<SmartObject> completionCallBack) {
-        executeWithRefresh(new MnuboOperation<SmartObject>() {
+        execute(new TaskImpl<>(new MnuboOperation<SmartObject>() {
             @Override
             public SmartObject executeMnuboCall() {
                 return getUserApi().objectService().findOne(objectId);
             }
-        }, completionCallBack);
+        }), completionCallBack);
     }
 
     @Override
     public void update(final SdkId objectId, final SmartObject object, final CompletionCallBack<Boolean> completionCallBack) {
-        executeWithRefresh(new MnuboOperation<Boolean>() {
+        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().update(objectId, object);
                 return true;
             }
-        }, completionCallBack);
+        }), completionCallBack);
     }
 
     @Override
     public void searchSamples(final SdkId objectId, final String sensorName, final CompletionCallBack<Samples> completionCallBack) {
-        executeWithRefresh(new MnuboOperation<Samples>() {
+        execute(new TaskImpl<>(new MnuboOperation<Samples>() {
             @Override
             public Samples executeMnuboCall() {
                 return getUserApi().objectService().searchSamples(objectId, sensorName);
             }
-        }, completionCallBack);
+        }), completionCallBack);
     }
 
     @Override
     public void addSamples(final SdkId objectId, final Samples samples, final CompletionCallBack<Boolean> completionCallBack) {
-        executeWithRefresh(new MnuboOperation<Boolean>() {
+        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().addSamples(objectId, samples);
                 return true;
             }
-        }, completionCallBack);
+        }), completionCallBack);
     }
 
     @Override
     public void addSampleOnPublicSensor(final SdkId objectId, final String sensorName, final Sample sample, final CompletionCallBack<Boolean> completionCallBack) {
-        executeWithRefresh(new MnuboOperation<Boolean>() {
+        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().addSampleOnPublicSensor(objectId, sensorName, sample);
                 return true;
             }
-        }, completionCallBack);
+        }), completionCallBack);
     }
 
     @Override
     public void createObject(final SmartObject smartObject, final Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack) {
-        executeWithRefresh(new MnuboOperation<Boolean>() {
+        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().create(smartObject, updateIfExists);
                 return true;
             }
-        }, completionCallBack);
+        }), completionCallBack);
     }
 
     @Override
     public String getOperationTag() {
-        return ACTIVITY_TAG;
+        return OPERATION_TAG;
     }
 }
