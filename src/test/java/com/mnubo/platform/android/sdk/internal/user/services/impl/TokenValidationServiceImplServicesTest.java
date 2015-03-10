@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
+import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.TokenValidationService;
 
 import org.junit.Before;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class TokenValidationServiceImplTest extends AbstractTestOperations {
+public class TokenValidationServiceImplServicesTest extends AbstractServicesTest {
 
     private TokenValidationService tokenValidationService;
 

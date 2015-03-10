@@ -1,7 +1,7 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.client.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.client.services.impl.ClientServiceImpl;
+import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class ClientServiceImplTest extends AbstractTestOperations {
+public class ClientServiceImplServicesTest extends AbstractServicesTest {
 
     private ClientService clientService;
 

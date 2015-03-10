@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
+import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.UserService;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class UserServiceImplTest extends AbstractTestOperations {
+public class UserServiceImplServicesTest extends AbstractServicesTest {
 
     private UserService userService;
 

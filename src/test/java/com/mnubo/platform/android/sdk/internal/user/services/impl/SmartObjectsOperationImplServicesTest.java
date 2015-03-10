@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
+import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class SmartObjectsOperationImplTest extends AbstractTestOperations {
+public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest {
 
     private SmartObjectService smartObjectService;
 

@@ -220,7 +220,7 @@ public class MnuboApiFactory {
         }
     }
 
-    public interface ConnectionOperations {
+    public static interface ConnectionOperations {
         public Connection<MnuboUserApi> refresh(Connection<MnuboUserApi> userConnection);
 
         public Connection<MnuboClientApi> getClientConnection();

@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
+import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.groups.Group;
@@ -13,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class GroupServiceImplTest extends AbstractTestOperations {
+public class GroupServiceImplServicesTest extends AbstractServicesTest {
 
     private GroupService groupService;
 
