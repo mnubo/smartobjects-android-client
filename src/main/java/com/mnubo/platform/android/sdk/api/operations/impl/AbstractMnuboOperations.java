@@ -16,15 +16,16 @@ import org.springframework.social.ExpiredAuthorizationException;
 import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static com.mnubo.platform.android.sdk.api.MnuboApiFactory.ConnectionOperations;
 
 public abstract class AbstractMnuboOperations {
 
     private Connection<MnuboClientApi> clientConnection;
     private Connection<MnuboUserApi> userConnection;
 
-    protected final MnuboApiFactory.ConnectionOperations connectionOperations;
+    protected final ConnectionOperations connectionOperations;
 
-    protected AbstractMnuboOperations(MnuboApiFactory.ConnectionOperations connectionOperations,
+    protected AbstractMnuboOperations(ConnectionOperations connectionOperations,
                                       Connection<MnuboClientApi> clientConnection,
                                       Connection<MnuboUserApi> userConnection) {
         this.connectionOperations = connectionOperations;
