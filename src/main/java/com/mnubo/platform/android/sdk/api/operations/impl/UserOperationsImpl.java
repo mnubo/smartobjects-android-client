@@ -85,7 +85,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
     }
 
     @Override
-    public String getActivityTag() {
+    public String getOperationTag() {
         return ACTIVITY_TAG;
     }
 }

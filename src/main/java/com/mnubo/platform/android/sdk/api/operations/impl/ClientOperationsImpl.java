@@ -68,7 +68,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
     }
 
     @Override
-    public String getActivityTag() {
+    public String getOperationTag() {
         return ACTIVITY_TAG;
     }
 }

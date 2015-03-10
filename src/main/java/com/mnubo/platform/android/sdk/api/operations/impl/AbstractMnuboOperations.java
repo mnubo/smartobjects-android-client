@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mnubo.platform.android.sdk.Strings;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.AsyncTaskFactory;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboCancelledOperationException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboClientConnectionUnavailableException;
@@ -25,6 +25,7 @@ public abstract class AbstractMnuboOperations {
     private Connection<MnuboClientApi> clientConnection;
     private Connection<MnuboUserApi> userConnection;
 
+    private final AsyncTaskFactory asyncTaskFactory;
     protected final ConnectionOperations connectionOperations;
 
     protected AbstractMnuboOperations(ConnectionOperations connectionOperations,
@@ -33,6 +34,7 @@ public abstract class AbstractMnuboOperations {
         this.connectionOperations = connectionOperations;
         this.userConnection = userConnection;
         this.clientConnection = clientConnection;
+        this.asyncTaskFactory = new AsyncTaskFactory(getOperationTag());
     }
 
     @Deprecated
@@ -68,12 +70,12 @@ public abstract class AbstractMnuboOperations {
         throw new MnuboClientConnectionUnavailableException();
     }
 
-    protected void execute(final Task task){
+    protected void execute(final Task task) {
         task.execute();
     }
 
-    protected <Result> void execute(final Task task, final CompletionCallBack<Result> callback){
-
+    protected <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
+        this.asyncTaskFactory.create(task, callback);
     }
 
     @Deprecated
@@ -81,7 +83,7 @@ public abstract class AbstractMnuboOperations {
         try {
             operation.executeMnuboCall();
         } catch (Exception ex) {
-            Log.e(getActivityTag(), "An error has occurred while executing the request", ex);
+            Log.e(getOperationTag(), "An error has occurred while executing the request", ex);
             throw new MnuboException(ex);
         }
     }
@@ -180,11 +182,11 @@ public abstract class AbstractMnuboOperations {
         }
     }
 
-    abstract String getActivityTag();
+    abstract String getOperationTag();
 
     private void logIfError(MnuboException ex) {
         if (ex != null) {
-            Log.e(getActivityTag(), Strings.EXCEPTION_SDK, ex);
+            Log.e(getOperationTag(), Strings.EXCEPTION_SDK, ex);
         }
     }
 

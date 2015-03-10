@@ -2,6 +2,7 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.AuthenticationOperations;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
@@ -11,7 +12,7 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class AuthenticationOperationsImpl extends AbstractMnuboOperations implements AuthenticationOperations {
 
-    private final static String ACTIVITY_TAG = AuthenticationOperationsImpl.class.getName();
+    private final static String OPERATION_TAG = AuthenticationOperationsImpl.class.getName();
 
     public AuthenticationOperationsImpl(MnuboApiFactory.ConnectionOperations connectionOperations,
                                         Connection<MnuboClientApi> clientConnection,
@@ -21,12 +22,12 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
 
     @Override
     public void logIn(final String username, final String password, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new MnuboOperation<Boolean>() {
+        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 return connectionOperations.logIn(username, password);
             }
-        }, completionCallBack);
+        }));
     }
 
     @Override
@@ -45,7 +46,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
     }
 
     @Override
-    public String getActivityTag() {
-        return ACTIVITY_TAG;
+    public String getOperationTag() {
+        return OPERATION_TAG;
     }
 }

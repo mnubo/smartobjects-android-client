@@ -10,7 +10,7 @@ import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboCancelledOperationExce
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
-public class AsyncTaskFactory<Result> {
+public class AsyncTaskFactory {
 
     private final String operationTag;
 
@@ -18,7 +18,7 @@ public class AsyncTaskFactory<Result> {
         this.operationTag = operationTag;
     }
 
-    AsyncTask<Void, Void, MnuboResponse<Result>> create(final Task<Result> task, final CompletionCallBack<Result> callback) {
+    public <Result> AsyncTask<Void, Void, MnuboResponse<Result>> create(final Task<Result> task, final CompletionCallBack<Result> callback) {
         return new AsyncTask<Void, Void, MnuboResponse<Result>>() {
             @Override
             protected MnuboResponse<Result> doInBackground(Void... params) {

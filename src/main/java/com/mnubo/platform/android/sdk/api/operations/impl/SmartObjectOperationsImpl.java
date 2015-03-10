@@ -88,7 +88,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
     }
 
     @Override
-    public String getActivityTag() {
+    public String getOperationTag() {
         return ACTIVITY_TAG;
     }
 }
