@@ -6,7 +6,7 @@ import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 import static com.mnubo.platform.android.sdk.api.operations.impl.AbstractMnuboOperations.MnuboOperation;
 
-public class TaskImpl<Result> implements Task {
+public class TaskImpl<Result> implements Task<Result> {
 
     final MnuboOperation<Result> operation;
 

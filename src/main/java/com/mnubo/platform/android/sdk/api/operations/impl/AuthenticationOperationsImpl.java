@@ -27,7 +27,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
             public Boolean executeMnuboCall() {
                 return connectionOperations.logIn(username, password);
             }
-        }));
+        }), completionCallBack);
     }
 
     @Override
