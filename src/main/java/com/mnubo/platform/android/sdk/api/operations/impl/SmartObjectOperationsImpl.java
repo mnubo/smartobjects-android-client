@@ -2,7 +2,7 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -26,66 +26,66 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     @Override
     public void findObject(final SdkId objectId, final CompletionCallBack<SmartObject> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<SmartObject>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<SmartObject>() {
             @Override
             public SmartObject executeMnuboCall() {
                 return getUserApi().objectService().findOne(objectId);
             }
-        }), completionCallBack);
+        }, getConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void update(final SdkId objectId, final SmartObject object, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().update(objectId, object);
                 return true;
             }
-        }), completionCallBack);
+        }, getConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void searchSamples(final SdkId objectId, final String sensorName, final CompletionCallBack<Samples> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Samples>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Samples>() {
             @Override
             public Samples executeMnuboCall() {
                 return getUserApi().objectService().searchSamples(objectId, sensorName);
             }
-        }), completionCallBack);
+        }, getConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void addSamples(final SdkId objectId, final Samples samples, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().addSamples(objectId, samples);
                 return true;
             }
-        }), completionCallBack);
+        }, getConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void addSampleOnPublicSensor(final SdkId objectId, final String sensorName, final Sample sample, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().addSampleOnPublicSensor(objectId, sensorName, sample);
                 return true;
             }
-        }), completionCallBack);
+        }, getConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void createObject(final SmartObject smartObject, final Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getUserApi().objectService().create(smartObject, updateIfExists);
                 return true;
             }
-        }), completionCallBack);
+        }, getConnectionRefresher()), completionCallBack);
     }
 
     @Override
