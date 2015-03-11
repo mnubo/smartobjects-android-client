@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="dialog_add_collection">Add a Collection</string>
-
-    <string name="lbl_collection_name">Pick a name :</string>
-    <string name="hint_collection_name">Name</string>
-
-</resources>
