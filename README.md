@@ -25,8 +25,8 @@ should be defined in your $HOME/.gradle/gradle.properties file.
 artifactory_user=MNUBO_ARTIFACTORY_USERNAME
 artifactory_password=MNUBO_ARTIFACTORY_PASSWORD
 
-REPO_USERNAME=YourSonatypeJiraUsername
-REPO_PASSWORD=YourSonatypeJiraPassword
+NEXUS_USERNAME=YourSonatypeJiraUsername
+NEXUS_PASSWORD=YourSonatypeJiraPassword
 
 POM_DEVELOPER_ID=DEVELOPER_ID
 POM_DEVELOPER_NAME=YOUR_NAME
@@ -34,7 +34,7 @@ POM_DEVELOPER_EMAIL=EMAIL
 
 //obtained with gpg --gen-key
 //to sign the artifact pushed to the Sonatype repository
-signing.keyId=94B86DB8
+signing.keyId=KEYIDAABC123
 signing.password=PrivateKeyPassword
 signing.secretKeyRingFile=/path/to/gpg/secring.gpg
 ```
