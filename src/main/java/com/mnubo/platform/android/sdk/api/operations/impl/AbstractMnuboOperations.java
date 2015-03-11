@@ -1,19 +1,16 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.AsyncTaskFactory;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
-import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboCancelledOperationException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboClientConnectionUnavailableException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboNotLoggedInException;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
-import org.springframework.social.ExpiredAuthorizationException;
 import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
@@ -25,7 +22,7 @@ public abstract class AbstractMnuboOperations {
     private Connection<MnuboClientApi> clientConnection;
     private Connection<MnuboUserApi> userConnection;
 
-    private final AsyncTaskFactory asyncTaskFactory;
+    private AsyncTaskFactory asyncTaskFactory;
     protected final ConnectionOperations connectionOperations;
 
     protected AbstractMnuboOperations(ConnectionOperations connectionOperations,
@@ -35,6 +32,14 @@ public abstract class AbstractMnuboOperations {
         this.userConnection = userConnection;
         this.clientConnection = clientConnection;
         this.asyncTaskFactory = new AsyncTaskFactory(getOperationTag());
+    }
+
+    public AsyncTaskFactory getAsyncTaskFactory() {
+        return asyncTaskFactory;
+    }
+
+    public void setAsyncTaskFactory(AsyncTaskFactory asyncTaskFactory) {
+        this.asyncTaskFactory = asyncTaskFactory;
     }
 
     public ConnectionRefresher getConnectionRefresher() {
@@ -70,7 +75,11 @@ public abstract class AbstractMnuboOperations {
     }
 
     protected <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
-        this.asyncTaskFactory.create(task, callback);
+        if (callback == null) {
+            execute(task);
+        } else {
+            this.asyncTaskFactory.create(task, callback).execute();
+        }
     }
 
     abstract String getOperationTag();

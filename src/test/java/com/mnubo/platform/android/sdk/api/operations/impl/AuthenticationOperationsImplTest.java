@@ -1,38 +1,53 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.api.MnuboApi;
-import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
-import com.mnubo.platform.android.sdk.api.operations.AuthenticationOperations;
-import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import android.os.AsyncTask;
 
+import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
+
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
-    private AuthenticationOperations authenticationOperations = new AuthenticationOperationsImpl(connectionOperations, clientApiConnection, userApiConnection);
+    private AuthenticationOperationsImpl authenticationOperations = new AuthenticationOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
+
+
+    @Before
+    public void setUp() throws Exception {
+        authenticationOperations.setAsyncTaskFactory(mockedAsyncTaskFactory);
+    }
 
     @Test
     public void logInAsyncTest() throws Exception {
         authenticationOperations.logIn("username", "password", null);
 
-        verify(connectionOperations, only()).logIn("username", "password");
+        verify(mockedConnectionOperations, only()).logIn("username", "password");
     }
+
     @Test
     public void logInWithCallbackTest() throws Exception {
-        final MnuboApi.CompletionCallBack<Boolean> callback = new MnuboApi.CompletionCallBack<Boolean>() {
-            @Override
-            public void onCompletion(Boolean success, MnuboException error) {
-                assertThat(success, equalTo(true));
-            }
-        };
 
-        authenticationOperations.logIn("username", "password", callback);
+        @SuppressWarnings("unchecked")
+        AsyncTask<Void, Void, Boolean> mockedAsyncTask = mock(AsyncTask.class);
 
-        verify(connectionOperations, only()).logIn("username", "password");
+        @SuppressWarnings("unchecked")
+        final CompletionCallBack<Boolean> callback = mock(CompletionCallBack.class);
+
+        when(mockedAsyncTaskFactory.create(any(Task.class), any(CompletionCallBack.class)))
+                .thenReturn(mockedAsyncTask);
+
+        final String username = "username";
+        final String password = "password";
+
+        authenticationOperations.logIn(username, password, callback);
+        verify(mockedAsyncTask, only()).execute();
     }
 }

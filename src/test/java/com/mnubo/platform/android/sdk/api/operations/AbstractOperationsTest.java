@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.api.operations;
 
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.AsyncTaskFactory;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
@@ -10,9 +11,10 @@ import static org.mockito.Mockito.mock;
 
 public class AbstractOperationsTest {
 
-    protected ConnectionOperations connectionOperations = mock(ConnectionOperations.class);
+    protected ConnectionOperations mockedConnectionOperations = mock(ConnectionOperations.class);
     @SuppressWarnings("unchecked")
-    protected Connection<MnuboClientApi> clientApiConnection = mock(Connection.class);
+    protected Connection<MnuboClientApi> mockedClientApiConnection = mock(Connection.class);
     @SuppressWarnings("unchecked")
-    protected Connection<MnuboUserApi> userApiConnection = mock(Connection.class);
+    protected Connection<MnuboUserApi> mockedUserApiConnection = mock(Connection.class);
+    protected AsyncTaskFactory mockedAsyncTaskFactory = mock(AsyncTaskFactory.class);
 }
