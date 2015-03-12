@@ -30,6 +30,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
     @SuppressWarnings("unchecked")
     protected final CompletionCallBack<Boolean> mockedSuccessCallback = mock(CompletionCallBack.class);
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

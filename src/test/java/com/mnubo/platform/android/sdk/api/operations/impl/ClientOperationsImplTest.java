@@ -22,7 +22,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
     @SuppressWarnings("unchecked")
     protected final MnuboApi.CompletionCallBack<Boolean> mockedCallback = mock(MnuboApi.CompletionCallBack.class);
 
-
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
