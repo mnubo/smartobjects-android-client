@@ -24,19 +24,12 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
     private final ClientOperationsImpl clientOperations = new ClientOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
     private final ClientService mockedClientService = mock(ClientService.class);
 
-    @SuppressWarnings("unchecked")
-    AsyncTask<Void, Void, Boolean> mockedAsyncTask = mock(AsyncTask.class);
-
-    @SuppressWarnings("unchecked")
-    final MnuboApi.CompletionCallBack<Boolean> mockedCallback = mock(MnuboApi.CompletionCallBack.class);
 
     @Before
     public void setUp() throws Exception {
-        clientOperations.setAsyncTaskFactory(mockedAsyncTaskFactory);
+        super.setUp();
 
-        //if mockedCallback, then the request should be async, the task factory is required
-        when(mockedAsyncTaskFactory.create(any(TaskImpl.class), any(MnuboApi.CompletionCallBack.class)))
-                .thenReturn(mockedAsyncTask);
+        clientOperations.setAsyncTaskFactory(mockedAsyncTaskFactory);
 
         when(mockedClientApiConnection.getApi()).thenReturn(mockedClientApi);
         when(mockedClientApi.clientService()).thenReturn(mockedClientService);
