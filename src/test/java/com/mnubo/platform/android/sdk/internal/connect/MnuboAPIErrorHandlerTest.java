@@ -4,6 +4,11 @@ import android.text.TextUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +21,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException.EXPIRED_REFRESH_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException.RESET_PASSWORD_DISABLED;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException.UNKNOWN_USER;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException.USER_DISABLED;
 import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -54,12 +65,51 @@ public class MnuboAPIErrorHandlerTest {
     }
 
     @Test(expected = MnuboBadCredentialsException.class)
-    public void testHandleError() throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse("Bad credentials", HttpStatus.BAD_REQUEST.value());
+    public void testBadCredentialsError() throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(BAD_CREDENTIALS, HttpStatus.BAD_REQUEST.value());
         MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(mockClientHttpResponse);
+    }
 
+    @Test(expected = MnuboExpiredAccessException.class)
+    public void testExpiredAccessException() throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(EXPIRED_REFRESH_TOKEN, HttpStatus.BAD_REQUEST.value());
+        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.UNAUTHORIZED);
+
+        responseErrorHandler.handleError(mockClientHttpResponse);
+    }
+
+    @Test(expected = MnuboInvalidRegistrationTokenException.class)
+    public void testInvalidRegistrationTokenError() throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(REGISTRATION_INVALID_TOKEN, HttpStatus.BAD_REQUEST.value());
+        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(mockClientHttpResponse);
+    }
+
+    @Test(expected = MnuboResetPasswordDisabledException.class)
+    public void testResetPasswordDisabledError() throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(RESET_PASSWORD_DISABLED, HttpStatus.BAD_REQUEST.value());
+        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(mockClientHttpResponse);
+    }
+
+    @Test(expected = MnuboUnknownUserException.class)
+    public void testUnknownUserError() throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(UNKNOWN_USER, HttpStatus.BAD_REQUEST.value());
+        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(mockClientHttpResponse);
+    }
+
+    @Test(expected = MnuboUserDisabledException.class)
+    public void testUserDisabled() throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(USER_DISABLED, HttpStatus.BAD_REQUEST.value());
+        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.UNAUTHORIZED);
+
+        responseErrorHandler.handleError(mockClientHttpResponse);
     }
 
     /**
