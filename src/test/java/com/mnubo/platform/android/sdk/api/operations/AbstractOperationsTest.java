@@ -4,9 +4,11 @@ import android.os.AsyncTask;
 
 import com.mnubo.platform.android.sdk.api.MnuboApi;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.AsyncTaskFactory;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
+import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
 import org.junit.Before;
 import org.springframework.social.connect.Connection;
@@ -38,7 +40,7 @@ public class AbstractOperationsTest {
     @Before
     public void setUp() throws Exception {
         //if mockedCallback, then the request should be async, the task factory is required
-        when(mockedAsyncTaskFactory.create(any(TaskImpl.class), any(CompletionCallBack.class)))
+        when(mockedAsyncTaskFactory.create(any(Task.class), any(CompletionCallBack.class)))
                 .thenReturn(mockedAsyncTask);
     }
 }

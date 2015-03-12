@@ -40,6 +40,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         createdUser.setUsername("username");
 
         clientOperations.createUser(createdUser, mockedCallback);
+
         verify(mockedAsyncTask, only()).execute();
     }
 
