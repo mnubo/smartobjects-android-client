@@ -31,7 +31,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
             public SmartObject executeMnuboCall() {
                 return getUserApi().objectService().findOne(objectId);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().update(objectId, object);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
             public Samples executeMnuboCall() {
                 return getUserApi().objectService().searchSamples(objectId, sensorName);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().addSamples(objectId, samples);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().addSampleOnPublicSensor(objectId, sensorName, sample);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().create(smartObject, updateIfExists);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override

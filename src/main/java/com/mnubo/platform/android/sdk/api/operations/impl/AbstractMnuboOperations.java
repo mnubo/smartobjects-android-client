@@ -42,7 +42,7 @@ public abstract class AbstractMnuboOperations {
         this.asyncTaskFactory = asyncTaskFactory;
     }
 
-    public ConnectionRefresher getConnectionRefresher() {
+    public ConnectionRefresher getUserConnectionRefresher() {
         return new ConnectionRefresher() {
             @Override
             public void refresh() {

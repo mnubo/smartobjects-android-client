@@ -30,7 +30,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
             public SmartObjects executeMnuboCall() {
                 return getUserApi().userService().findUserObjects(username);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
             public SmartObjects executeMnuboCall() {
                 return getUserApi().userService().findUserObjects(username, details);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
             public SmartObjects executeMnuboCall() {
                 return getUserApi().userService().findUserObjects(username, details, objectModelName);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
             public User executeMnuboCall() {
                 return getUserApi().userService().getUser(username);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
                 getUserApi().userService().update(username, updatedUser);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
                 getUserApi().userService().updatePassword(username, newPassword);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
