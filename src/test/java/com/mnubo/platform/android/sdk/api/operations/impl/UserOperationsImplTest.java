@@ -1,6 +1,5 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.api.MnuboApi;
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
 import com.mnubo.platform.android.sdk.internal.user.services.UserService;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
