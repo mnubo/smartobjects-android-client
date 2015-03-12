@@ -34,8 +34,6 @@ public class AbstractOperationsTest {
     @SuppressWarnings("unchecked")
     protected final AsyncTask<Void, Void, Boolean> mockedAsyncTask = mock(AsyncTask.class);
 
-    @SuppressWarnings("unchecked")
-    protected final CompletionCallBack<Boolean> mockedCallback = mock(CompletionCallBack.class);
 
     @Before
     public void setUp() throws Exception {

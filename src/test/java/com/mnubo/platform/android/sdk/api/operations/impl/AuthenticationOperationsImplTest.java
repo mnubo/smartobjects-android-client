@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
+import com.mnubo.platform.android.sdk.api.MnuboApi;
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
 
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,6 +18,8 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
     private AuthenticationOperationsImpl authenticationOperations = new AuthenticationOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
 
+    @SuppressWarnings("unchecked")
+    protected final MnuboApi.CompletionCallBack<Boolean> mockedCallback = mock(MnuboApi.CompletionCallBack.class);
 
     @Before
     public void setUp() throws Exception {

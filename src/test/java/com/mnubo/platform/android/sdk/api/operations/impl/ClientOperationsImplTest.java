@@ -1,10 +1,7 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import android.os.AsyncTask;
-
 import com.mnubo.platform.android.sdk.api.MnuboApi;
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
 import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
@@ -13,7 +10,6 @@ import com.mnubo.platform.android.sdk.models.users.User;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
@@ -23,6 +19,8 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
 
     private final ClientOperationsImpl clientOperations = new ClientOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
     private final ClientService mockedClientService = mock(ClientService.class);
+    @SuppressWarnings("unchecked")
+    protected final MnuboApi.CompletionCallBack<Boolean> mockedCallback = mock(MnuboApi.CompletionCallBack.class);
 
 
     @Before
@@ -37,9 +35,6 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
 
     @Test
     public void createUserWithCallback() throws Exception {
-
-        when(mockedAsyncTaskFactory.create(any(TaskImpl.class), any(MnuboApi.CompletionCallBack.class)))
-                .thenReturn(mockedAsyncTask);
 
         final User createdUser = new User();
         createdUser.setUsername("username");
@@ -74,7 +69,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
     @Test
     public void confirmUserCreation() throws Exception {
 
-        final UserConfirmation userConfirmation = new UserConfirmation("token","password");
+        final UserConfirmation userConfirmation = new UserConfirmation("token", "password");
         final String username = "username";
 
         clientOperations.confirmUserCreation(username, userConfirmation, null);
