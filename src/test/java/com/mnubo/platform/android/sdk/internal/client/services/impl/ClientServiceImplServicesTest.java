@@ -39,7 +39,7 @@ public class ClientServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void testConfirmCreation() throws Exception {
 
-        UserConfirmation userConfirmation = new UserConfirmation("password", "token");
+        UserConfirmation userConfirmation = new UserConfirmation("token", "password");
 
         String calledUrl = buildPath("/users/test/confirmation");
         when(mockedRestTemplate.postForLocation(calledUrl, userConfirmation)).thenReturn(new URI(PLATFORM_BASE_URL));

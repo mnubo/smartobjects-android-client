@@ -3,7 +3,7 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 import android.os.AsyncTask;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,18 +39,18 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
     public void logInWithCallbackTest() throws Exception {
 
         @SuppressWarnings("unchecked")
-        AsyncTask<Void, Void, Boolean> mockedAsyncTask = mock(AsyncTask.class);
+        final AsyncTask<Void, Void, Boolean> mockedAsyncTask = mock(AsyncTask.class);
 
         @SuppressWarnings("unchecked")
-        final CompletionCallBack<Boolean> callback = mock(CompletionCallBack.class);
+        final CompletionCallBack<Boolean> mockedCallback = mock(CompletionCallBack.class);
 
-        when(mockedAsyncTaskFactory.create(any(Task.class), any(CompletionCallBack.class)))
+        when(mockedAsyncTaskFactory.create(any(TaskImpl.class), any(CompletionCallBack.class)))
                 .thenReturn(mockedAsyncTask);
 
         final String username = "username";
         final String password = "password";
 
-        authenticationOperations.logIn(username, password, callback);
+        authenticationOperations.logIn(username, password, mockedCallback);
         verify(mockedAsyncTask, only()).execute();
     }
 

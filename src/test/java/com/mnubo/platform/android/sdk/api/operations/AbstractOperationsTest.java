@@ -12,9 +12,14 @@ import static org.mockito.Mockito.mock;
 public class AbstractOperationsTest {
 
     protected ConnectionOperations mockedConnectionOperations = mock(ConnectionOperations.class);
+
     @SuppressWarnings("unchecked")
     protected Connection<MnuboClientApi> mockedClientApiConnection = mock(Connection.class);
     @SuppressWarnings("unchecked")
     protected Connection<MnuboUserApi> mockedUserApiConnection = mock(Connection.class);
+
+    protected MnuboUserApi mockedUserApi = mock(MnuboUserApi.class);
+    protected MnuboClientApi mockedClientApi = mock(MnuboClientApi.class);
+
     protected AsyncTaskFactory mockedAsyncTaskFactory = mock(AsyncTaskFactory.class);
 }

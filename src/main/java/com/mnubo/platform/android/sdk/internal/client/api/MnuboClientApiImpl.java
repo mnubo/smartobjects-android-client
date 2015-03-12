@@ -31,7 +31,7 @@ public class MnuboClientApiImpl extends AbstractOAuth2ApiBinding implements Mnub
 
 
     @Override
-    public ClientService clientSdkOperations() {
+    public ClientService clientService() {
         return this.clientService;
     }
 

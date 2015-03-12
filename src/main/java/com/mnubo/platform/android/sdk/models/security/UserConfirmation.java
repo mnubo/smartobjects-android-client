@@ -23,7 +23,7 @@ public class UserConfirmation {
     private String password;
     private String token;
 
-    public UserConfirmation(String password, String token) {
+    public UserConfirmation(String token, String password) {
         this.password = password;
         this.token = token;
     }

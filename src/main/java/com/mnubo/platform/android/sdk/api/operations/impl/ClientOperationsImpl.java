@@ -29,7 +29,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
         execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().createUser(user);
+                getClientApi().clientService().createUser(user);
                 return true;
             }
         }), completionCallBack);
@@ -40,7 +40,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
         execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().confirmUserCreation(username, confirmation);
+                getClientApi().clientService().confirmUserCreation(username, confirmation);
                 return true;
             }
         }), completionCallBack);
@@ -51,7 +51,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
         execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().resetPassword(username);
+                getClientApi().clientService().resetPassword(username);
                 return true;
             }
         }), completionCallBack);
@@ -62,7 +62,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
         execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().confirmPasswordReset(username, resetPassword);
+                getClientApi().clientService().confirmPasswordReset(username, resetPassword);
                 return true;
             }
         }), completionCallBack);
