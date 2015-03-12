@@ -30,14 +30,15 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException.EXPIRED_REFRESH_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException.RESET_PASSWORD_DISABLED;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException.UNKNOWN_USER;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException.USER_DISABLED;
+
 public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
 
-    private static String BAD_CREDENTIALS = "Bad credentials";
-    private static String EXPIRED_REFRESH_TOKEN = "Invalid refresh token (expired):";
-    private static String RESET_PASSWORD_DISABLED = "Reset Password Disabled";
-    private static String UNKNOWN_USER = "Unknown User";
-    private static String USER_DISABLED = "User is disabled";
-    private static String REGISTRATION_INVALID_TOKEN = "Two Steps User Registration: Invalid Token received for the User.";
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {

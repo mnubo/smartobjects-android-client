@@ -8,6 +8,8 @@ import com.mnubo.platform.android.sdk.Strings;
  * while it is required.
  */
 public class MnuboUserDisabledException extends MnuboClientException {
+    public final static String USER_DISABLED = "User is disabled";
+
     public MnuboUserDisabledException() {
         super(Strings.EXCEPTION_USER_DISABLED);
     }

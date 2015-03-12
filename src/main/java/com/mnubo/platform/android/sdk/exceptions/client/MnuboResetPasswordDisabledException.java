@@ -9,6 +9,8 @@ import com.mnubo.platform.android.sdk.Strings;
  */
 public class MnuboResetPasswordDisabledException extends MnuboClientException {
 
+    public final static String RESET_PASSWORD_DISABLED = "Reset Password Disabled";
+
     public MnuboResetPasswordDisabledException() {
         super(Strings.EXCEPTION_RESET_PASSWORD_DISABLED);
     }
