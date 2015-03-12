@@ -9,6 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
@@ -49,5 +52,31 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
         authenticationOperations.logIn(username, password, callback);
         verify(mockedAsyncTask, only()).execute();
+    }
+
+    @Test
+    public void logOutAsyncTest() throws Exception {
+        authenticationOperations.logOut();
+
+        verify(mockedConnectionOperations, only()).logOut();
+    }
+
+    @Test
+    public void isUserConnected() throws Exception {
+        when(mockedConnectionOperations.isUserConnected()).thenReturn(false);
+        Boolean isUserConnected = authenticationOperations.isUserConnected();
+        assertFalse(isUserConnected);
+        verify(mockedConnectionOperations, only()).isUserConnected();
+    }
+
+    @Test
+    public void getUsernameTest() throws Exception {
+        final String expectedUsername = "username";
+        when(mockedConnectionOperations.getUsername()).thenReturn(expectedUsername);
+
+        String username = authenticationOperations.getUsername();
+        assertThat(username, equalTo(expectedUsername));
+
+        verify(mockedConnectionOperations, only()).getUsername();
     }
 }
