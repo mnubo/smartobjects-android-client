@@ -3,6 +3,7 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.ClientOperations;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
@@ -26,46 +27,46 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
 
     @Override
     public void createUser(final User user, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientService().createUser(user);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void confirmUserCreation(final String username, final UserConfirmation confirmation, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientService().confirmUserCreation(username, confirmation);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void resetPassword(final String username, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientService().resetPassword(username);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void confirmPasswordReset(final String username, final ResetPassword resetPassword, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
                 getClientApi().clientService().confirmPasswordReset(username, resetPassword);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override

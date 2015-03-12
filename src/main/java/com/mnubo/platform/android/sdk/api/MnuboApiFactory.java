@@ -93,7 +93,7 @@ public class MnuboApiFactory {
     private ConnectionOperations getConnectionOperations() {
         return new ConnectionOperations() {
             @Override
-            public Connection<MnuboUserApi> refresh(Connection<MnuboUserApi> userConnection) {
+            public Connection<MnuboUserApi> refreshUserConnection(Connection<MnuboUserApi> userConnection) {
                 if (userConnection != null) {
                     userConnection.refresh();
                     connectionRepository.updateConnection(userConnection);
@@ -106,7 +106,7 @@ public class MnuboApiFactory {
             }
 
             @Override
-            public Connection<MnuboClientApi> getClientConnection() {
+            public Connection<MnuboClientApi> getNewClientConnection() {
                 clientConnection = createClientConnection();
 
                 return clientConnection;
@@ -221,9 +221,9 @@ public class MnuboApiFactory {
     }
 
     public static interface ConnectionOperations {
-        public Connection<MnuboUserApi> refresh(Connection<MnuboUserApi> userConnection);
+        public Connection<MnuboUserApi> refreshUserConnection(Connection<MnuboUserApi> userConnection);
 
-        public Connection<MnuboClientApi> getClientConnection();
+        public Connection<MnuboClientApi> getNewClientConnection();
 
         public Boolean logIn(String username, String password);
 

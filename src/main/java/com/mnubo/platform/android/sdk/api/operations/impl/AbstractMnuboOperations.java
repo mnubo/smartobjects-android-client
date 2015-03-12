@@ -46,7 +46,16 @@ public abstract class AbstractMnuboOperations {
         return new ConnectionRefresher() {
             @Override
             public void refresh() {
-                userConnection = connectionOperations.refresh(userConnection);
+                userConnection = connectionOperations.refreshUserConnection(userConnection);
+            }
+        };
+    }
+
+    public ConnectionRefresher getClientConnectionRefresher() {
+        return new ConnectionRefresher() {
+            @Override
+            public void refresh() {
+                clientConnection = connectionOperations.getNewClientConnection();
             }
         };
     }
@@ -62,7 +71,7 @@ public abstract class AbstractMnuboOperations {
         if (this.clientConnection != null) {
             return this.clientConnection.getApi();
         }
-        this.clientConnection = connectionOperations.getClientConnection();
+        this.clientConnection = connectionOperations.getNewClientConnection();
 
         if (this.clientConnection != null) {
             return this.clientConnection.getApi();
