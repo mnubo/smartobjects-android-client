@@ -18,6 +18,7 @@ import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
@@ -66,50 +67,49 @@ public class MnuboAPIErrorHandlerTest {
 
     @Test(expected = MnuboBadCredentialsException.class)
     public void testBadCredentialsError() throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(BAD_CREDENTIALS, HttpStatus.BAD_REQUEST.value());
-        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
+        ClientHttpResponse response = preprareResponse(BAD_CREDENTIALS, HttpStatus.BAD_REQUEST.value());
 
-        responseErrorHandler.handleError(mockClientHttpResponse);
+        responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboExpiredAccessException.class)
     public void testExpiredAccessException() throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(EXPIRED_REFRESH_TOKEN, HttpStatus.BAD_REQUEST.value());
-        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.UNAUTHORIZED);
+        ClientHttpResponse response = preprareResponse(EXPIRED_REFRESH_TOKEN, HttpStatus.BAD_REQUEST.value());
 
-        responseErrorHandler.handleError(mockClientHttpResponse);
+        responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboInvalidRegistrationTokenException.class)
     public void testInvalidRegistrationTokenError() throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(REGISTRATION_INVALID_TOKEN, HttpStatus.BAD_REQUEST.value());
-        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
-
-        responseErrorHandler.handleError(mockClientHttpResponse);
+        ClientHttpResponse response = preprareResponse(REGISTRATION_INVALID_TOKEN, HttpStatus.BAD_REQUEST.value());
+        
+        responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboResetPasswordDisabledException.class)
     public void testResetPasswordDisabledError() throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(RESET_PASSWORD_DISABLED, HttpStatus.BAD_REQUEST.value());
-        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
-
-        responseErrorHandler.handleError(mockClientHttpResponse);
+        ClientHttpResponse response = preprareResponse(RESET_PASSWORD_DISABLED, HttpStatus.BAD_REQUEST.value());
+        
+        responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboUnknownUserException.class)
     public void testUnknownUserError() throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(UNKNOWN_USER, HttpStatus.BAD_REQUEST.value());
-        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.BAD_REQUEST);
-
-        responseErrorHandler.handleError(mockClientHttpResponse);
+        ClientHttpResponse response = preprareResponse(UNKNOWN_USER, HttpStatus.BAD_REQUEST.value());
+        
+        responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboUserDisabledException.class)
     public void testUserDisabled() throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(USER_DISABLED, HttpStatus.BAD_REQUEST.value());
-        MockClientHttpResponse mockClientHttpResponse = new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.UNAUTHORIZED);
+        ClientHttpResponse response = preprareResponse(USER_DISABLED, HttpStatus.BAD_REQUEST.value());
+        
+        responseErrorHandler.handleError(response);
+    }
 
-        responseErrorHandler.handleError(mockClientHttpResponse);
+    private ClientHttpResponse preprareResponse(String errorMessage, Integer code) throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(errorMessage, code);
+        return new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.UNAUTHORIZED);
     }
 
     /**
