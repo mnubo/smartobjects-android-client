@@ -80,7 +80,8 @@ public abstract class AbstractMnuboOperations {
     }
 
     protected void execute(final Task task) {
-        task.execute();
+        MnuboResponse response = task.execute();
+        logIfError(response.getError());
     }
 
     protected <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
