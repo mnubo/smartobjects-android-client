@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
@@ -24,7 +26,9 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException.EXPIRED_REFRESH_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException.INVALID_PREVIOUS_PASSWORD;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException.OBJECT_NOT_FOUND;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException.RESET_PASSWORD_DISABLED;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException.UNKNOWN_USER;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException.USER_DISABLED;
@@ -67,49 +71,63 @@ public class MnuboAPIErrorHandlerTest {
 
     @Test(expected = MnuboBadCredentialsException.class)
     public void testBadCredentialsError() throws Exception {
-        ClientHttpResponse response = preprareResponse(BAD_CREDENTIALS, HttpStatus.BAD_REQUEST.value());
+        ClientHttpResponse response = preprareResponse(BAD_CREDENTIALS, HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboExpiredAccessException.class)
     public void testExpiredAccessException() throws Exception {
-        ClientHttpResponse response = preprareResponse(EXPIRED_REFRESH_TOKEN, HttpStatus.BAD_REQUEST.value());
+        ClientHttpResponse response = preprareResponse(EXPIRED_REFRESH_TOKEN, HttpStatus.UNAUTHORIZED);
 
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboInvalidRegistrationTokenException.class)
     public void testInvalidRegistrationTokenError() throws Exception {
-        ClientHttpResponse response = preprareResponse(REGISTRATION_INVALID_TOKEN, HttpStatus.BAD_REQUEST.value());
+        ClientHttpResponse response = preprareResponse(REGISTRATION_INVALID_TOKEN, HttpStatus.BAD_REQUEST);
         
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboResetPasswordDisabledException.class)
     public void testResetPasswordDisabledError() throws Exception {
-        ClientHttpResponse response = preprareResponse(RESET_PASSWORD_DISABLED, HttpStatus.BAD_REQUEST.value());
+        ClientHttpResponse response = preprareResponse(RESET_PASSWORD_DISABLED, HttpStatus.BAD_REQUEST);
         
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboUnknownUserException.class)
     public void testUnknownUserError() throws Exception {
-        ClientHttpResponse response = preprareResponse(UNKNOWN_USER, HttpStatus.BAD_REQUEST.value());
+        ClientHttpResponse response = preprareResponse(UNKNOWN_USER, HttpStatus.BAD_REQUEST);
         
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboUserDisabledException.class)
     public void testUserDisabled() throws Exception {
-        ClientHttpResponse response = preprareResponse(USER_DISABLED, HttpStatus.BAD_REQUEST.value());
+        ClientHttpResponse response = preprareResponse(USER_DISABLED, HttpStatus.UNAUTHORIZED);
         
         responseErrorHandler.handleError(response);
     }
 
-    private ClientHttpResponse preprareResponse(String errorMessage, Integer code) throws Exception {
-        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(errorMessage, code);
-        return new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), HttpStatus.UNAUTHORIZED);
+    @Test(expected = MnuboInvalidPreviousPasswordException.class)
+    public void testInvalidPreviousPassword() throws Exception {
+        ClientHttpResponse response = preprareResponse(INVALID_PREVIOUS_PASSWORD, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboObjectNotFoundException.class)
+    public void testObjectNotFound() throws Exception {
+        ClientHttpResponse response = preprareResponse(OBJECT_NOT_FOUND, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    private ClientHttpResponse preprareResponse(String errorMessage, HttpStatus code) throws Exception {
+        MnuboAPIResponse mnuboAPIResponse = new MnuboAPIResponse(errorMessage, code.value());
+        return new MockClientHttpResponse(mapper.writeValueAsBytes(mnuboAPIResponse), code);
     }
 
     /**
