@@ -1,7 +1,7 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.CollectionService;
+import com.mnubo.platform.android.sdk.internal.user.services.impl.CollectionServiceImpl;
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class CollectionServiceImplServicesTest extends AbstractServicesTest {
+public class CollectionServiceImplTestMocked extends MockedAbstractTest {
 
     private CollectionService collectionService;
 

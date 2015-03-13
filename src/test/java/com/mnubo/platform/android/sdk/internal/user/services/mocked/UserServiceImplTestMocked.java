@@ -1,7 +1,7 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.UserService;
+import com.mnubo.platform.android.sdk.internal.user.services.impl.UserServiceImpl;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
@@ -54,7 +54,7 @@ import static org.mockito.Mockito.when;
  }
 
  */
-public class UserServiceImplServicesTest extends AbstractServicesTest {
+public class UserServiceImplTestMocked extends MockedAbstractTest {
 
     private UserService userService;
 

@@ -1,4 +1,4 @@
-package com.mnubo.platform.android.sdk.internal;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.groups.Group;
@@ -17,7 +17,7 @@ import java.util.UUID;
 import static com.mnubo.platform.android.sdk.BuildConstants.PATH;
 import static org.mockito.Mockito.mock;
 
-public abstract class AbstractServicesTest {
+public abstract class MockedAbstractTest {
 
     protected static final String PLATFORM_BASE_URL = "https://sandbox.mnubo.com";
     protected static final String USER_ACCESS_TOKEN = "ACCESS_TOKEN";

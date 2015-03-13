@@ -1,7 +1,7 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
+import com.mnubo.platform.android.sdk.internal.user.services.impl.GroupServiceImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.groups.Group;
 import com.mnubo.platform.android.sdk.models.users.Users;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class GroupServiceImplServicesTest extends AbstractServicesTest {
+public class GroupServiceImplTestMocked extends MockedAbstractTest {
 
     private GroupService groupService;
 
