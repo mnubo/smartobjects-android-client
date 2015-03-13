@@ -37,7 +37,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
         ConnManagerParams.class,
         AbstractHttpClient.class
 })
-public class AbstractServicesTest {
+public abstract class AbstractServicesTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
     protected static MediaType APPLICATION_JSON_UTF8 = MediaType.valueOf("application/json;charset=UTF-8");
