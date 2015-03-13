@@ -41,10 +41,10 @@ public class MnuboApiFactory {
     private final Context applicationContext;
 
     public MnuboApiFactory(Context applicationContext, String hostname, String consumerKey, String consumerSecret) {
-        Validate.notNull(applicationContext);
-        Validate.notBlank(consumerKey);
-        Validate.notBlank(consumerSecret);
-        Validate.notBlank(hostname);
+        Validate.notNull(applicationContext, "The application context must be provided");
+        Validate.notBlank(consumerKey, "The consumer key cannot be null or empty");
+        Validate.notBlank(consumerSecret, "The consumer secret cannot be null or empty");
+        Validate.notBlank(hostname, "The hostname cannot be null or empty");
 
         this.applicationContext = applicationContext;
 
