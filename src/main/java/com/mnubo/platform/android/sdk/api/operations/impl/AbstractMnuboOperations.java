@@ -13,8 +13,8 @@ import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.springframework.social.connect.Connection;
 
+import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.api.MnuboApiFactory.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
 
 public abstract class AbstractMnuboOperations {

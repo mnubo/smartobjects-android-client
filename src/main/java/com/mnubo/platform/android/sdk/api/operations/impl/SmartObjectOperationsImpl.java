@@ -1,6 +1,5 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
@@ -12,13 +11,14 @@ import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 
 import org.springframework.social.connect.Connection;
 
+import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class SmartObjectOperationsImpl extends AbstractMnuboOperations implements SmartObjectOperations {
 
     private final static String OPERATION_TAG = SmartObjectOperationsImpl.class.getName();
 
-    public SmartObjectOperationsImpl(MnuboApiFactory.ConnectionOperations connectionOperations,
+    public SmartObjectOperationsImpl(ConnectionOperations connectionOperations,
                                      Connection<MnuboClientApi> clientConnection,
                                      Connection<MnuboUserApi> userConnection) {
         super(connectionOperations, clientConnection, userConnection);

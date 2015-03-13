@@ -1,8 +1,6 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.ClientOperations;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
@@ -12,6 +10,7 @@ import com.mnubo.platform.android.sdk.models.users.User;
 
 import org.springframework.social.connect.Connection;
 
+import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class ClientOperationsImpl extends AbstractMnuboOperations implements ClientOperations {
@@ -19,7 +18,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
     private final static String OPERATION_TAG = ClientOperationsImpl.class.getName();
 
 
-    public ClientOperationsImpl(MnuboApiFactory.ConnectionOperations connectionOperations,
+    public ClientOperationsImpl(ConnectionOperations connectionOperations,
                                 Connection<MnuboClientApi> clientConnection,
                                 Connection<MnuboUserApi> userConnection) {
         super(connectionOperations, clientConnection, userConnection);

@@ -62,7 +62,7 @@ public class TaskWithRefreshImplTest {
         final Task<Boolean> task = new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                if(mockedCustomRefresher.expiredConnection){
+                if (mockedCustomRefresher.expiredConnection) {
                     throw new ExpiredAuthorizationException("expired");
                 }
                 return true;
@@ -82,7 +82,7 @@ public class TaskWithRefreshImplTest {
         final Task<Boolean> task = new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                if(mockedCustomRefresher.expiredConnection){
+                if (mockedCustomRefresher.expiredConnection) {
                     throw new ExpiredAuthorizationException("expired");
                 }
                 return true;
