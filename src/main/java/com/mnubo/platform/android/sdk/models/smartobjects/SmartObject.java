@@ -25,8 +25,8 @@ import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.AbstractOwnable;
 import com.mnubo.platform.android.sdk.models.common.Attribute;
 
+import org.geojson.Coordinate;
 import org.geojson.Feature;
-import org.geojson.LngLatAlt;
 import org.geojson.Point;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import static com.mnubo.platform.android.sdk.Constants.OBJECT_MODEL;
  * A Smart object on the Mnubo Platform, it belongs to a single
  * {@link com.mnubo.platform.android.sdk.models.users.User} and can
  * be in different {@link com.mnubo.platform.android.sdk.models.collections.Collection}
- *
+ * <p/>
  * It also has a list of {@link com.mnubo.platform.android.sdk.models.common.Attribute}
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects
@@ -161,7 +161,7 @@ public class SmartObject extends AbstractOwnable {
 
         Feature feature = new Feature();
         Point point = new Point();
-        LngLatAlt coord = new LngLatAlt();
+        Coordinate coord = new Coordinate();
 
         coord.setLatitude(location.getLatitude());
         coord.setLongitude(location.getLongitude());
