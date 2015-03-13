@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
+import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.UserService;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
@@ -39,13 +40,13 @@ public class UserServiceImplTest extends AbstractServicesTest {
         expectedUser.setLastname("lastname");
         expectedUser.setUsername("username");
 
-        mockServer.expect(requestTo(expectedUrl("/users/test")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedUser), APPLICATION_JSON_UTF8));
 
         User user = userService.getUser("test");
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
@@ -56,7 +57,7 @@ public class UserServiceImplTest extends AbstractServicesTest {
         expectedUser.setLastname("lastname");
         expectedUser.setUsername("username");
 
-        mockServer.expect(requestTo(expectedUrl("/users/test?attributes=attributes&attributes=attributes2")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test?attributes=attributes&attributes=attributes2")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedUser), APPLICATION_JSON_UTF8));
@@ -64,17 +65,17 @@ public class UserServiceImplTest extends AbstractServicesTest {
         List<String> attributes = Arrays.asList("attributes", "attributes2");
         User user = userService.getUser("test", attributes);
 
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
     public void deleteUserTest() throws Exception {
-        mockServer.expect(requestTo(expectedUrl("/users/test")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test")))
                 .andExpect(method(DELETE))
                 .andRespond(withNoContent());
 
         userService.delete("test");
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
@@ -85,14 +86,14 @@ public class UserServiceImplTest extends AbstractServicesTest {
         expectedUser.setLastname("lastname");
         expectedUser.setUsername("username");
 
-        mockServer.expect(requestTo(expectedUrl("/users/test")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test")))
                 .andExpect(method(PUT))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string(toJson(expectedUser)))
                 .andRespond(withNoContent());
 
         userService.update("test", expectedUser);
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
@@ -103,67 +104,67 @@ public class UserServiceImplTest extends AbstractServicesTest {
         updatePassword.setPassword("new");
         updatePassword.setConfirmedPassword("new");
 
-        mockServer.expect(requestTo(expectedUrl("/users/test/password")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test/password")))
                 .andExpect(method(PUT))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string(toJson(updatePassword)))
                 .andRespond(withNoContent());
 
         userService.updatePassword("test", updatePassword);
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
-    public void findSmartObjects() throws Exception {
+    public void findUserObjects() throws Exception {
 
         final SmartObjects expectedSmartObjects = new SmartObjects();
 
-        mockServer.expect(requestTo(expectedUrl("/users/test/objects?details=false&show_history=false")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test/objects?details=false&show_history=false")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSmartObjects), APPLICATION_JSON_UTF8));
 
         SmartObjects SmartObjects = userService.findUserObjects("test");
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
-    public void findSmartObjectsWithDetails() throws Exception {
+    public void findUserObjectsWithDetails() throws Exception {
 
         final SmartObjects expectedSmartObjects = new SmartObjects();
 
-        mockServer.expect(requestTo(expectedUrl("/users/test/objects?details=true&show_history=false")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test/objects?details=true&show_history=false")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSmartObjects), APPLICATION_JSON_UTF8));
 
         SmartObjects SmartObjects = userService.findUserObjects("test", true);
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
-    public void findSmartObjectsWithDetailsAndModel() throws Exception {
+    public void findUserObjectsWithDetailsAndModel() throws Exception {
         final SmartObjects expectedSmartObjects = new SmartObjects();
 
-        mockServer.expect(requestTo(expectedUrl("/users/test/objects?details=true&object_model=model&show_history=false")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test/objects?details=true&object_model=model&show_history=false")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSmartObjects), APPLICATION_JSON_UTF8));
 
         SmartObjects SmartObjects = userService.findUserObjects("test", true, "model");
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
     @Test
-    public void findSmartObjectsWithDetailsAndModelAndHistory() throws Exception {
+    public void findUserObjectsWithDetailsAndModelAndHistory() throws Exception {
 
-        mockServer.expect(requestTo(expectedUrl("/users/test/objects?details=true&object_model=model&show_history=true")))
+        mockUserServiceServer.expect(requestTo(expectedUrl("/users/test/objects?details=true&object_model=model&show_history=true")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withNoContent());
 
         SmartObjects SmartObjects = userService.findUserObjects("test", true, "model", true);
-        mockServer.verify();
+        mockUserServiceServer.verify();
     }
 
 }

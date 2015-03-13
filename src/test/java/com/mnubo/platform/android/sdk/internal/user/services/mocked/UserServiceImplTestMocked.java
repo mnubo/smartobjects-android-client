@@ -1,5 +1,6 @@
 package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
+import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
 import com.mnubo.platform.android.sdk.internal.user.services.UserService;
 import com.mnubo.platform.android.sdk.internal.user.services.impl.UserServiceImpl;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
@@ -54,7 +55,7 @@ import static org.mockito.Mockito.when;
  }
 
  */
-public class UserServiceImplTestMocked extends MockedAbstractTest {
+public class UserServiceImplTestMocked extends MockedAbstractServiceTest {
 
     private UserService userService;
 
@@ -77,7 +78,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
     @Test
     public void getUserWithUsername() throws Exception {
 
-        String calledUrl = buildPath("/users/test");
+        String calledUrl = expectedUrl("/users/test");
         when(mockedRestTemplate.getForObject(calledUrl, User.class)).thenReturn(expectedUser);
 
         User user = userService.getUser("test");
@@ -89,7 +90,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
     @Test
     public void getUserWithUsernameAndAttributes() throws Exception {
 
-        String calledUrl = buildPath("/users/test?attributes=attributes&attributes=attributes2");
+        String calledUrl = expectedUrl("/users/test?attributes=attributes&attributes=attributes2");
         when(mockedRestTemplate.getForObject(calledUrl, User.class)).thenReturn(expectedUser);
 
         List<String> attributes = Arrays.asList("attributes", "attributes2");
@@ -101,7 +102,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
 
     @Test
     public void deleteUserTest() throws Exception {
-        String calledUrl = buildPath("/users/test");
+        String calledUrl = expectedUrl("/users/test");
 
         userService.delete("test");
 
@@ -111,7 +112,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
 
     @Test
     public void updateUserTest() throws Exception {
-        String calledUrl = buildPath("/users/test");
+        String calledUrl = expectedUrl("/users/test");
 
         userService.update("test", expectedUser);
         verify(mockedRestTemplate, only()).put(calledUrl, expectedUser);
@@ -120,7 +121,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
     @Test
     public void updatePasswordTest() throws Exception {
         final UpdatePassword updatePassword = new UpdatePassword("old", "new", "new");
-        String calledUrl = buildPath("/users/test/password");
+        String calledUrl = expectedUrl("/users/test/password");
 
         userService.updatePassword("test", updatePassword);
 
@@ -130,7 +131,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
     @Test
     public void findUserObjects() throws Exception {
 
-        String calledUrl = buildPath("/users/test/objects?details=false&show_history=false");
+        String calledUrl = expectedUrl("/users/test/objects?details=false&show_history=false");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test");
@@ -143,7 +144,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
 
         final SmartObjects expectedSmartObjects = new SmartObjects();
 
-        String calledUrl = buildPath("/users/test/objects?details=true&show_history=false");
+        String calledUrl = expectedUrl("/users/test/objects?details=true&show_history=false");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test", true);
@@ -156,7 +157,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
     public void findUserObjectsWithDetailsAndModel() throws Exception {
         final SmartObjects expectedSmartObjects = new SmartObjects();
 
-        String calledUrl = buildPath("/users/test/objects?details=true&object_model=model&show_history=false");
+        String calledUrl = expectedUrl("/users/test/objects?details=true&object_model=model&show_history=false");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test", true, "model");
@@ -167,7 +168,7 @@ public class UserServiceImplTestMocked extends MockedAbstractTest {
     @Test
     public void findUserObjectsWithDetailsAndModelAndHistory() throws Exception {
 
-        String calledUrl = buildPath("/users/test/objects?details=true&object_model=model&show_history=true");
+        String calledUrl = expectedUrl("/users/test/objects?details=true&object_model=model&show_history=true");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test", true, "model", true);

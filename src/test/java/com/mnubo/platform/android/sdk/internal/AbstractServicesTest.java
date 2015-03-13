@@ -1,4 +1,4 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal;
 
 import android.util.Log;
 
@@ -52,7 +52,8 @@ public abstract class AbstractServicesTest {
     private final String CLIENT_ACCESS_TOKEN = "client_token";
     private final String PLATFORM_BASE_URL = "http://test.com";
 
-    protected MockRestServiceServer mockServer;
+    protected MockRestServiceServer mockUserServiceServer;
+    protected MockRestServiceServer mockClientServiceServer;
     protected MnuboUserApiImpl mnuboUserApi;
     protected MnuboClientApiImpl mnuboClientApi;
 
@@ -73,7 +74,8 @@ public abstract class AbstractServicesTest {
         mnuboUserApi = new MnuboUserApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL, true);
         mnuboClientApi = new MnuboClientApiImpl(CLIENT_ACCESS_TOKEN, PLATFORM_BASE_URL, true);
 
-        mockServer = MockRestServiceServer.createServer(mnuboUserApi.getRestTemplate());
+        mockUserServiceServer = MockRestServiceServer.createServer(mnuboUserApi.getRestTemplate());
+        mockClientServiceServer = MockRestServiceServer.createServer(mnuboClientApi.getRestTemplate());
 
     }
 
