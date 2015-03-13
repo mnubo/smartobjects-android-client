@@ -203,4 +203,4 @@ generated Javadoc.
 ## ToDos ##
 * Parcelable on Mnubo models
 * Validate Android-GeoJson (type problem)
-* spring-core import
+* Add buffer of failed operations to be retried later
