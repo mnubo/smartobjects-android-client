@@ -19,8 +19,6 @@ repositories {
 
 
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
-apply plugin: 'signing'
 apply plugin: "com.jfrog.artifactory"
 
 android {
