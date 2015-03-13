@@ -14,7 +14,7 @@ import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.springframework.social.connect.Connection;
 
-import static com.mnubo.platform.android.sdk.api.MnuboApiFactory.ConnectionOperations;
+import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 
 /**
  * Mnubo API that is used by the application developers to perform
@@ -30,7 +30,7 @@ public class MnuboApi {
 
     private final AuthenticationOperations authenticationOperations;
 
-    protected MnuboApi(ConnectionOperations connectionOperations, Connection<MnuboClientApi> clientConnection, Connection<MnuboUserApi> userConnection) {
+    public MnuboApi(ConnectionOperations connectionOperations, Connection<MnuboClientApi> clientConnection, Connection<MnuboUserApi> userConnection) {
 
         this.userOperations = new UserOperationsImpl(connectionOperations, clientConnection, userConnection);
         this.smartObjectOperations = new SmartObjectOperationsImpl(connectionOperations, clientConnection, userConnection);

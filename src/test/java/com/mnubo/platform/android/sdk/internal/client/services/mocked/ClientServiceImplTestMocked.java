@@ -1,7 +1,8 @@
-package com.mnubo.platform.android.sdk.internal.client.services.impl;
+package com.mnubo.platform.android.sdk.internal.client.services.mocked;
 
 import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
+import com.mnubo.platform.android.sdk.internal.client.services.impl.ClientServiceImpl;
+import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class ClientServiceImplServicesTest extends AbstractServicesTest {
+public class ClientServiceImplTestMocked extends MockedAbstractServiceTest {
 
     private ClientService clientService;
 
@@ -29,7 +30,7 @@ public class ClientServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void testCreateUser() throws Exception {
 
-        String calledUrl = buildPath("/users");
+        String calledUrl = expectedUrl("/users");
 
         clientService.createUser(expectedUser);
         verify(mockedRestTemplate, only()).postForLocation(calledUrl, expectedUser);
@@ -41,7 +42,7 @@ public class ClientServiceImplServicesTest extends AbstractServicesTest {
 
         UserConfirmation userConfirmation = new UserConfirmation("token", "password");
 
-        String calledUrl = buildPath("/users/test/confirmation");
+        String calledUrl = expectedUrl("/users/test/confirmation");
         when(mockedRestTemplate.postForLocation(calledUrl, userConfirmation)).thenReturn(new URI(PLATFORM_BASE_URL));
 
         clientService.confirmUserCreation("test", userConfirmation);
@@ -51,7 +52,7 @@ public class ClientServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testResetPassword() throws Exception {
-        String calledUrl = buildPath("/users/test/password");
+        String calledUrl = expectedUrl("/users/test/password");
 
         clientService.resetPassword("test");
 
@@ -62,7 +63,7 @@ public class ClientServiceImplServicesTest extends AbstractServicesTest {
     public void testConfirmPasswordUpdate() throws Exception {
         ResetPassword resetPassword = new ResetPassword("token", "password", "password");
 
-        String calledUrl = buildPath("/users/test/password");
+        String calledUrl = expectedUrl("/users/test/password");
         when(mockedRestTemplate.postForLocation(calledUrl, resetPassword)).thenReturn(new URI(PLATFORM_BASE_URL));
 
         clientService.confirmPasswordReset("test", resetPassword);

@@ -1,7 +1,8 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
+import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
+import com.mnubo.platform.android.sdk.internal.user.services.impl.GroupServiceImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.groups.Group;
 import com.mnubo.platform.android.sdk.models.users.Users;
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class GroupServiceImplServicesTest extends AbstractServicesTest {
+public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
 
     private GroupService groupService;
 
@@ -28,7 +29,7 @@ public class GroupServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void testDelete() throws Exception {
 
-        String calledUrl = buildPath("/groups/groupId?id_type=objectid");
+        String calledUrl = expectedUrl("/groups/groupId?id_type=objectid");
 
         groupService.delete(SdkId.valueOf("groupId"));
 
@@ -38,7 +39,7 @@ public class GroupServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void testCreate() throws Exception {
 
-        String calledUrl = buildPath("/groups");
+        String calledUrl = expectedUrl("/groups");
         when(mockedRestTemplate.postForObject(calledUrl, expectedGroup, Group.class)).thenReturn(expectedGroup);
 
         groupService.create(expectedGroup);
@@ -48,7 +49,7 @@ public class GroupServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void testFindOne() throws Exception {
 
-        String calledUrl = buildPath("/groups/groupId?id_type=objectid");
+        String calledUrl = expectedUrl("/groups/groupId?id_type=objectid");
         when(mockedRestTemplate.getForObject(calledUrl, Group.class)).thenReturn(expectedGroup);
 
         Group group = groupService.findOne(SdkId.valueOf("groupId"));
@@ -59,7 +60,7 @@ public class GroupServiceImplServicesTest extends AbstractServicesTest {
     public void testListAllUsers() throws Exception {
 
 
-        String calledUrl = buildPath("/groups/groupId/users?id_type=objectid");
+        String calledUrl = expectedUrl("/groups/groupId/users?id_type=objectid");
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = groupService.listAllUsers(SdkId.valueOf("groupId"));
@@ -70,7 +71,7 @@ public class GroupServiceImplServicesTest extends AbstractServicesTest {
     public void testListAllUsersWithLimit() throws Exception {
         final Users expectedUsers = new Users();
 
-        String calledUrl = buildPath("/groups/groupId/users?id_type=objectid&limit=10");
+        String calledUrl = expectedUrl("/groups/groupId/users?id_type=objectid&limit=10");
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = groupService.listAllUsers(SdkId.valueOf("groupId"), 10);
@@ -79,7 +80,7 @@ public class GroupServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testAddUser() throws Exception {
-        String calledUrl = buildPath("/groups/groupId/users/username?id_type=objectid");
+        String calledUrl = expectedUrl("/groups/groupId/users/username?id_type=objectid");
 
         groupService.addUser(SdkId.valueOf("groupId"), "username");
 
@@ -88,7 +89,7 @@ public class GroupServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testRemoveUser() throws Exception {
-        String calledUrl = buildPath("/groups/groupId/users/username?id_type=objectid");
+        String calledUrl = expectedUrl("/groups/groupId/users/username?id_type=objectid");
 
         groupService.removeUser(SdkId.valueOf("groupId"), "username");
 

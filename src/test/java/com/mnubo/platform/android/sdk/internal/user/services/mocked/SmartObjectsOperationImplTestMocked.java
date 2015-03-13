@@ -1,7 +1,8 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
+import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
 import com.mnubo.platform.android.sdk.internal.user.services.SmartObjectService;
+import com.mnubo.platform.android.sdk.internal.user.services.impl.SmartObjectServiceImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest {
+public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTest {
 
     private SmartObjectService smartObjectService;
 
@@ -33,7 +34,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void createOrUpdateUserObjectTest() throws Exception {
 
-        String calledUrl = buildPath("/objects?update_if_exists=true");
+        String calledUrl = expectedUrl("/objects?update_if_exists=true");
         when(mockedRestTemplate.postForObject(calledUrl, expectedSmartObject, SmartObject.class)).thenReturn(expectedSmartObject);
 
         smartObjectService.create(expectedSmartObject, true);
@@ -46,7 +47,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     public void updateUserObjectTest() throws Exception {
 
         final SdkId objecSdkId = SdkId.withUuid(expectedSmartObject.getObjectId());
-        String calledUrl = buildPath("/objects/" + objecSdkId.getId() + "?id_type=" + objecSdkId.getIdType());
+        String calledUrl = expectedUrl("/objects/" + objecSdkId.getId() + "?id_type=" + objecSdkId.getIdType());
 
         smartObjectService.update(objecSdkId, expectedSmartObject);
 
@@ -57,7 +58,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void deleteObjectTest() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid?id_type=objectid");
+        String calledUrl = expectedUrl("/objects/objectid?id_type=objectid");
 
         smartObjectService.delete(SdkId.valueOf("objectid"));
 
@@ -67,7 +68,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void getObjectTest() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid?id_type=objectid");
+        String calledUrl = expectedUrl("/objects/objectid?id_type=objectid");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObject.class)).thenReturn(expectedSmartObject);
 
         SmartObject smartObject = smartObjectService.findOne(SdkId.valueOf("objectid"));
@@ -79,7 +80,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void getObjectWithAttributesTest() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid?id_type=objectid&attributes=attributes1&attributes=attributes2");
+        String calledUrl = expectedUrl("/objects/objectid?id_type=objectid&attributes=attributes1&attributes=attributes2");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObject.class)).thenReturn(expectedSmartObject);
 
         List<String> attributes = Arrays.asList("attributes1", "attributes2");
@@ -93,7 +94,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     public void getObjectOwnerHistory() throws Exception {
 
 
-        String calledUrl = buildPath("/objects/objectid/owners_history?id_type=objectid&details=false");
+        String calledUrl = expectedUrl("/objects/objectid/owners_history?id_type=objectid&details=false");
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = smartObjectService.listOwnersHistory(SdkId.valueOf("objectid"));
@@ -103,7 +104,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
 
     @Test
     public void getObjectOwnerHistoryWithDetail() throws Exception {
-        String calledUrl = buildPath("/objects/objectid/owners_history?id_type=objectid&details=true");
+        String calledUrl = expectedUrl("/objects/objectid/owners_history?id_type=objectid&details=true");
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = smartObjectService.listOwnersHistory(SdkId.valueOf("objectid"), true);
@@ -115,7 +116,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     public void getObjectSamples() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        String calledUrl = buildPath("/objects/objectid/sensors/sensorName/samples?id_type=objectid");
+        String calledUrl = expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid");
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName");
@@ -126,7 +127,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void getObjectSamplesWithValueType() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last");
+        String calledUrl = expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last");
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last);
@@ -137,7 +138,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void getObjectSamplesWithValueTypeWithTimeRange() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to");
+        String calledUrl = expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to");
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last, "from", "to");
@@ -148,7 +149,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void getObjectSamplesWithValueTypeWithTimeRangeAndLimit() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&limit=10");
+        String calledUrl = expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&limit=10");
 
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
@@ -160,7 +161,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void addSamplesForObject() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid/samples?id_type=objectid");
+        String calledUrl = expectedUrl("/objects/objectid/samples?id_type=objectid");
 
         smartObjectService.addSamples(SdkId.valueOf("objectid"), expectedSamples);
         verify(mockedRestTemplate, only()).postForLocation(calledUrl, expectedSamples);
@@ -170,7 +171,7 @@ public class SmartObjectsOperationImplServicesTest extends AbstractServicesTest 
     @Test
     public void addSampleForObjectPublicSensor() throws Exception {
 
-        String calledUrl = buildPath("/objects/objectid/sensors/sensorName/sample?id_type=objectid");
+        String calledUrl = expectedUrl("/objects/objectid/sensors/sensorName/sample?id_type=objectid");
 
         smartObjectService.addSampleOnPublicSensor(SdkId.valueOf("objectid"), "sensorName", expectedSample);
         verify(mockedRestTemplate, only()).postForLocation(calledUrl, expectedSample);
