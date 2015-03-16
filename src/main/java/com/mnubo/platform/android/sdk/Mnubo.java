@@ -50,7 +50,7 @@ public class Mnubo {
 
     private static Mnubo instance = null;
 
-    private Mnubo(Context applicationContext, String hostname, String consumerKey, String consumerSecret) {
+    private Mnubo(Context applicationContext, String consumerKey, String consumerSecret, String hostname) {
         Validate.notNull(applicationContext, "The application context must be provided");
         Validate.notBlank(consumerKey, "The consumer key cannot be null or empty");
         Validate.notBlank(consumerSecret, "The consumer secret cannot be null or empty");
