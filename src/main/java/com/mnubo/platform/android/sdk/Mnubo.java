@@ -72,7 +72,7 @@ public class Mnubo {
         connectionFactoryRegistry.addConnectionFactory(this.userConnectionFactory);
 
         this.connectionRepository = new SQLiteConnectionRepository(repositoryHelper,
-                connectionFactoryRegistry, AndroidEncryptors.text("password", "5c0744940b5c369b"));
+                connectionFactoryRegistry, AndroidEncryptors.text(consumerSecret, "5c0744940b5c369b"));
 
         connectionOperations = newConnectionOperations();
     }
