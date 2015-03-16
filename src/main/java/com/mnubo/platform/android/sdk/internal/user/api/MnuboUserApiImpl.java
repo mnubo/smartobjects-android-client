@@ -36,6 +36,7 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
         } else {
             sslsniRequestFactory = new SSLServerNameIndicationRequestFactory();
         }
+        sslsniRequestFactory.configure(getRestTemplate());
 
         this.userService = new UserServiceImpl(platformBaseUrl, getRestTemplate());
         this.smartObjectService = new SmartObjectServiceImpl(platformBaseUrl, getRestTemplate());
@@ -46,7 +47,6 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
 
     @Override
     protected void configureRestTemplate(RestTemplate restTemplate) {
-        sslsniRequestFactory.configure(restTemplate);
         restTemplate.setErrorHandler(new MnuboAPIErrorHandler());
     }
 
