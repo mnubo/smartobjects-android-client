@@ -81,7 +81,7 @@ public abstract class AbstractMnuboOperations {
 
     protected void execute(final Task task) {
         MnuboResponse response = task.execute();
-        logIfError(response.getError());
+        handleError(response.getError());
     }
 
     protected <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
@@ -94,9 +94,10 @@ public abstract class AbstractMnuboOperations {
 
     abstract String getOperationTag();
 
-    private void logIfError(MnuboException ex) {
+    private void handleError(MnuboException ex) {
         if (ex != null) {
             Log.e(getOperationTag(), Strings.EXCEPTION_SDK, ex);
+            throw ex;
         }
     }
 
