@@ -197,7 +197,6 @@ public class Mnubo {
      *
      * @return the last username
      */
-    @Deprecated
     public static String getUsername() {
         if(instance == null){
             throw new MnuboNotInitializedException();
