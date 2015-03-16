@@ -1,4 +1,4 @@
-package com.mnubo.platform.android.sdk.internal.connect;
+package com.mnubo.platform.android.sdk.internal.connect.sslfactory;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -10,7 +10,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
-public class SSLCertificateHostnameCheck {
+public class SSLHostnameCheckDisabledRequestFactory implements SSLConfigureSNIRequestFactory {
 
     private static class SSLHostnameCheckDisabledClientHttpRequestFactory extends SimpleClientHttpRequestFactory {
 
@@ -37,10 +37,10 @@ public class SSLCertificateHostnameCheck {
         }
     }
 
-    public static void disable(final RestTemplate restTemplate) {
+    @Override
+    public void configure(final RestTemplate restTemplate) {
         HostnameVerifier verifier = new NullHostnameVerifier();
         SSLHostnameCheckDisabledClientHttpRequestFactory factory = new SSLHostnameCheckDisabledClientHttpRequestFactory(verifier);
         restTemplate.setRequestFactory(factory);
     }
-
 }

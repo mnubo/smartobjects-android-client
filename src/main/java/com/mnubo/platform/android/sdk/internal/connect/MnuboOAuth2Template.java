@@ -1,5 +1,9 @@
 package com.mnubo.platform.android.sdk.internal.connect;
 
+import com.mnubo.platform.android.sdk.internal.connect.sslfactory.SSLConfigureSNIRequestFactory;
+import com.mnubo.platform.android.sdk.internal.connect.sslfactory.SSLHostnameCheckDisabledRequestFactory;
+import com.mnubo.platform.android.sdk.internal.connect.sslfactory.SSLServerNameIndicationRequestFactory;
+
 import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.OAuth2Template;
 import org.springframework.util.LinkedMultiValueMap;
@@ -9,6 +13,7 @@ public class MnuboOAuth2Template extends OAuth2Template {
 
     private final String consumerKey;
     private final String accessTokenUrl;
+    private final SSLConfigureSNIRequestFactory sslsniRequestFactory;
 
     public MnuboOAuth2Template(String consumerKey, String consumerSecret, String authorizeUrl, String accessTokenUrl, final Boolean disableSSLCertificateCheck) {
         super(consumerKey, consumerSecret, authorizeUrl, accessTokenUrl);
@@ -18,8 +23,11 @@ public class MnuboOAuth2Template extends OAuth2Template {
         setUseParametersForClientAuthentication(false);
         getRestTemplate().setErrorHandler(new MnuboAPIErrorHandler());
         if (disableSSLCertificateCheck) {
-            SSLCertificateHostnameCheck.disable(getRestTemplate());
+            sslsniRequestFactory = new SSLHostnameCheckDisabledRequestFactory();
+        } else {
+            sslsniRequestFactory = new SSLServerNameIndicationRequestFactory();
         }
+        sslsniRequestFactory.configure(getRestTemplate());
     }
 
     @Override

@@ -2,7 +2,9 @@ package com.mnubo.platform.android.sdk.internal.user.api;
 
 
 import com.mnubo.platform.android.sdk.internal.connect.MnuboAPIErrorHandler;
-import com.mnubo.platform.android.sdk.internal.connect.SSLCertificateHostnameCheck;
+import com.mnubo.platform.android.sdk.internal.connect.sslfactory.SSLHostnameCheckDisabledRequestFactory;
+import com.mnubo.platform.android.sdk.internal.connect.sslfactory.SSLConfigureSNIRequestFactory;
+import com.mnubo.platform.android.sdk.internal.connect.sslfactory.SSLServerNameIndicationRequestFactory;
 import com.mnubo.platform.android.sdk.internal.user.services.CollectionService;
 import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
 import com.mnubo.platform.android.sdk.internal.user.services.SmartObjectService;
@@ -24,12 +26,15 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
     private final GroupService groupService;
     private final CollectionService collectionService;
     private final TokenValidationService tokenValidationService;
+    private final SSLConfigureSNIRequestFactory sslsniRequestFactory;
 
-    public MnuboUserApiImpl(final String accessToken, final String platformBaseUrl, final Boolean disableSSLCertifacteCheck) {
+    public MnuboUserApiImpl(final String accessToken, final String platformBaseUrl, final Boolean disableSSLCertificateCheck) {
         super(accessToken);
 
-        if (disableSSLCertifacteCheck) {
-            SSLCertificateHostnameCheck.disable(getRestTemplate());
+        if (disableSSLCertificateCheck) {
+            sslsniRequestFactory = new SSLHostnameCheckDisabledRequestFactory();
+        } else {
+            sslsniRequestFactory = new SSLServerNameIndicationRequestFactory();
         }
 
         this.userService = new UserServiceImpl(platformBaseUrl, getRestTemplate());
@@ -41,6 +46,7 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
 
     @Override
     protected void configureRestTemplate(RestTemplate restTemplate) {
+        sslsniRequestFactory.configure(restTemplate);
         restTemplate.setErrorHandler(new MnuboAPIErrorHandler());
     }
 
