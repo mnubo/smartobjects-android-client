@@ -94,15 +94,9 @@ afterEvaluate { project ->
         sign configurations.archives
     }
 
-    task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        excludes = ["**/*.md"]
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-
-    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    task androidJavadocsJar(type: Jar, dependsOn: generateProductionReleaseJavadoc) {
         classifier = 'javadoc'
-        from androidJavadocs.destinationDir
+        from generateProductionReleaseJavadoc.destinationDir
     }
 
     task androidSourcesJar(type: Jar) {
