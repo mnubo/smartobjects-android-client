@@ -1,4 +1,4 @@
-package com.mnubo.platform.android.sdk.internal.client.services.impl;
+package com.mnubo.platform.android.sdk.internal.services;
 
 
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;

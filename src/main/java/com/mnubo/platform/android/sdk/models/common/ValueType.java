@@ -19,5 +19,5 @@ package com.mnubo.platform.android.sdk.models.common;
  * specific queries.
  */
 public enum ValueType {
-    last, count, samples;
+    last, count, samples
 }

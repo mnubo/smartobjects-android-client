@@ -2,6 +2,7 @@ package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
+import com.mnubo.platform.android.sdk.internal.services.AbstractMnuboService;
 import com.mnubo.platform.android.sdk.internal.user.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
