@@ -88,8 +88,7 @@ dependencies {
     compile "org.apache.commons:commons-lang3:$COMMONS_LANG_VERSION"
 
     compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON_VERSION"
-    compile "com.github.daddykotex:geojson-jackson-android:$ANDROID_GEOJSON_VERSION@aar"\
-    //compile "de.grundid.opendatalab:geojson-jackson:$GEOJSON_JACKSON_VERSION"
+    compile "com.github.daddykotex:geojson-jackson-android:$ANDROID_GEOJSON_VERSION@aar"
     compile "joda-time:joda-time:$JODATIME_VERSION"
 
     testCompile "junit:junit:$JUNIT_VERSION"
