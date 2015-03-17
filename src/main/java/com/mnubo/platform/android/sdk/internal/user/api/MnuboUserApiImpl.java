@@ -67,10 +67,5 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
         return tokenValidationService;
     }
 
-    @Override
-    public RestTemplate getRestTemplate() {
-        return super.getRestTemplate();
-    }
-
 
 }

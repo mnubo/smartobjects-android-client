@@ -7,8 +7,8 @@ public abstract class MnuboServiceProvider<API> extends AbstractOAuth2ServicePro
 
     private final String platformBaseUrl;
 
-    public MnuboServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                String authorizeUrl, String accessTokenUrl) {
+    protected MnuboServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
+                                   String authorizeUrl, String accessTokenUrl) {
         super(new MnuboOAuth2Template(consumerKey,
                         consumerSecret,
                         platformBaseUrl + authorizeUrl,
@@ -17,7 +17,7 @@ public abstract class MnuboServiceProvider<API> extends AbstractOAuth2ServicePro
         this.platformBaseUrl = platformBaseUrl;
     }
 
-    public String getPlatformBaseUrl() {
+    protected String getPlatformBaseUrl() {
         return platformBaseUrl;
     }
 }

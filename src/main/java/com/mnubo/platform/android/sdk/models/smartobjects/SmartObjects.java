@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * A list of {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
- *
+ * <p/>
  * List implementation used is {@link java.util.LinkedList}
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObject
@@ -72,8 +72,7 @@ public class SmartObjects {
         StringBuilder out = new StringBuilder("");
 
         for (SmartObject object : smartObjects) {
-            out.append("ObjectId: " + object.getObjectId() + ", owner: "
-                    + object.getOwner() + "\n");
+            out.append(String.format("ObjectId: %s, owner: %s\n", object.getObjectId(), object.getOwner()));
         }
         return out.toString();
     }

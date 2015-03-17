@@ -19,13 +19,4 @@ public class MnuboResponse<Type> {
     public MnuboException getError() {
         return error;
     }
-
-    public boolean hasNoError() {
-        return this.error == null;
-    }
-
-    public boolean isSuccess() {
-        return hasNoError() && this.result != null &&
-                (this.result instanceof Boolean ? (Boolean) result : true);
-    }
 }

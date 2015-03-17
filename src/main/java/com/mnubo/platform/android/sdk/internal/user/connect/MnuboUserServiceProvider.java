@@ -5,7 +5,7 @@ import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApiImpl;
 
 
-public class MnuboUserServiceProvider extends MnuboServiceProvider<MnuboUserApi> {
+class MnuboUserServiceProvider extends MnuboServiceProvider<MnuboUserApi> {
 
     public MnuboUserServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
                                     String authorizeUrl, String accessTokenUrl) {

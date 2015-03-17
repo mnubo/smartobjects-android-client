@@ -21,40 +21,6 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @RunWith(PowerMockRunner.class)
- @PrepareForTest({
- Log.class,
- PlainSocketFactory.class,
- SSLSocketFactory.class,
- HttpComponentsClientHttpRequestFactory.class,
- ConnManagerParams.class,
- AbstractHttpClient.class
- })
-
-
- private final PlainSocketFactory mockedPlainSocketFactory = mock(PlainSocketFactory.class);
- private final SSLSocketFactory mockedSSLSocketFactory = mock(SSLSocketFactory.class);
- private final SchemeRegistry mockedSchemeRegistry = mock(SchemeRegistry.class);
- private final DefaultHttpClient mockedHttpClient = mock(DefaultHttpClient.class);
- private final HttpParams mockedHttpParams = mock(HttpParams.class);
-
- @Before
- public void setUp() throws Exception {
- mockStatic(Log.class);
- mockStatic(PlainSocketFactory.class);
- mockStatic(SchemeRegistry.class);
- mockStatic(SSLSocketFactory.class);
- mockStatic(ConnManagerParams.class);
-
- whenNew(SchemeRegistry.class).withAnyArguments().thenReturn(mockedSchemeRegistry);
- whenNew(DefaultHttpClient.class).withAnyArguments().thenReturn(mockedHttpClient);
- when(PlainSocketFactory.getSocketFactory()).thenReturn(mockedPlainSocketFactory);
- when(SSLSocketFactory.getSocketFactory()).thenReturn(mockedSSLSocketFactory);
- when(mockedHttpClient.getParams()).thenReturn(mockedHttpParams);
- }
-
- */
 public class UserServiceImplTestMocked extends MockedAbstractServiceTest {
 
     private UserService userService;

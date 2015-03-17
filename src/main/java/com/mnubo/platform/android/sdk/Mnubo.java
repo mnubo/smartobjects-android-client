@@ -103,7 +103,7 @@ public class Mnubo {
      * @return an instance of MnuboApi
      */
     public static MnuboApi getApi() {
-        if(instance == null){
+        if (instance == null) {
             throw new MnuboNotInitializedException();
         }
         return new MnuboApi(instance.connectionOperations, instance.clientConnection, instance.getUserConnection());
@@ -155,6 +155,7 @@ public class Mnubo {
             @Override
             public Boolean logIn(String username, String password) {
                 connectionRepository.removeConnections(userConnectionFactory.getProviderId());
+
                 saveUsername(username);
 
                 Connection<MnuboUserApi> userConnection = createUserConnection(username, password);
@@ -198,7 +199,7 @@ public class Mnubo {
      * @return the last username
      */
     public static String getUsername() {
-        if(instance == null){
+        if (instance == null) {
             throw new MnuboNotInitializedException();
         }
         return instance.readUsername();

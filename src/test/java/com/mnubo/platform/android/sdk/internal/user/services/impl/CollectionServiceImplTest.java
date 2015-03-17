@@ -56,19 +56,18 @@ public class CollectionServiceImplTest extends AbstractServicesTest {
 
     @Test
     public void testFindOne() throws Exception {
-        Collection expectedcollection = new Collection();
-        expectedcollection.setOwner("owner");
+        Collection expectedCollection = new Collection();
+        expectedCollection.setOwner("owner");
 
         mockUserServiceServer.expect(requestTo(expectedUrl("/collections/collectionId?id_type=objectid")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
-                .andRespond(withSuccess(toJson(expectedcollection), APPLICATION_JSON_UTF8));
+                .andRespond(withSuccess(toJson(expectedCollection), APPLICATION_JSON_UTF8));
 
         Collection collection = collectionService.findOne(SdkId.valueOf("collectionId"));
         mockUserServiceServer.verify();
     }
 
-    
 
     @Test
     public void testListAllObjects() throws Exception {

@@ -7,7 +7,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-public class MnuboOAuth2Template extends OAuth2Template {
+class MnuboOAuth2Template extends OAuth2Template {
 
     private final String consumerKey;
     private final String accessTokenUrl;

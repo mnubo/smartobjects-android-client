@@ -2,6 +2,7 @@ package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
+import com.mnubo.platform.android.sdk.internal.services.AbstractMnuboService;
 import com.mnubo.platform.android.sdk.internal.user.services.CollectionService;
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -12,11 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 public class CollectionServiceImpl extends AbstractMnuboService implements CollectionService {
 
-    private RestTemplate restTemplate;
-
     public CollectionServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.collections);
-        this.restTemplate = restTemplate;
+        super(platformBaseUrl, PlatformPath.collections, restTemplate);
     }
 
     @Override
@@ -28,7 +26,7 @@ public class CollectionServiceImpl extends AbstractMnuboService implements Colle
         query.setUri("/{collectionId}", collectionId.getId());
         query.idType(collectionId.getIdType());
 
-        restTemplate.delete(query.buildUrl());
+        getRestTemplate().delete(query.buildUrl());
     }
 
     @Override
@@ -38,7 +36,7 @@ public class CollectionServiceImpl extends AbstractMnuboService implements Colle
         PlatformQuery query = this.getQuery();
         query.setBody(collection);
 
-        return restTemplate.postForObject(query.buildUrl(), query.getBody(), Collection.class);
+        return getRestTemplate().postForObject(query.buildUrl(), query.getBody(), Collection.class);
     }
 
     @Override
@@ -49,7 +47,7 @@ public class CollectionServiceImpl extends AbstractMnuboService implements Colle
         query.setUri("/{collectionId}", collectionId.getId());
         query.idType(collectionId.getIdType());
 
-        return restTemplate.getForObject(query.buildUrl(), Collection.class);
+        return getRestTemplate().getForObject(query.buildUrl(), Collection.class);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class CollectionServiceImpl extends AbstractMnuboService implements Colle
         query.idType(collectionId.getIdType());
         query.limit(resultSizeLimit);
 
-        return restTemplate.getForObject(query.buildUrl(), SmartObjects.class);
+        return getRestTemplate().getForObject(query.buildUrl(), SmartObjects.class);
     }
 
     @Override
@@ -80,7 +78,7 @@ public class CollectionServiceImpl extends AbstractMnuboService implements Colle
         query.setUri("/{collectionId}/objects/{objectId}", collectionId.getId(), objectId.getId());
         query.idType(collectionId.getIdType());
 
-        restTemplate.put(query.buildUrl(), null);
+        getRestTemplate().put(query.buildUrl(), null);
     }
 
     @Override
@@ -93,7 +91,7 @@ public class CollectionServiceImpl extends AbstractMnuboService implements Colle
         query.setUri("/{collectionId}/objects/{objectId}", collectionId.getId(), objectId.getId());
         query.idType(collectionId.getIdType());
 
-        restTemplate.delete(query.buildUrl());
+        getRestTemplate().delete(query.buildUrl());
     }
 
 }

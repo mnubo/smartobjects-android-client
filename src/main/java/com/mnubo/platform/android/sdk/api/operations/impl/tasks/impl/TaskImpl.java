@@ -8,7 +8,7 @@ import static com.mnubo.platform.android.sdk.api.operations.impl.AbstractMnuboOp
 
 public class TaskImpl<Result> implements Task<Result> {
 
-    final MnuboOperation<Result> operation;
+    private final MnuboOperation<Result> operation;
 
     public TaskImpl(MnuboOperation<Result> operation) {
         this.operation = operation;

@@ -31,7 +31,7 @@ public abstract class MockedAbstractServiceTest {
     protected final Sample expectedSample = new Sample();
     protected final Samples expectedSamples = new Samples();
 
-    protected RestTemplate mockedRestTemplate = mock(RestTemplate.class);
+    protected final RestTemplate mockedRestTemplate = mock(RestTemplate.class);
 
     @Before
     public void setUp() throws Exception {
@@ -57,10 +57,6 @@ public abstract class MockedAbstractServiceTest {
     }
 
     protected String expectedUrl(String uri) {
-        return buildPath(PATH, uri);
-    }
-
-    protected String buildPath(String rootPath, String uri) {
-        return PLATFORM_BASE_URL + rootPath + uri;
+        return PLATFORM_BASE_URL + PATH + uri;
     }
 }

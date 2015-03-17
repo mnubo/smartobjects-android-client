@@ -10,12 +10,12 @@ public interface AuthenticationOperations {
     /**
      * Log in as a user to the mnubo API. It fetch an user access token along with it's
      * refreshUserConnection token that will be persisted on the device.
-     *
+     * <p/>
      * If the access token expires, the refreshUserConnection token is used to refreshUserConnection it. If both have expired,
      * you should ask the user to log in again.
      *
-     * @param username username of the user
-     * @param password password of the user
+     * @param username           username of the user
+     * @param password           password of the user
      * @param completionCallBack the callback that will be executed on completion of the request
      */
     void logIn(String username, String password, CompletionCallBack<Boolean> completionCallBack);
@@ -35,8 +35,8 @@ public interface AuthenticationOperations {
 
     /**
      * This method gives the username of the connected user.
-     * @return the username of the currently connected username, null if no use connected.
      *
+     * @return the username of the currently connected username, null if no use connected.
      */
     String getUsername();
 }

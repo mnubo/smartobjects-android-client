@@ -3,6 +3,7 @@ package com.mnubo.platform.android.sdk.internal.client.services.impl;
 import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
+import com.mnubo.platform.android.sdk.internal.services.AbstractMnuboService;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 import com.mnubo.platform.android.sdk.models.users.User;
@@ -12,11 +13,9 @@ import org.springframework.web.client.RestTemplate;
 
 public class ClientServiceImpl extends AbstractMnuboService implements ClientService {
 
-    private RestTemplate restTemplate;
 
     public ClientServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.users);
-        this.restTemplate = restTemplate;
+        super(platformBaseUrl, PlatformPath.users, restTemplate);
     }
 
     @Override
@@ -27,7 +26,7 @@ public class ClientServiceImpl extends AbstractMnuboService implements ClientSer
 
         query.setBody(user);
 
-        restTemplate.postForLocation(query.buildUrl(), query.getBody());
+        getRestTemplate().postForLocation(query.buildUrl(), query.getBody());
     }
 
     @Override
@@ -39,7 +38,7 @@ public class ClientServiceImpl extends AbstractMnuboService implements ClientSer
         query.setUri("/{username}/confirmation", username);
         query.setBody(userConfirmation);
 
-        restTemplate.postForLocation(query.buildUrl(), query.getBody());
+        getRestTemplate().postForLocation(query.buildUrl(), query.getBody());
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ClientServiceImpl extends AbstractMnuboService implements ClientSer
         PlatformQuery query = this.getQuery();
         query.setUri("/{username}/password", username);
 
-        restTemplate.delete(query.buildUrl());
+        getRestTemplate().delete(query.buildUrl());
     }
 
     @Override
@@ -61,6 +60,6 @@ public class ClientServiceImpl extends AbstractMnuboService implements ClientSer
         query.setUri("/{username}/password", username);
         query.setBody(newPassword);
 
-        restTemplate.postForLocation(query.buildUrl(), query.getBody());
+        getRestTemplate().postForLocation(query.buildUrl(), query.getBody());
     }
 }

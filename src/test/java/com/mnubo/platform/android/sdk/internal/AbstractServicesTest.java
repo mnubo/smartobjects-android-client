@@ -41,7 +41,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 public abstract class AbstractServicesTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    protected static MediaType APPLICATION_JSON_UTF8 = MediaType.valueOf("application/json;charset=UTF-8");
+    protected static final MediaType APPLICATION_JSON_UTF8 = MediaType.valueOf("application/json;charset=UTF-8");
 
     private final PlainSocketFactory mockedPlainSocketFactory = mock(PlainSocketFactory.class);
     private final SSLSocketFactory mockedSSLSocketFactory = mock(SSLSocketFactory.class);
