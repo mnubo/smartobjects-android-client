@@ -18,11 +18,9 @@ import java.util.List;
 
 public class SmartObjectServiceImpl extends AbstractMnuboService implements SmartObjectService {
 
-    private RestTemplate restTemplate;
 
     public SmartObjectServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.objects);
-        this.restTemplate = restTemplate;
+        super(platformBaseUrl, PlatformPath.objects, restTemplate);
     }
 
     @Override
@@ -34,7 +32,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.setUri("/{objectId}", objectId.getId());
         query.idType(objectId.getIdType());
 
-        restTemplate.delete(query.buildUrl());
+        getRestTemplate().delete(query.buildUrl());
     }
 
     @Override
@@ -46,7 +44,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.updateIfExists(updateIfExists);
         query.setBody(object);
 
-        return restTemplate.postForObject(query.buildUrl(), query.getBody(), SmartObject.class);
+        return getRestTemplate().postForObject(query.buildUrl(), query.getBody(), SmartObject.class);
     }
 
     @Override
@@ -60,7 +58,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.idType(objectId.getIdType());
         query.setBody(object);
 
-        restTemplate.put(query.buildUrl(), query.getBody());
+        getRestTemplate().put(query.buildUrl(), query.getBody());
     }
 
     @Override
@@ -79,7 +77,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.idType(objectId.getIdType());
         query.queryParams("attributes", attributes);
 
-        return restTemplate.getForObject(query.buildUrl(), SmartObject.class);
+        return getRestTemplate().getForObject(query.buildUrl(), SmartObject.class);
     }
 
     @Override
@@ -111,7 +109,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.timeRange(from, to);
         query.limit(resultSizeLimit);
 
-        return restTemplate.getForObject(query.buildUrl(), Samples.class);
+        return getRestTemplate().getForObject(query.buildUrl(), Samples.class);
     }
 
     @Override
@@ -124,7 +122,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.idType(objectId.getIdType());
         query.setBody(samples);
 
-        restTemplate.postForLocation(query.buildUrl(), query.getBody());
+        getRestTemplate().postForLocation(query.buildUrl(), query.getBody());
     }
 
     @Override
@@ -138,7 +136,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.idType(objectId.getIdType());
         query.setBody(sample);
 
-        restTemplate.postForLocation(query.buildUrl(), query.getBody());
+        getRestTemplate().postForLocation(query.buildUrl(), query.getBody());
     }
 
     @Override
@@ -156,6 +154,6 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.idType(objectId.getIdType());
         query.details(details);
 
-        return restTemplate.getForObject(query.buildUrl(), Users.class);
+        return getRestTemplate().getForObject(query.buildUrl(), Users.class);
     }
 }

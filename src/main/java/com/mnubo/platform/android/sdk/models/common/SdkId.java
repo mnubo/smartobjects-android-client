@@ -25,7 +25,7 @@ import static com.mnubo.platform.android.sdk.models.common.IdType.uuid;
  * SdkId is used to perform query against the Mnubo API.
  * In Mnubo, each object has an ID which is a UUID and an
  * unique human readable identifier called the natural key.
- *
+ * <p/>
  * SdkId is used to translate correctly to the good query parameters
  * to perform the correct request when fetching an object.
  */

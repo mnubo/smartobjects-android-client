@@ -103,7 +103,7 @@ public class Mnubo {
      * @return an instance of MnuboApi
      */
     public static MnuboApi getApi() {
-        if(instance == null){
+        if (instance == null) {
             throw new MnuboNotInitializedException();
         }
         return new MnuboApi(instance.connectionOperations, instance.clientConnection, instance.getUserConnection());
@@ -198,7 +198,7 @@ public class Mnubo {
      * @return the last username
      */
     public static String getUsername() {
-        if(instance == null){
+        if (instance == null) {
             throw new MnuboNotInitializedException();
         }
         return instance.readUsername();

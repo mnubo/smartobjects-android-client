@@ -1,7 +1,7 @@
 package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.user.services.CollectionService;
 import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
+import com.mnubo.platform.android.sdk.internal.user.services.CollectionService;
 import com.mnubo.platform.android.sdk.internal.user.services.impl.CollectionServiceImpl;
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.SdkId;

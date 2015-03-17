@@ -23,26 +23,22 @@ public abstract class AbstractMnuboOperations {
     private Connection<MnuboUserApi> userConnection;
 
     private AsyncTaskFactory asyncTaskFactory;
-    protected final ConnectionOperations connectionOperations;
+    final ConnectionOperations connectionOperations;
 
-    protected AbstractMnuboOperations(ConnectionOperations connectionOperations,
-                                      Connection<MnuboClientApi> clientConnection,
-                                      Connection<MnuboUserApi> userConnection) {
+    AbstractMnuboOperations(ConnectionOperations connectionOperations,
+                            Connection<MnuboClientApi> clientConnection,
+                            Connection<MnuboUserApi> userConnection) {
         this.connectionOperations = connectionOperations;
         this.userConnection = userConnection;
         this.clientConnection = clientConnection;
         this.asyncTaskFactory = new AsyncTaskFactory(getOperationTag());
     }
 
-    public AsyncTaskFactory getAsyncTaskFactory() {
-        return asyncTaskFactory;
-    }
-
     public void setAsyncTaskFactory(AsyncTaskFactory asyncTaskFactory) {
         this.asyncTaskFactory = asyncTaskFactory;
     }
 
-    public ConnectionRefresher getUserConnectionRefresher() {
+    ConnectionRefresher getUserConnectionRefresher() {
         return new ConnectionRefresher() {
             @Override
             public void refresh() {
@@ -51,7 +47,7 @@ public abstract class AbstractMnuboOperations {
         };
     }
 
-    public ConnectionRefresher getClientConnectionRefresher() {
+    ConnectionRefresher getClientConnectionRefresher() {
         return new ConnectionRefresher() {
             @Override
             public void refresh() {
@@ -60,14 +56,14 @@ public abstract class AbstractMnuboOperations {
         };
     }
 
-    public MnuboUserApi getUserApi() {
+    MnuboUserApi getUserApi() {
         if (this.userConnection != null) {
             return this.userConnection.getApi();
         }
         throw new MnuboNotLoggedInException();
     }
 
-    public MnuboClientApi getClientApi() {
+    MnuboClientApi getClientApi() {
         if (this.clientConnection != null) {
             return this.clientConnection.getApi();
         }
@@ -79,12 +75,12 @@ public abstract class AbstractMnuboOperations {
         throw new MnuboClientConnectionUnavailableException();
     }
 
-    protected void execute(final Task task) {
+    void execute(final Task task) {
         MnuboResponse response = task.execute();
         handleError(response.getError());
     }
 
-    protected <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
+    <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
         if (callback == null) {
             execute(task);
         } else {

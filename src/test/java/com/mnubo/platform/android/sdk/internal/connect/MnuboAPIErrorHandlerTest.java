@@ -86,28 +86,28 @@ public class MnuboAPIErrorHandlerTest {
     @Test(expected = MnuboInvalidRegistrationTokenException.class)
     public void testInvalidRegistrationTokenError() throws Exception {
         ClientHttpResponse response = preprareResponse(REGISTRATION_INVALID_TOKEN, HttpStatus.BAD_REQUEST);
-        
+
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboResetPasswordDisabledException.class)
     public void testResetPasswordDisabledError() throws Exception {
         ClientHttpResponse response = preprareResponse(RESET_PASSWORD_DISABLED, HttpStatus.BAD_REQUEST);
-        
+
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboUnknownUserException.class)
     public void testUnknownUserError() throws Exception {
         ClientHttpResponse response = preprareResponse(UNKNOWN_USER, HttpStatus.BAD_REQUEST);
-        
+
         responseErrorHandler.handleError(response);
     }
 
     @Test(expected = MnuboUserDisabledException.class)
     public void testUserDisabled() throws Exception {
         ClientHttpResponse response = preprareResponse(USER_DISABLED, HttpStatus.UNAUTHORIZED);
-        
+
         responseErrorHandler.handleError(response);
     }
 

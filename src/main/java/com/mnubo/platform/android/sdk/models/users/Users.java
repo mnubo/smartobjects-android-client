@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * A list of {@link com.mnubo.platform.android.sdk.models.users.User}
- *
+ * <p/>
  * List implementation used is {@link java.util.LinkedList}
  *
  * @see com.mnubo.platform.android.sdk.models.users.User
@@ -17,8 +17,8 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 public class Users {
 
-    protected List<User> users;
-    protected int count;
+    private List<User> users;
+    private int count;
 
     public Users() {
         users = new LinkedList<>();

@@ -1,7 +1,7 @@
 package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
 import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
+import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
 import com.mnubo.platform.android.sdk.internal.user.services.impl.GroupServiceImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.groups.Group;
@@ -33,7 +33,7 @@ public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
 
         groupService.delete(SdkId.valueOf("groupId"));
 
-        verify(mockedRestTemplate,  only()).delete(calledUrl);
+        verify(mockedRestTemplate, only()).delete(calledUrl);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
         when(mockedRestTemplate.postForObject(calledUrl, expectedGroup, Group.class)).thenReturn(expectedGroup);
 
         groupService.create(expectedGroup);
-        verify(mockedRestTemplate,  only()).postForObject(calledUrl, expectedGroup, Group.class);
+        verify(mockedRestTemplate, only()).postForObject(calledUrl, expectedGroup, Group.class);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
         when(mockedRestTemplate.getForObject(calledUrl, Group.class)).thenReturn(expectedGroup);
 
         Group group = groupService.findOne(SdkId.valueOf("groupId"));
-        verify(mockedRestTemplate,  only()).getForObject(calledUrl, Group.class);
+        verify(mockedRestTemplate, only()).getForObject(calledUrl, Group.class);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = groupService.listAllUsers(SdkId.valueOf("groupId"));
-        verify(mockedRestTemplate,  only()).getForObject(calledUrl, Users.class);
+        verify(mockedRestTemplate, only()).getForObject(calledUrl, Users.class);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = groupService.listAllUsers(SdkId.valueOf("groupId"), 10);
-        verify(mockedRestTemplate,  only()).getForObject(calledUrl, Users.class);
+        verify(mockedRestTemplate, only()).getForObject(calledUrl, Users.class);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
 
         groupService.addUser(SdkId.valueOf("groupId"), "username");
 
-        verify(mockedRestTemplate,  only()).put(calledUrl, null);
+        verify(mockedRestTemplate, only()).put(calledUrl, null);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class GroupServiceImplTestMocked extends MockedAbstractServiceTest {
 
         groupService.removeUser(SdkId.valueOf("groupId"), "username");
 
-        verify(mockedRestTemplate,  only()).delete(calledUrl);
+        verify(mockedRestTemplate, only()).delete(calledUrl);
     }
 
 }

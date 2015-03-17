@@ -13,11 +13,9 @@ import org.springframework.web.client.RestTemplate;
 
 public class GroupServiceImpl extends AbstractMnuboService implements GroupService {
 
-    private RestTemplate restTemplate;
 
     public GroupServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.groups);
-        this.restTemplate = restTemplate;
+        super(platformBaseUrl, PlatformPath.groups, restTemplate);
     }
 
     @Override
@@ -29,7 +27,7 @@ public class GroupServiceImpl extends AbstractMnuboService implements GroupServi
         query.setUri("/{groupId}", groupId.getId());
         query.idType(groupId.getIdType());
 
-        restTemplate.delete(query.buildUrl());
+        getRestTemplate().delete(query.buildUrl());
     }
 
     @Override
@@ -40,7 +38,7 @@ public class GroupServiceImpl extends AbstractMnuboService implements GroupServi
 
         query.setBody(group);
 
-        return restTemplate.postForObject(query.buildUrl(), query.getBody(), Group.class);
+        return getRestTemplate().postForObject(query.buildUrl(), query.getBody(), Group.class);
     }
 
     @Override
@@ -51,7 +49,7 @@ public class GroupServiceImpl extends AbstractMnuboService implements GroupServi
         query.setUri("/{groupId}", groupId.getId());
         query.idType(groupId.getIdType());
 
-        return restTemplate.getForObject(query.buildUrl(), Group.class);
+        return getRestTemplate().getForObject(query.buildUrl(), Group.class);
     }
 
     @Override
@@ -68,7 +66,7 @@ public class GroupServiceImpl extends AbstractMnuboService implements GroupServi
         query.idType(groupId.getIdType());
         query.limit(resultSizeLimit);
 
-        return restTemplate.getForObject(query.buildUrl(), Users.class);
+        return getRestTemplate().getForObject(query.buildUrl(), Users.class);
     }
 
     @Override
@@ -81,7 +79,7 @@ public class GroupServiceImpl extends AbstractMnuboService implements GroupServi
         query.setUri("/{groupId}/users/{username}", groupId.getId(), username);
         query.idType(groupId.getIdType());
 
-        restTemplate.put(query.buildUrl(), null);
+        getRestTemplate().put(query.buildUrl(), null);
     }
 
     @Override
@@ -94,6 +92,6 @@ public class GroupServiceImpl extends AbstractMnuboService implements GroupServi
         query.setUri("/{groupId}/users/{username}", groupId.getId(), username);
         query.idType(groupId.getIdType());
 
-        restTemplate.delete(query.buildUrl());
+        getRestTemplate().delete(query.buildUrl());
     }
 }

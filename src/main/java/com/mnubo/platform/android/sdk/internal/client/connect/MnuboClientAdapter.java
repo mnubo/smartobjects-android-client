@@ -6,7 +6,7 @@ import org.springframework.social.connect.ApiAdapter;
 import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 
-public class MnuboClientAdapter implements ApiAdapter<MnuboClientApi> {
+class MnuboClientAdapter implements ApiAdapter<MnuboClientApi> {
 
     public boolean test(MnuboClientApi mnuboClientApi) {
         return true;

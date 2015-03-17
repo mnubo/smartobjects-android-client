@@ -68,7 +68,6 @@ public class CollectionServiceImplTest extends AbstractServicesTest {
         mockUserServiceServer.verify();
     }
 
-    
 
     @Test
     public void testListAllObjects() throws Exception {

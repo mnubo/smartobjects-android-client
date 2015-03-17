@@ -10,15 +10,15 @@ import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import org.junit.Before;
 import org.springframework.social.connect.Connection;
 
-import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
+import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AbstractOperationsTest {
 
-    protected ConnectionOperations mockedConnectionOperations = mock(ConnectionOperations.class);
+    protected final ConnectionOperations mockedConnectionOperations = mock(ConnectionOperations.class);
 
     @SuppressWarnings("unchecked")
     protected final Connection<MnuboClientApi> mockedClientApiConnection = mock(Connection.class);

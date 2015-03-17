@@ -16,10 +16,10 @@ import static org.mockito.Mockito.when;
 
 public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
-    private AuthenticationOperationsImpl authenticationOperations = new AuthenticationOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
+    private final AuthenticationOperationsImpl authenticationOperations = new AuthenticationOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
 
     @SuppressWarnings("unchecked")
-    protected final MnuboApi.CompletionCallBack<Boolean> mockedCallback = mock(MnuboApi.CompletionCallBack.class);
+    private final MnuboApi.CompletionCallBack<Boolean> mockedCallback = mock(MnuboApi.CompletionCallBack.class);
 
     @Override
     @Before

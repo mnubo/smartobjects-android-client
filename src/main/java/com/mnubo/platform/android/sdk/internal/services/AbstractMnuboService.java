@@ -4,26 +4,35 @@ package com.mnubo.platform.android.sdk.internal.services;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
 
+import org.springframework.web.client.RestTemplate;
+
 public class AbstractMnuboService {
 
     private final String platformBaseUrl;
 
     private final PlatformPath platformPath;
 
-    public AbstractMnuboService(String platformBaseUrl, PlatformPath platformPath) {
+    private final RestTemplate restTemplate;
+
+    public AbstractMnuboService(String platformBaseUrl, PlatformPath platformPath, RestTemplate restTemplate) {
         this.platformBaseUrl = platformBaseUrl;
         this.platformPath = platformPath;
+        this.restTemplate = restTemplate;
     }
 
     public PlatformPath getPlatformPath() {
         return platformPath;
     }
 
-    public String getPlatformBaseUrl() {
+    protected String getPlatformBaseUrl() {
         return platformBaseUrl;
     }
 
-    public PlatformQuery getQuery() {
+    protected PlatformQuery getQuery() {
         return new PlatformQuery(this.getPlatformBaseUrl(), this.platformPath);
+    }
+
+    protected RestTemplate getRestTemplate() {
+        return restTemplate;
     }
 }

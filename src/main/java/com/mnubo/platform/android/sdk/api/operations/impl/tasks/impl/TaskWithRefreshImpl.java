@@ -11,8 +11,8 @@ import org.springframework.social.ExpiredAuthorizationException;
 import static com.mnubo.platform.android.sdk.api.operations.impl.AbstractMnuboOperations.MnuboOperation;
 
 public class TaskWithRefreshImpl<Result> implements Task<Result> {
-    final MnuboOperation<Result> operation;
-    final ConnectionRefresher connectionRefresher;
+    private final MnuboOperation<Result> operation;
+    private final ConnectionRefresher connectionRefresher;
 
     public TaskWithRefreshImpl(MnuboOperation<Result> operation, final ConnectionRefresher connectionRefresher) {
         this.operation = operation;

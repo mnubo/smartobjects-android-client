@@ -57,10 +57,6 @@ public abstract class MockedAbstractServiceTest {
     }
 
     protected String expectedUrl(String uri) {
-        return buildPath(PATH, uri);
-    }
-
-    protected String buildPath(String rootPath, String uri) {
-        return PLATFORM_BASE_URL + rootPath + uri;
+        return PLATFORM_BASE_URL + PATH + uri;
     }
 }

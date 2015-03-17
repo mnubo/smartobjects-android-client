@@ -16,11 +16,8 @@ import java.util.List;
 
 public class UserServiceImpl extends AbstractMnuboService implements UserService {
 
-    private RestTemplate restTemplate;
-
     public UserServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.users);
-        this.restTemplate = restTemplate;
+        super(platformBaseUrl, PlatformPath.users, restTemplate);
     }
 
     @Override
@@ -31,7 +28,7 @@ public class UserServiceImpl extends AbstractMnuboService implements UserService
 
         query.setUri("/{username}", username);
 
-        restTemplate.delete(query.buildUrl());
+        getRestTemplate().delete(query.buildUrl());
     }
 
     @Override
@@ -44,7 +41,7 @@ public class UserServiceImpl extends AbstractMnuboService implements UserService
         query.setUri("/{username}", username);
         query.setBody(user);
 
-        restTemplate.put(query.buildUrl(), query.getBody());
+        getRestTemplate().put(query.buildUrl(), query.getBody());
     }
 
     @Override
@@ -57,7 +54,7 @@ public class UserServiceImpl extends AbstractMnuboService implements UserService
         query.setUri("/{username}/password", username);
         query.setBody(password);
 
-        restTemplate.put(query.buildUrl(), query.getBody());
+        getRestTemplate().put(query.buildUrl(), query.getBody());
     }
 
     @Override
@@ -74,7 +71,7 @@ public class UserServiceImpl extends AbstractMnuboService implements UserService
         query.setUri("/{username}", username);
         query.queryParams("attributes", attributes);
 
-        return restTemplate.getForObject(query.buildUrl(), User.class);
+        return getRestTemplate().getForObject(query.buildUrl(), User.class);
     }
 
     @Override
@@ -106,6 +103,6 @@ public class UserServiceImpl extends AbstractMnuboService implements UserService
         query.queryParam("object_model", model);
         query.queryParam("show_history", showHistory);
 
-        return restTemplate.getForObject(query.buildUrl(), SmartObjects.class);
+        return getRestTemplate().getForObject(query.buildUrl(), SmartObjects.class);
     }
 }

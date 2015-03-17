@@ -56,7 +56,7 @@ public class PlatformQuery {
         this.setUriVariables(uriVariables);
     }
 
-    protected void setUriVariables(String... uriVariables) {
+    void setUriVariables(String... uriVariables) {
         for (String uriVariable : uriVariables) {
             if (StringUtils.isNotBlank(uriVariable)) {
                 this.uriVariables.add(uriVariable);
@@ -123,7 +123,7 @@ public class PlatformQuery {
         return URIBuilder.fromUri(this.build()).queryParams(this.queryParams).build().toString();
     }
 
-    protected String build() {
+    String build() {
 
         String finalUrl = String.format("%s/%s%s", this.platformBaseUrl, this.platformPath, this.uri);
 
@@ -132,7 +132,7 @@ public class PlatformQuery {
         return builder.buildAndExpand(this.getUriVariables()).toString();
     }
 
-    public Object[] getUriVariables() {
+    Object[] getUriVariables() {
         return uriVariables.toArray();
     }
 

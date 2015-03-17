@@ -62,12 +62,11 @@ public interface UserOperations {
      * This method allow you to update user's password. The user has to be currently logged in
      * to use this method.
      *
-     * @see com.mnubo.platform.android.sdk.api.operations.ClientOperations#resetPassword(String, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
-     *
-     * @param username username of the user to be updated
-     * @param newPassword the <code>UpdatePassword</code> contains the old password, the new
-     *                    password and it's confirmation.
+     * @param username           username of the user to be updated
+     * @param newPassword        the <code>UpdatePassword</code> contains the old password, the new
+     *                           password and it's confirmation.
      * @param completionCallBack the callback that will be executed on completion of the request
+     * @see com.mnubo.platform.android.sdk.api.operations.ClientOperations#resetPassword(String, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
      */
     void updatePassword(String username, UpdatePassword newPassword, CompletionCallBack<Boolean> completionCallBack);
 }

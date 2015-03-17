@@ -21,13 +21,13 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
     private final UserService mockedUserService = mock(UserService.class);
 
     @SuppressWarnings("unchecked")
-    protected final CompletionCallBack<SmartObjects> mockedSmartObjectsCallback = mock(CompletionCallBack.class);
+    private final CompletionCallBack<SmartObjects> mockedSmartObjectsCallback = mock(CompletionCallBack.class);
 
     @SuppressWarnings("unchecked")
-    protected final CompletionCallBack<User> mockedUserCallback = mock(CompletionCallBack.class);
+    private final CompletionCallBack<User> mockedUserCallback = mock(CompletionCallBack.class);
 
     @SuppressWarnings("unchecked")
-    protected final CompletionCallBack<Boolean> mockedSuccessCallback = mock(CompletionCallBack.class);
+    private final CompletionCallBack<Boolean> mockedSuccessCallback = mock(CompletionCallBack.class);
 
     @Override
     @Before

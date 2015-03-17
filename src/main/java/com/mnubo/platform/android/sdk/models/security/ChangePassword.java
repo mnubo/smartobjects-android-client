@@ -30,7 +30,7 @@ public abstract class ChangePassword {
     @JsonProperty("confirmed_password")
     private String confirmedPassword;
 
-    protected ChangePassword(String password, String confirmedPassword) {
+    ChangePassword(String password, String confirmedPassword) {
         this.password = password;
         this.confirmedPassword = confirmedPassword;
     }
