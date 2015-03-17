@@ -27,7 +27,7 @@ public class Users {
 
     public List<User> getUsers() {
         if (users == null) {
-            users = new LinkedList<User>();
+            users = new LinkedList<>();
         }
 
         if (users.size() != count) {

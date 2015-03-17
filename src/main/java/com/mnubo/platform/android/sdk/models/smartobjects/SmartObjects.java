@@ -72,8 +72,7 @@ public class SmartObjects {
         StringBuilder out = new StringBuilder("");
 
         for (SmartObject object : smartObjects) {
-            out.append("ObjectId: " + object.getObjectId() + ", owner: "
-                    + object.getOwner() + "\n");
+            out.append(String.format("ObjectId: %s, owner: %s\n", object.getObjectId(), object.getOwner()));
         }
         return out.toString();
     }

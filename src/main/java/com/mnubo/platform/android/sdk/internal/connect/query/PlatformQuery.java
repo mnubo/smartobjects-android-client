@@ -26,15 +26,15 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
 public class PlatformQuery {
 
-    private MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+    private final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
-    private List<String> uriVariables = new ArrayList<>();
+    private final List<String> uriVariables = new ArrayList<>();
 
     private String uri = "";
 
-    private String platformBaseUrl;
+    private final String platformBaseUrl;
 
-    private PlatformPath platformPath;
+    private final PlatformPath platformPath;
 
     private Object body;
 

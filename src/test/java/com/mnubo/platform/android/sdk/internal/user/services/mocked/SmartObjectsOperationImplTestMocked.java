@@ -72,7 +72,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         when(mockedRestTemplate.getForObject(calledUrl, SmartObject.class)).thenReturn(expectedSmartObject);
 
         SmartObject smartObject = smartObjectService.findOne(SdkId.valueOf("objectid"));
-        assertUserObject(smartObject, expectedSmartObject);
 
         verify(mockedRestTemplate, only()).getForObject(calledUrl, SmartObject.class);
     }
@@ -86,7 +85,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         List<String> attributes = Arrays.asList("attributes1", "attributes2");
         SmartObject smartObject = smartObjectService.findOne(SdkId.valueOf("objectid"), attributes);
 
-        assertUserObject(smartObject, expectedSmartObject);
         verify(mockedRestTemplate, only()).getForObject(calledUrl, SmartObject.class);
     }
 
@@ -98,7 +96,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = smartObjectService.listOwnersHistory(SdkId.valueOf("objectid"));
-        assertUsers(users, expectedUsers);
         verify(mockedRestTemplate, only()).getForObject(calledUrl, Users.class);
     }
 
@@ -108,7 +105,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         when(mockedRestTemplate.getForObject(calledUrl, Users.class)).thenReturn(expectedUsers);
 
         Users users = smartObjectService.listOwnersHistory(SdkId.valueOf("objectid"), true);
-        assertUsers(users, expectedUsers);
         verify(mockedRestTemplate, only()).getForObject(calledUrl, Users.class);
     }
 
@@ -120,7 +116,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName");
-        assertSamples(samples, expectedSamples);
         verify(mockedRestTemplate, only()).getForObject(calledUrl, Samples.class);
     }
 
@@ -131,7 +126,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last);
-        assertSamples(samples, expectedSamples);
         verify(mockedRestTemplate, only()).getForObject(calledUrl, Samples.class);
     }
 
@@ -142,7 +136,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last, "from", "to");
-        assertSamples(samples, expectedSamples);
         verify(mockedRestTemplate, only()).getForObject(calledUrl, Samples.class);
     }
 
@@ -154,7 +147,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
         when(mockedRestTemplate.getForObject(calledUrl, Samples.class)).thenReturn(expectedSamples);
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last, "from", "to", 10);
-        assertSamples(samples, expectedSamples);
         verify(mockedRestTemplate, only()).getForObject(calledUrl, Samples.class);
     }
 
@@ -175,18 +167,6 @@ public class SmartObjectsOperationImplTestMocked extends MockedAbstractServiceTe
 
         smartObjectService.addSampleOnPublicSensor(SdkId.valueOf("objectid"), "sensorName", expectedSample);
         verify(mockedRestTemplate, only()).postForLocation(calledUrl, expectedSample);
-    }
-
-    private void assertUserObject(SmartObject actual, SmartObject expected) {
-
-    }
-
-    private void assertUsers(Users actual, Users expected) {
-
-    }
-
-    private void assertSamples(Samples actual, Samples expected) {
-
     }
 
 }

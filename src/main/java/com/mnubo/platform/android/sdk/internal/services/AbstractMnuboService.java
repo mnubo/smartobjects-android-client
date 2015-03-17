@@ -20,10 +20,6 @@ public class AbstractMnuboService {
         this.restTemplate = restTemplate;
     }
 
-    public PlatformPath getPlatformPath() {
-        return platformPath;
-    }
-
     protected String getPlatformBaseUrl() {
         return platformBaseUrl;
     }

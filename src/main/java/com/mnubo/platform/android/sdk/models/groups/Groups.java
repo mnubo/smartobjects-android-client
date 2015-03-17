@@ -27,12 +27,12 @@ public class Groups {
     private int count;
 
     public Groups() {
-        groupList = new ArrayList<Group>(0);
+        groupList = new ArrayList<>(0);
     }
 
     public List<Group> getGroupList() {
         if (groupList == null) {
-            groupList = new LinkedList<Group>();
+            groupList = new LinkedList<>();
         }
 
         return groupList;

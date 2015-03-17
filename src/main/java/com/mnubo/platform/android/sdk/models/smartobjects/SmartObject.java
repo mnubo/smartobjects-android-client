@@ -65,9 +65,9 @@ public class SmartObject extends AbstractOwnable {
     @JsonProperty("registration_location")
     private Feature registrationLocation;
 
-    private List<Attribute> attributes = new ArrayList<Attribute>();
+    private List<Attribute> attributes = new ArrayList<>();
 
-    private List<Collection> collections = new ArrayList<Collection>();
+    private List<Collection> collections = new ArrayList<>();
 
     public SmartObject() {
     }

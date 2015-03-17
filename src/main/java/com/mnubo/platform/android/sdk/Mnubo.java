@@ -155,6 +155,7 @@ public class Mnubo {
             @Override
             public Boolean logIn(String username, String password) {
                 connectionRepository.removeConnections(userConnectionFactory.getProviderId());
+
                 saveUsername(username);
 
                 Connection<MnuboUserApi> userConnection = createUserConnection(username, password);
