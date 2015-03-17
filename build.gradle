@@ -33,6 +33,7 @@ android {
     }
 
     // Build all possible build variants
+    //defaultPublishConfig "productionRelease"
     publishNonDefault true
 
     productFlavors {
