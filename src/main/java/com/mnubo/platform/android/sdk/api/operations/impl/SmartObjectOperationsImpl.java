@@ -1,6 +1,5 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations;
 import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
@@ -12,13 +11,14 @@ import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 
 import org.springframework.social.connect.Connection;
 
+import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class SmartObjectOperationsImpl extends AbstractMnuboOperations implements SmartObjectOperations {
 
     private final static String OPERATION_TAG = SmartObjectOperationsImpl.class.getName();
 
-    public SmartObjectOperationsImpl(MnuboApiFactory.ConnectionOperations connectionOperations,
+    public SmartObjectOperationsImpl(ConnectionOperations connectionOperations,
                                      Connection<MnuboClientApi> clientConnection,
                                      Connection<MnuboUserApi> userConnection) {
         super(connectionOperations, clientConnection, userConnection);
@@ -31,7 +31,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
             public SmartObject executeMnuboCall() {
                 return getUserApi().objectService().findOne(objectId);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().update(objectId, object);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
             public Samples executeMnuboCall() {
                 return getUserApi().objectService().searchSamples(objectId, sensorName);
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().addSamples(objectId, samples);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().addSampleOnPublicSensor(objectId, sensorName, sample);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
                 getUserApi().objectService().create(smartObject, updateIfExists);
                 return true;
             }
-        }, getConnectionRefresher()), completionCallBack);
+        }, getUserConnectionRefresher()), completionCallBack);
     }
 
     @Override

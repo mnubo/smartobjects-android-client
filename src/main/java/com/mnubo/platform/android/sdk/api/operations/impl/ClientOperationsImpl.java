@@ -1,8 +1,7 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.api.MnuboApiFactory;
 import com.mnubo.platform.android.sdk.api.operations.ClientOperations;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskImpl;
+import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
@@ -11,6 +10,7 @@ import com.mnubo.platform.android.sdk.models.users.User;
 
 import org.springframework.social.connect.Connection;
 
+import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class ClientOperationsImpl extends AbstractMnuboOperations implements ClientOperations {
@@ -18,7 +18,7 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
     private final static String OPERATION_TAG = ClientOperationsImpl.class.getName();
 
 
-    public ClientOperationsImpl(MnuboApiFactory.ConnectionOperations connectionOperations,
+    public ClientOperationsImpl(ConnectionOperations connectionOperations,
                                 Connection<MnuboClientApi> clientConnection,
                                 Connection<MnuboUserApi> userConnection) {
         super(connectionOperations, clientConnection, userConnection);
@@ -26,46 +26,46 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
 
     @Override
     public void createUser(final User user, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().createUser(user);
+                getClientApi().clientService().createUser(user);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void confirmUserCreation(final String username, final UserConfirmation confirmation, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().confirmUserCreation(username, confirmation);
+                getClientApi().clientService().confirmUserCreation(username, confirmation);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void resetPassword(final String username, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().resetPassword(username);
+                getClientApi().clientService().resetPassword(username);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override
     public void confirmPasswordReset(final String username, final ResetPassword resetPassword, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskImpl<>(new MnuboOperation<Boolean>() {
+        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
             @Override
             public Boolean executeMnuboCall() {
-                getClientApi().clientSdkOperations().confirmPasswordReset(username, resetPassword);
+                getClientApi().clientService().confirmPasswordReset(username, resetPassword);
                 return true;
             }
-        }), completionCallBack);
+        }, getClientConnectionRefresher()), completionCallBack);
     }
 
     @Override

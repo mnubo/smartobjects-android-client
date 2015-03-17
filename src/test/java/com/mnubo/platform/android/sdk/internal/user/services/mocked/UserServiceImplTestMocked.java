@@ -1,7 +1,8 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
+import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
 import com.mnubo.platform.android.sdk.internal.user.services.UserService;
+import com.mnubo.platform.android.sdk.internal.user.services.impl.UserServiceImpl;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
@@ -20,8 +21,41 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * @RunWith(PowerMockRunner.class)
+ @PrepareForTest({
+ Log.class,
+ PlainSocketFactory.class,
+ SSLSocketFactory.class,
+ HttpComponentsClientHttpRequestFactory.class,
+ ConnManagerParams.class,
+ AbstractHttpClient.class
+ })
 
-public class UserServiceImplServicesTest extends AbstractServicesTest {
+
+ private final PlainSocketFactory mockedPlainSocketFactory = mock(PlainSocketFactory.class);
+ private final SSLSocketFactory mockedSSLSocketFactory = mock(SSLSocketFactory.class);
+ private final SchemeRegistry mockedSchemeRegistry = mock(SchemeRegistry.class);
+ private final DefaultHttpClient mockedHttpClient = mock(DefaultHttpClient.class);
+ private final HttpParams mockedHttpParams = mock(HttpParams.class);
+
+ @Before
+ public void setUp() throws Exception {
+ mockStatic(Log.class);
+ mockStatic(PlainSocketFactory.class);
+ mockStatic(SchemeRegistry.class);
+ mockStatic(SSLSocketFactory.class);
+ mockStatic(ConnManagerParams.class);
+
+ whenNew(SchemeRegistry.class).withAnyArguments().thenReturn(mockedSchemeRegistry);
+ whenNew(DefaultHttpClient.class).withAnyArguments().thenReturn(mockedHttpClient);
+ when(PlainSocketFactory.getSocketFactory()).thenReturn(mockedPlainSocketFactory);
+ when(SSLSocketFactory.getSocketFactory()).thenReturn(mockedSSLSocketFactory);
+ when(mockedHttpClient.getParams()).thenReturn(mockedHttpParams);
+ }
+
+ */
+public class UserServiceImplTestMocked extends MockedAbstractServiceTest {
 
     private UserService userService;
 
@@ -44,7 +78,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void getUserWithUsername() throws Exception {
 
-        String calledUrl = buildPath("/users/test");
+        String calledUrl = expectedUrl("/users/test");
         when(mockedRestTemplate.getForObject(calledUrl, User.class)).thenReturn(expectedUser);
 
         User user = userService.getUser("test");
@@ -56,7 +90,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void getUserWithUsernameAndAttributes() throws Exception {
 
-        String calledUrl = buildPath("/users/test?attributes=attributes&attributes=attributes2");
+        String calledUrl = expectedUrl("/users/test?attributes=attributes&attributes=attributes2");
         when(mockedRestTemplate.getForObject(calledUrl, User.class)).thenReturn(expectedUser);
 
         List<String> attributes = Arrays.asList("attributes", "attributes2");
@@ -68,7 +102,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void deleteUserTest() throws Exception {
-        String calledUrl = buildPath("/users/test");
+        String calledUrl = expectedUrl("/users/test");
 
         userService.delete("test");
 
@@ -78,7 +112,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void updateUserTest() throws Exception {
-        String calledUrl = buildPath("/users/test");
+        String calledUrl = expectedUrl("/users/test");
 
         userService.update("test", expectedUser);
         verify(mockedRestTemplate, only()).put(calledUrl, expectedUser);
@@ -87,7 +121,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void updatePasswordTest() throws Exception {
         final UpdatePassword updatePassword = new UpdatePassword("old", "new", "new");
-        String calledUrl = buildPath("/users/test/password");
+        String calledUrl = expectedUrl("/users/test/password");
 
         userService.updatePassword("test", updatePassword);
 
@@ -97,7 +131,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void findUserObjects() throws Exception {
 
-        String calledUrl = buildPath("/users/test/objects?details=false&show_history=false");
+        String calledUrl = expectedUrl("/users/test/objects?details=false&show_history=false");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test");
@@ -110,7 +144,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
 
         final SmartObjects expectedSmartObjects = new SmartObjects();
 
-        String calledUrl = buildPath("/users/test/objects?details=true&show_history=false");
+        String calledUrl = expectedUrl("/users/test/objects?details=true&show_history=false");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test", true);
@@ -123,7 +157,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
     public void findUserObjectsWithDetailsAndModel() throws Exception {
         final SmartObjects expectedSmartObjects = new SmartObjects();
 
-        String calledUrl = buildPath("/users/test/objects?details=true&object_model=model&show_history=false");
+        String calledUrl = expectedUrl("/users/test/objects?details=true&object_model=model&show_history=false");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test", true, "model");
@@ -134,7 +168,7 @@ public class UserServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void findUserObjectsWithDetailsAndModelAndHistory() throws Exception {
 
-        String calledUrl = buildPath("/users/test/objects?details=true&object_model=model&show_history=true");
+        String calledUrl = expectedUrl("/users/test/objects?details=true&object_model=model&show_history=true");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = userService.findUserObjects("test", true, "model", true);

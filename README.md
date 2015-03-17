@@ -175,7 +175,7 @@ See the api doc [here](./src/main/com/mnubo/platform/android/sdk/api/README.md)
 ## Examples
 
 Suppose the user of the application is logged in (the user token is still valid
-(access or atleast the refresh)). You want to see all the objects that belongs to this user. In your
+(access or atleast the refreshUserConnection)). You want to see all the objects that belongs to this user. In your
 Android Activity, you should have something like this:
 
 ```
@@ -203,4 +203,4 @@ generated Javadoc.
 ## ToDos ##
 * Parcelable on Mnubo models
 * Validate Android-GeoJson (type problem)
-* spring-core import
+* Add buffer of failed operations to be retried later

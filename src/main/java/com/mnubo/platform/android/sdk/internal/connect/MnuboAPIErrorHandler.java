@@ -11,7 +11,9 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboAccessDeniedExcepti
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
@@ -30,14 +32,17 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException.EXPIRED_REFRESH_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException.INVALID_PREVIOUS_PASSWORD;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException.OBJECT_NOT_FOUND;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException.RESET_PASSWORD_DISABLED;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException.UNKNOWN_USER;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException.USER_DISABLED;
+
 public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
 
-    private static String BAD_CREDENTIALS = "Bad credentials";
-    private static String EXPIRED_REFRESH_TOKEN = "Invalid refresh token (expired):";
-    private static String RESET_PASSWORD_DISABLED = "Reset Password Disabled";
-    private static String UNKNOWN_USER = "Unknown User";
-    private static String USER_DISABLED = "User is disabled";
-    private static String REGISTRATION_INVALID_TOKEN = "Two Steps User Registration: Invalid Token received for the User.";
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
@@ -110,6 +115,10 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboUnknownUserException();
         } else if (TextUtils.equals(REGISTRATION_INVALID_TOKEN, errorMessage)) {
             throw new MnuboInvalidRegistrationTokenException();
+        } else if (TextUtils.equals(OBJECT_NOT_FOUND, errorMessage)) {
+            throw new MnuboObjectNotFoundException();
+        } else if (TextUtils.equals(INVALID_PREVIOUS_PASSWORD, errorMessage)) {
+            throw new MnuboInvalidPreviousPasswordException();
         }
     }
 

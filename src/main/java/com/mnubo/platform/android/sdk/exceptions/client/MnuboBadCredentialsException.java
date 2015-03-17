@@ -10,6 +10,7 @@ import com.mnubo.platform.android.sdk.Strings;
  * function.
  */
 public class MnuboBadCredentialsException extends MnuboClientException {
+    public final static String BAD_CREDENTIALS = "Bad credentials";
 
     public MnuboBadCredentialsException() {
         super(Strings.EXCEPTION_BAD_CREDENTIALS);

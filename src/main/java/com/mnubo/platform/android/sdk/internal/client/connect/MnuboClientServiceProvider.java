@@ -8,13 +8,13 @@ import com.mnubo.platform.android.sdk.internal.connect.MnuboServiceProvider;
 public class MnuboClientServiceProvider extends MnuboServiceProvider<MnuboClientApi> {
 
     public MnuboClientServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                      String authorizeUrl, String accessTokenUrl, Boolean disableSSLCertificateHostnameCheck) {
+                                      String authorizeUrl, String accessTokenUrl) {
         super(platformBaseUrl, consumerKey, consumerSecret,
-                authorizeUrl, accessTokenUrl, disableSSLCertificateHostnameCheck);
+                authorizeUrl, accessTokenUrl);
     }
 
     public MnuboClientApi getApi(String accessToken) {
-        return new MnuboClientApiImpl(accessToken, getPlatformBaseUrl(), getDisableSSLCertificateHostnameCheck());
+        return new MnuboClientApiImpl(accessToken, getPlatformBaseUrl());
     }
 
 }

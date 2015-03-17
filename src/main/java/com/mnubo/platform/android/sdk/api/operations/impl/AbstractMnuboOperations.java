@@ -13,8 +13,8 @@ import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.springframework.social.connect.Connection;
 
+import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.api.MnuboApiFactory.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
 
 public abstract class AbstractMnuboOperations {
@@ -42,11 +42,20 @@ public abstract class AbstractMnuboOperations {
         this.asyncTaskFactory = asyncTaskFactory;
     }
 
-    public ConnectionRefresher getConnectionRefresher() {
+    public ConnectionRefresher getUserConnectionRefresher() {
         return new ConnectionRefresher() {
             @Override
             public void refresh() {
-                userConnection = connectionOperations.refresh(userConnection);
+                userConnection = connectionOperations.refreshUserConnection(userConnection);
+            }
+        };
+    }
+
+    public ConnectionRefresher getClientConnectionRefresher() {
+        return new ConnectionRefresher() {
+            @Override
+            public void refresh() {
+                clientConnection = connectionOperations.getNewClientConnection();
             }
         };
     }
@@ -62,7 +71,7 @@ public abstract class AbstractMnuboOperations {
         if (this.clientConnection != null) {
             return this.clientConnection.getApi();
         }
-        this.clientConnection = connectionOperations.getClientConnection();
+        this.clientConnection = connectionOperations.getNewClientConnection();
 
         if (this.clientConnection != null) {
             return this.clientConnection.getApi();
@@ -71,7 +80,8 @@ public abstract class AbstractMnuboOperations {
     }
 
     protected void execute(final Task task) {
-        task.execute();
+        MnuboResponse response = task.execute();
+        handleError(response.getError());
     }
 
     protected <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
@@ -84,9 +94,10 @@ public abstract class AbstractMnuboOperations {
 
     abstract String getOperationTag();
 
-    private void logIfError(MnuboException ex) {
+    private void handleError(MnuboException ex) {
         if (ex != null) {
             Log.e(getOperationTag(), Strings.EXCEPTION_SDK, ex);
+            throw ex;
         }
     }
 

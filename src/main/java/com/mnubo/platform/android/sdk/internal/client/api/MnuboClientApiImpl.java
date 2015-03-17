@@ -4,8 +4,8 @@ package com.mnubo.platform.android.sdk.internal.client.api;
 import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
 import com.mnubo.platform.android.sdk.internal.client.services.impl.ClientServiceImpl;
 import com.mnubo.platform.android.sdk.internal.connect.MnuboAPIErrorHandler;
-import com.mnubo.platform.android.sdk.internal.connect.SSLCertificateHostnameCheck;
 
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,12 +13,8 @@ public class MnuboClientApiImpl extends AbstractOAuth2ApiBinding implements Mnub
 
     private final ClientService clientService;
 
-    public MnuboClientApiImpl(final String accessToken, final String platformBaseUrl, final Boolean disableSSLCertificateCheck) {
+    public MnuboClientApiImpl(final String accessToken, final String platformBaseUrl) {
         super(accessToken);
-
-        if (disableSSLCertificateCheck) {
-            SSLCertificateHostnameCheck.disable(getRestTemplate());
-        }
 
         this.clientService = new ClientServiceImpl(platformBaseUrl, getRestTemplate());
 
@@ -27,11 +23,13 @@ public class MnuboClientApiImpl extends AbstractOAuth2ApiBinding implements Mnub
     @Override
     protected void configureRestTemplate(RestTemplate restTemplate) {
         restTemplate.setErrorHandler(new MnuboAPIErrorHandler());
+        //Force the use of SNI to fetch the proper certificate
+        restTemplate.setRequestFactory(new SimpleClientHttpRequestFactory());
     }
 
 
     @Override
-    public ClientService clientSdkOperations() {
+    public ClientService clientService() {
         return this.clientService;
     }
 

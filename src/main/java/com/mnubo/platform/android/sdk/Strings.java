@@ -24,5 +24,7 @@ public interface Strings {
     public static String EXCEPTION_USER_DISABLED = "The user is disabled. Either manually deactivated or never activated after registration.";
     public static String EXCEPTION_ACCESS_DENIED = "The access was denied by the Mnubo API.";
     public static String EXCEPTION_INVALID_REGISTRATION_TOKEN = "The token provided to confirm the user registration is invalid.";
+    public static String EXCEPTION_INVALID_PREVIOUS_PASSWORD = "The provided previous password is incorrect. The password was not updated.";
+    public static String EXCEPTION_OBJECT_NOT_FOUND = "The requested object was not found.";
 
 }

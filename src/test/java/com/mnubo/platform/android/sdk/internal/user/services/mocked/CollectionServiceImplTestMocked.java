@@ -1,7 +1,8 @@
-package com.mnubo.platform.android.sdk.internal.user.services.impl;
+package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.CollectionService;
+import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
+import com.mnubo.platform.android.sdk.internal.user.services.impl.CollectionServiceImpl;
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class CollectionServiceImplServicesTest extends AbstractServicesTest {
+public class CollectionServiceImplTestMocked extends MockedAbstractServiceTest {
 
     private CollectionService collectionService;
 
@@ -27,7 +28,7 @@ public class CollectionServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testDelete() throws Exception {
-        String calledUrl = buildPath("/collections/collectionId?id_type=objectid");
+        String calledUrl = expectedUrl("/collections/collectionId?id_type=objectid");
 
         collectionService.delete(SdkId.valueOf("collectionId"));
 
@@ -37,7 +38,7 @@ public class CollectionServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testCreate() throws Exception {
-        String calledUrl = buildPath("/collections");
+        String calledUrl = expectedUrl("/collections");
         when(mockedRestTemplate.postForObject(calledUrl, expectedCollection, Collection.class)).thenReturn(expectedCollection);
 
         collectionService.create(expectedCollection);
@@ -47,7 +48,7 @@ public class CollectionServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void testFindOne() throws Exception {
 
-        String calledUrl = buildPath("/collections/collectionId?id_type=objectid");
+        String calledUrl = expectedUrl("/collections/collectionId?id_type=objectid");
         when(mockedRestTemplate.getForObject(calledUrl, Collection.class)).thenReturn(expectedCollection);
 
         Collection collection = collectionService.findOne(SdkId.valueOf("collectionId"));
@@ -56,7 +57,7 @@ public class CollectionServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testListAllObjects() throws Exception {
-        String calledUrl = buildPath("/collections/collectionId/objects?id_type=objectid");
+        String calledUrl = expectedUrl("/collections/collectionId/objects?id_type=objectid");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = collectionService.listAllObjects(SdkId.valueOf("collectionId"));
@@ -66,7 +67,7 @@ public class CollectionServiceImplServicesTest extends AbstractServicesTest {
     @Test
     public void testListAllObjectsWithLimit() throws Exception {
 
-        String calledUrl = buildPath("/collections/collectionId/objects?id_type=objectid&limit=10");
+        String calledUrl = expectedUrl("/collections/collectionId/objects?id_type=objectid&limit=10");
         when(mockedRestTemplate.getForObject(calledUrl, SmartObjects.class)).thenReturn(expectedSmartObjects);
 
         SmartObjects smartObjects = collectionService.listAllObjects(SdkId.valueOf("collectionId"), 10);
@@ -75,7 +76,7 @@ public class CollectionServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testAddObject() throws Exception {
-        String calledUrl = buildPath("/collections/collectionId/objects/objectId?id_type=objectid");
+        String calledUrl = expectedUrl("/collections/collectionId/objects/objectId?id_type=objectid");
 
         collectionService.addObject(SdkId.valueOf("collectionId"), SdkId.valueOf("objectId"));
 
@@ -84,7 +85,7 @@ public class CollectionServiceImplServicesTest extends AbstractServicesTest {
 
     @Test
     public void testRemoveObject() throws Exception {
-        String calledUrl = buildPath("/collections/collectionId/objects/objectId?id_type=objectid");
+        String calledUrl = expectedUrl("/collections/collectionId/objects/objectId?id_type=objectid");
 
         collectionService.removeObject(SdkId.valueOf("collectionId"), SdkId.valueOf("objectId"));
 
