@@ -5,6 +5,7 @@ import org.springframework.social.oauth2.AccessGrant;
 import org.springframework.social.oauth2.OAuth2Template;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 public class MnuboOAuth2Template extends OAuth2Template {
 
@@ -15,11 +16,15 @@ public class MnuboOAuth2Template extends OAuth2Template {
         super(consumerKey, consumerSecret, authorizeUrl, accessTokenUrl);
         this.consumerKey = consumerKey;
         this.accessTokenUrl = accessTokenUrl;
+    }
 
-        setUseParametersForClientAuthentication(false);
-        getRestTemplate().setErrorHandler(new MnuboAPIErrorHandler());
-        //Force the use of SNI to fetch the proper certificate
-        getRestTemplate().setRequestFactory(new SimpleClientHttpRequestFactory());
+    @Override
+    protected RestTemplate createRestTemplate() {
+        final RestTemplate restTemplate = super.createRestTemplate();
+        //ensure sni is used
+        restTemplate.setRequestFactory(new SimpleClientHttpRequestFactory());
+        restTemplate.setErrorHandler(new MnuboAPIErrorHandler());
+        return restTemplate;
     }
 
     @Override

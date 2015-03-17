@@ -3,6 +3,7 @@ package com.mnubo.platform.android.sdk.internal;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mnubo.platform.android.sdk.BuildConstants;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApiImpl;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApiImpl;
 
@@ -96,6 +97,6 @@ public abstract class AbstractServicesTest {
     }
 
     protected String expectedUrl(final String uri) {
-        return String.format("%s/rest%s", PLATFORM_BASE_URL, uri);
+        return String.format("%s%s%s", PLATFORM_BASE_URL, BuildConstants.PATH, uri);
     }
 }
