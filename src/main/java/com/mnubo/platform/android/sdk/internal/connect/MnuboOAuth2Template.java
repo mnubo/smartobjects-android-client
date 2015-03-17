@@ -12,7 +12,7 @@ public class MnuboOAuth2Template extends OAuth2Template {
     private final String consumerKey;
     private final String accessTokenUrl;
 
-    public MnuboOAuth2Template(String consumerKey, String consumerSecret, String authorizeUrl, String accessTokenUrl, final Boolean disableSSLCertificateCheck) {
+    public MnuboOAuth2Template(String consumerKey, String consumerSecret, String authorizeUrl, String accessTokenUrl) {
         super(consumerKey, consumerSecret, authorizeUrl, accessTokenUrl);
         this.consumerKey = consumerKey;
         this.accessTokenUrl = accessTokenUrl;

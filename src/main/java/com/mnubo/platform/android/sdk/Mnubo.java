@@ -66,8 +66,8 @@ public class Mnubo {
         SQLiteOpenHelper repositoryHelper = new SQLiteConnectionRepositoryHelper(applicationContext);
         ConnectionFactoryRegistry connectionFactoryRegistry = new ConnectionFactoryRegistry();
 
-        this.userConnectionFactory = new MnuboUserConnectionFactory(validatedPlatformUrl, consumerKey, consumerSecret, authorizeUrl, accessTokenUrl, BuildConstants.DISABLE_CERTIFICATE_HOSTNAME_CHECK);
-        this.clientConnectionFactory = new MnuboClientConnectionFactory(validatedPlatformUrl, consumerKey, consumerSecret, authorizeUrl, accessTokenUrl, BuildConstants.DISABLE_CERTIFICATE_HOSTNAME_CHECK);
+        this.userConnectionFactory = new MnuboUserConnectionFactory(validatedPlatformUrl, consumerKey, consumerSecret, authorizeUrl, accessTokenUrl);
+        this.clientConnectionFactory = new MnuboClientConnectionFactory(validatedPlatformUrl, consumerKey, consumerSecret, authorizeUrl, accessTokenUrl);
 
         connectionFactoryRegistry.addConnectionFactory(this.userConnectionFactory);
 

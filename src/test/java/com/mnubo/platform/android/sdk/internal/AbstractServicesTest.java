@@ -72,8 +72,8 @@ public abstract class AbstractServicesTest {
         when(SSLSocketFactory.getSocketFactory()).thenReturn(mockedSSLSocketFactory);
         when(mockedHttpClient.getParams()).thenReturn(mockedHttpParams);
 
-        mnuboUserApi = new MnuboUserApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL, true);
-        mnuboClientApi = new MnuboClientApiImpl(CLIENT_ACCESS_TOKEN, PLATFORM_BASE_URL, true);
+        mnuboUserApi = new MnuboUserApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL);
+        mnuboClientApi = new MnuboClientApiImpl(CLIENT_ACCESS_TOKEN, PLATFORM_BASE_URL);
 
         mockUserServiceServer = MockRestServiceServer.createServer(mnuboUserApi.getRestTemplate());
         mockClientServiceServer = MockRestServiceServer.createServer(mnuboClientApi.getRestTemplate());

@@ -9,10 +9,10 @@ public class MnuboClientConnectionFactory extends OAuth2ConnectionFactory<MnuboC
 
 
     public MnuboClientConnectionFactory(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                        String authorizeUrl, String accessTokenUrl, Boolean disableSSLCertificateHostnameCheck) {
+                                        String authorizeUrl, String accessTokenUrl) {
         super(BuildConstants.MNUBO_PROVIDER,
                 new MnuboClientServiceProvider(platformBaseUrl, consumerKey, consumerSecret,
-                        authorizeUrl, accessTokenUrl, disableSSLCertificateHostnameCheck),
+                        authorizeUrl, accessTokenUrl),
                 new MnuboClientAdapter());
     }
 

@@ -13,7 +13,7 @@ public class MnuboClientApiImpl extends AbstractOAuth2ApiBinding implements Mnub
 
     private final ClientService clientService;
 
-    public MnuboClientApiImpl(final String accessToken, final String platformBaseUrl, final Boolean disableSSLCertificateCheck) {
+    public MnuboClientApiImpl(final String accessToken, final String platformBaseUrl) {
         super(accessToken);
 
         this.clientService = new ClientServiceImpl(platformBaseUrl, getRestTemplate());

@@ -8,10 +8,10 @@ import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 public class MnuboUserConnectionFactory extends OAuth2ConnectionFactory<MnuboUserApi> {
 
     public MnuboUserConnectionFactory(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                      String authorizeUrl, String accessTokenUrl, Boolean disableSSLCertificateHostnameCheck) {
+                                      String authorizeUrl, String accessTokenUrl) {
         super(BuildConstants.MNUBO_PROVIDER,
                 new MnuboUserServiceProvider(platformBaseUrl, consumerKey, consumerSecret,
-                        authorizeUrl, accessTokenUrl, disableSSLCertificateHostnameCheck),
+                        authorizeUrl, accessTokenUrl),
                 new MnuboUserAdapter());
     }
 

@@ -25,7 +25,7 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
     private final CollectionService collectionService;
     private final TokenValidationService tokenValidationService;
 
-    public MnuboUserApiImpl(final String accessToken, final String platformBaseUrl, final Boolean disableSSLCertificateCheck) {
+    public MnuboUserApiImpl(final String accessToken, final String platformBaseUrl) {
         super(accessToken);
 
         this.userService = new UserServiceImpl(platformBaseUrl, getRestTemplate());

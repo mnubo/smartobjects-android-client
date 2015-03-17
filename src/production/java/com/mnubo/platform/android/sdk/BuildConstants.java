@@ -22,11 +22,6 @@ public interface BuildConstants {
      */
     Integer PORT = 443;
 
-    /**
-     * Disable the SSL Certificate Hostname check
-     */
-    Boolean DISABLE_CERTIFICATE_HOSTNAME_CHECK = false;
-
 
     /**
      * Provider ID used to persist connection in the SQLite database
