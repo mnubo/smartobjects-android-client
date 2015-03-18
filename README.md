@@ -17,38 +17,25 @@ This project can be opened with Android Studio or Eclipse (Note : Eclipse is not
    4. Android Studio should detect an existing project, and ask you what do to about it. Select "Open existing project"
 
 ## Gradle properties ##
-The build.gradle files depends on properties that are different from user to user. These properties
-should be defined in your $HOME/.gradle/gradle.properties file.
-
+If you intent to build the SDK from the sources, the build.gradle files will require various
+properties that are used for publishing. To remove these requirements, get rid of the following
+line in the gradle.build file :
 
 ```
-NEXUS_USERNAME=YourSonatypeJiraUsername
-NEXUS_PASSWORD=YourSonatypeJiraPassword
-
-POM_DEVELOPER_ID=DEVELOPER_ID
-POM_DEVELOPER_NAME=YOUR_NAME
-POM_DEVELOPER_EMAIL=EMAIL
-
-//obtained with gpg --gen-key
-//to sign the artifact pushed to the Sonatype repository
-signing.keyId=KEYIDABC123
-signing.password=PrivateKeyPassword
-signing.secretKeyRingFile=/path/to/gpg/secring.gpg
+apply from: 'gradle/gradle-mvn-push.gradle'
 ```
 
 
 ## Geting started ##
 
-The library can be picked up from Github or MavenCentral. Add the jar to your project dependencies
+The library can be picked up from Github or MavenCentral. Add the aar to your project dependencies
 or add this Gradle dependency to your build file :
 
 ```
     // Using gradle and maven dependency resolution
-    compile('com.mnubo:sdk:1.0.0@aar') {
+    compile('com.mnubo:android-sdk:1.0.0@aar') {
         transitive = true
     }
-    // If you drop it in the /libs folder
-    compile fileTree(dir: 'libs', include: ['*.aar'])
 ```
 
 You also need to exclude the following files from the packaging to avoid duplicate exception during
@@ -98,15 +85,15 @@ Once initialized, you can do a very limited set of commands until the user of yo
 signed in.
 
 Using only your client credentials (_CONSUMER\_KEY_ and _CONSUMER\_SECRET_), you can only use the
-ClientOperations and AuthenticationOperations interfaces, anything else would raise Unauthorized
+ClientOperations and AuthenticationOperations interfaces, anything else will raise Unauthorized
 Exception.
 
 To use the Mnubo's SDK, you must have a `MnuboApi` object. The `MnuboApi` is used to perform all
-the operations in your activities. If a User connection (based on a user token, grant\_type=password)
+the operations. If a User connection (based on a user token, grant\_type=password)
 is available, it will be used, otherwise, a client connection (based on a client token,
-grant\_type=client\_credentials).
+grant\_type=client\_credentials) will be.
 
-To get the `MnuboApi` object, use this :
+To get the `MnuboApi` object, use this (after initialization) :
 
 ```
     MnuboApi mnuboApi = Mnubo.getApi();
@@ -134,9 +121,9 @@ mnuboApi.getAuthenticationOperations().logIn(username, password, new CompletionC
 ## Available API operations ##
 All operations except the ClientOperations and the AuthenticationOperations will perform a token
 refresh if the current access\_token has expired. Most of these operations requires a
-CompletionCallBack, the request that don't are not using the network.
+CompletionCallBack, the requests that don't are not using the network and they are synchronous.
 
-All of the operations are executed in a AsyncTask. Therefore, none of them run on the main thread.
+All of the asynchronous operations are executed in an `AsyncTask`. Therefore, none of them run on the main thread.
 Here is an exhaustive list of the available operations.
 
 * UserOperations
@@ -167,12 +154,12 @@ Here is an exhaustive list of the available operations.
 Note that if you are required to execute the request synchronously, on the current thread, you can
 pass `null` as the completion callback. This can be useful when you work in an Android `Service`.
 
-See the api doc [here](./src/main/com/mnubo/platform/android/sdk/api/README.md)
+See the api doc [here](./src/main/java/com/mnubo/platform/android/sdk/api/README.md)
 
 ## Examples
 
 Suppose the user of the application is logged in (the user token is still valid
-(access or atleast the refreshUserConnection)). You want to see all the objects that belongs to this user. In your
+(access or atleast the refresh token)). You want to see all the objects that belongs to this user. In your
 Android Activity, you should have something like this:
 
 ```
