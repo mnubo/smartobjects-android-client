@@ -20,7 +20,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
+    return !VERSION_NAME.contains("SNAPSHOT")
 }
 
 def getReleaseRepositoryUrl() {
@@ -44,7 +44,6 @@ def getVersionName() {
     if(!isReleaseBuild()) {
         ext.env = System.getenv()
         ext.buildNumber = env.BUILD_NUMBER ? env.BUILD_NUMBER : "local"
-        println "Build Number: " + VERSION_NAME.replace("-SNAPSHOT", "-$buildNumber-SNAPSHOT")
         return VERSION_NAME.replace("-SNAPSHOT", "-$buildNumber-SNAPSHOT")
     }
     return VERSION_NAME
@@ -103,9 +102,19 @@ afterEvaluate { project ->
         sign configurations.archives
     }
 
-    task androidJavadocsJar(type: Jar, dependsOn: generateProductionReleaseJavadoc) {
+    task androidJavadocs(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        exclude '**/*.md'
+        options {
+            links "http://fasterxml.github.io/jackson-databind/javadoc/2.5/"
+            linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
+        }
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
         classifier = 'javadoc'
-        from generateProductionReleaseJavadoc.destinationDir
+        from androidJavadocs.destinationDir
     }
 
     task androidSourcesJar(type: Jar) {

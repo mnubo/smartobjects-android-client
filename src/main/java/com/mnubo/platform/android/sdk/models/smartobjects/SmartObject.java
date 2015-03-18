@@ -49,7 +49,7 @@ import static com.mnubo.platform.android.sdk.Constants.OBJECT_MODEL;
  * A Smart object on the Mnubo Platform, it belongs to a single
  * {@link com.mnubo.platform.android.sdk.models.users.User} and can
  * be in different {@link com.mnubo.platform.android.sdk.models.collections.Collection}
- * <p/>
+ *
  * It also has a list of {@link com.mnubo.platform.android.sdk.models.common.Attribute}
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects

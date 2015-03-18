@@ -232,7 +232,7 @@ public class Mnubo {
      * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
      * has a way to fetch the User information using the user token in the
      * authorization header.
-     * <p/>
+     *
      * If the username can't be persisted or fetched from the platform
      * the connection can't be saved locally.
      *
@@ -255,7 +255,7 @@ public class Mnubo {
      * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
      * has a way to fetch the User information using the user token in the
      * authorization header.
-     * <p/>
+     *
      * Read the saved username
      *
      * @return read username
@@ -283,7 +283,7 @@ public class Mnubo {
      * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
      * has a way to fetch the User information using the user token in the
      * authorization header.
-     * <p/>
+     *
      * Deletes the saved username
      */
     @Deprecated
