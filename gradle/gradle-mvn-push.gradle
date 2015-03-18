@@ -43,8 +43,8 @@ def getRepositoryPassword() {
 def getVersionName() {
     if(!isReleaseBuild()) {
         ext.env = System.getenv()
-        ext.buildNumber = env.BUILD_NUMBER?.toInteger()
-        println "Build Number: $buildNumber"
+        ext.buildNumber = env.BUILD_NUMBER ? env.BUILD_NUMBER : "local"
+        println "Build Number: " + VERSION_NAME.replace("-SNAPSHOT", "-$buildNumber-SNAPSHOT")
         return VERSION_NAME.replace("-SNAPSHOT", "-$buildNumber-SNAPSHOT")
     }
     return VERSION_NAME
