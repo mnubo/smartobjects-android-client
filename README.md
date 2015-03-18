@@ -22,9 +22,6 @@ should be defined in your $HOME/.gradle/gradle.properties file.
 
 
 ```
-artifactory_user=MNUBO_ARTIFACTORY_USERNAME
-artifactory_password=MNUBO_ARTIFACTORY_PASSWORD
-
 NEXUS_USERNAME=YourSonatypeJiraUsername
 NEXUS_PASSWORD=YourSonatypeJiraPassword
 
@@ -34,7 +31,7 @@ POM_DEVELOPER_EMAIL=EMAIL
 
 //obtained with gpg --gen-key
 //to sign the artifact pushed to the Sonatype repository
-signing.keyId=KEYIDAABC123
+signing.keyId=KEYIDABC123
 signing.password=PrivateKeyPassword
 signing.secretKeyRingFile=/path/to/gpg/secring.gpg
 ```
@@ -47,7 +44,7 @@ or add this Gradle dependency to your build file :
 
 ```
     // Using gradle and maven dependency resolution
-    compile('com.mnubo.android:sdk:1.0.0@aar') {
+    compile('com.mnubo:sdk:1.0.0@aar') {
         transitive = true
     }
     // If you drop it in the /libs folder
