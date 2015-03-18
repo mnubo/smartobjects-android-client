@@ -40,6 +40,15 @@ def getRepositoryUsername() {
 def getRepositoryPassword() {
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
+def getVersionName() {
+    if(!isReleaseBuild()) {
+        ext.env = System.getenv()
+        ext.buildNumber = env.BUILD_NUMBER?.toInteger()
+        println "Build Number: $buildNumber"
+        return VERSION_NAME.replace("-SNAPSHOT", "-$buildNumber-SNAPSHOT")
+    }
+    return VERSION_NAME
+}
 
 afterEvaluate { project ->
     uploadArchives {
@@ -49,7 +58,7 @@ afterEvaluate { project ->
 
                 pom.groupId = GROUP
                 pom.artifactId = POM_ARTIFACT_ID
-                pom.version = VERSION_NAME
+                pom.version = getVersionName()
 
                 repository(url: getReleaseRepositoryUrl()) {
                     authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
