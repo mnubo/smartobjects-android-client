@@ -18,7 +18,8 @@
  *     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *     THE SOFTWARE.
- */package com.mnubo.platform.android.sdk.internal.user.services.impl;
+ */
+package com.mnubo.platform.android.sdk.internal.user.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.user.services.UserService;
