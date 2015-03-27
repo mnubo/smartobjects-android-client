@@ -3,29 +3,6 @@ This SDK provides you with a wrapper to use the Mnubo's service easily from your
 Basically this SDK sets up a connection with the Mnubo API and ensure oAuth2 headers are present in
 your calls to it.
 
-## How to open this project ##
-This project can be opened with Android Studio or Eclipse (Note : Eclipse is not an Android supported IDE anymore). New Android build system is based on Gradle, so you'll need that too.
-
- 1. Download and install [Android Studio](http://developer.android.com/sdk/index.html)
- 2. Download and install Gradle
- 3. Clone this repo
- 4. Start Android Studio
- 5. Open the project
-   1. File -> Open
-   2. Go to the cloned repository and select the build.gradle file in the top directory
-   3. Keep the default options (Use gradle wrapper)
-   4. Android Studio should detect an existing project, and ask you what do to about it. Select "Open existing project"
-
-## Gradle properties ##
-If you intent to build the SDK from the sources, the build.gradle files will require various
-properties that are used for publishing. To remove these requirements, get rid of the following
-line in the gradle.build file :
-
-```
-apply from: 'gradle/gradle-mvn-push.gradle'
-```
-
-
 ## Geting started ##
 
 The library can be picked up from Github or MavenCentral. Add the aar to your project dependencies
@@ -37,6 +14,10 @@ or add this Gradle dependency to your build file :
         transitive = true
     }
 ```
+
+_Sources/Javadoc are not automatically linked by Android Studio and Gradle for the moment even
+if they are downloaded properly to your local Maven repository. You can attach them manually attach them.
+See the Google group discussion [here](https://groups.google.com/forum/#!searchin/adt-dev/javadoc/adt-dev/yVPo71O_ZKM/q4LzRL1eockJ)
 
 You also need to exclude the following files from the packaging to avoid duplicate exception during
 build :
@@ -186,5 +167,27 @@ generated Javadoc.
 
 ## ToDos ##
 * Parcelable on Mnubo models
-* Validate Android-GeoJson (type problem)
-* Add buffer of failed operations to be retried later
+* Add buffer of failed operations to be retried later (on the way)
+
+
+## How to open this project ##
+This project can be opened with Android Studio or Eclipse (Note : Eclipse is not an Android supported IDE anymore). New Android build system is based on Gradle, so you'll need that too.
+
+ 1. Download and install [Android Studio](http://developer.android.com/sdk/index.html)
+ 2. Download and install Gradle
+ 3. Clone this repo
+ 4. Start Android Studio
+ 5. Open the project
+   1. File -> Open
+   2. Go to the cloned repository and select the build.gradle file in the top directory
+   3. Keep the default options (Use gradle wrapper)
+   4. Android Studio should detect an existing project, and ask you what do to about it. Select "Open existing project"
+
+## Gradle properties ##
+If you intent to build the SDK from the sources, the build.gradle files will require various
+properties that are used for publishing. To remove these requirements, get rid of the following
+line in the gradle.build file :
+
+```
+apply from: 'gradle/gradle-mvn-push.gradle'
+```
