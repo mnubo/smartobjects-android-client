@@ -22,8 +22,8 @@
 package com.mnubo.platform.android.sdk.internal.client.services.mocked;
 
 import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
-import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.client.services.impl.ClientServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.ClientService;
+import com.mnubo.platform.android.sdk.internal.services.impl.ClientServiceImpl;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 

@@ -22,7 +22,12 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
-import com.mnubo.platform.android.sdk.internal.user.services.UserService;
+import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.FindUserObjectsTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.GetUserTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdatePasswordTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdateUserTask;
+import com.mnubo.platform.android.sdk.internal.services.UserService;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 import com.mnubo.platform.android.sdk.models.users.User;
@@ -31,11 +36,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.when;
 
+@SuppressWarnings("unchecked")
 public class UserOperationsImplTest extends AbstractOperationsTest {
 
     private final UserOperationsImpl userOperations = new UserOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
@@ -54,7 +62,6 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        userOperations.setAsyncTaskFactory(mockedAsyncTaskFactory);
 
         when(mockedUserApiConnection.getApi()).thenReturn(mockedUserApi);
         when(mockedUserApi.userService()).thenReturn(mockedUserService);
@@ -62,137 +69,149 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
 
     @Test
     public void testFindUserObjects() throws Exception {
+        when(AsyncTaskFactory.create(
+                any(FindUserObjectsTask.class),
+                isNull(CompletionCallBack.class),
+                any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
         final String username = "username";
 
         userOperations.findUserObjects(username, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).userService();
-        verify(mockedUserService, only()).findUserObjects(username);
     }
 
     @Test
     public void testFindUserObjectsWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(
+                any(FindUserObjectsTask.class),
+                eq(mockedSmartObjectsCallback),
+                any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
         final String username = "username";
 
         userOperations.findUserObjects(username, mockedSmartObjectsCallback);
 
-        verify(mockedAsyncTask, only()).execute();
+
     }
 
     @Test
     public void testFindUserObjectsDetails() throws Exception {
+        when(AsyncTaskFactory.create(any(FindUserObjectsTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
 
         final String username = "username";
 
         userOperations.findUserObjects(username, true, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).userService();
-        verify(mockedUserService, only()).findUserObjects(username, true);
     }
 
     @Test
     public void testFindUserObjectsDetailsWithCallback() throws Exception {
-
+        when(AsyncTaskFactory.create(any(FindUserObjectsTask.class), eq(mockedSmartObjectsCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
         final String username = "username";
 
         userOperations.findUserObjects(username, true, mockedSmartObjectsCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 
     @Test
     public void testFindUserObjectsDetailsAndObjectModel() throws Exception {
+        when(AsyncTaskFactory.create(any(FindUserObjectsTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final String username = "username";
         final String objectModelName = "objectModelName";
 
         userOperations.findUserObjects(username, true, objectModelName, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).userService();
-        verify(mockedUserService, only()).findUserObjects(username, true, objectModelName);
     }
 
     @Test
     public void testFindUserObjectsDetailsAndObjectModelWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(FindUserObjectsTask.class), eq(mockedSmartObjectsCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final String username = "username";
         final String objectModelName = "objectModelName";
 
         userOperations.findUserObjects(username, true, objectModelName, mockedSmartObjectsCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 
     @Test
     public void testGetUser() throws Exception {
+        when(AsyncTaskFactory.create(any(UpdatePasswordTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
         final String username = "username";
 
         userOperations.getUser(username, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).userService();
-        verify(mockedUserService, only()).getUser(username);
     }
 
     @Test
     public void testGetUserWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(GetUserTask.class), eq(mockedUserCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
         final String username = "username";
 
         userOperations.getUser(username, mockedUserCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    public void testUpdateAsync() throws Exception {
+        when(AsyncTaskFactory.create(any(UpdateUserTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final String username = "username";
         final User updatedUser = new User();
         updatedUser.setUsername(username);
 
         userOperations.update(username, updatedUser, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).userService();
-        verify(mockedUserService, only()).update(username, updatedUser);
     }
 
     @Test
-    public void testUpdateWithCallback() throws Exception {
+    public void testUpdateAsyncWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(UpdateUserTask.class), eq(mockedSuccessCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final String username = "username";
         final User updatedUser = new User();
         updatedUser.setUsername(username);
 
         userOperations.update(username, updatedUser, mockedSuccessCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 
     @Test
     public void testUpdatePassword() throws Exception {
+        when(AsyncTaskFactory.create(any(UpdatePasswordTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final String username = "username";
         final UpdatePassword updatePassword = new UpdatePassword("old", "new", "new");
 
         userOperations.updatePassword(username, updatePassword, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).userService();
-        verify(mockedUserService, only()).updatePassword(username, updatePassword);
     }
 
     @Test
     public void testUpdatePasswordWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(UpdatePasswordTask.class), eq(mockedSuccessCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final String username = "username";
         final UpdatePassword updatePassword = new UpdatePassword("old", "new", "new");
 
         userOperations.updatePassword(username, updatePassword, mockedSuccessCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 }

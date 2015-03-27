@@ -128,7 +128,12 @@ public class Mnubo {
         if (instance == null) {
             throw new MnuboNotInitializedException();
         }
-        return new MnuboApi(instance.connectionOperations, instance.clientConnection, instance.getUserConnection());
+        return new MnuboApi(
+                instance.connectionOperations,
+                instance.clientConnection,
+                instance.getUserConnection(),
+                instance.applicationContext.getCacheDir()
+        );
     }
 
     private Connection<MnuboUserApi> getUserConnection() {
@@ -232,7 +237,7 @@ public class Mnubo {
      * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
      * has a way to fetch the User information using the user token in the
      * authorization header.
-     *
+     * <p/>
      * If the username can't be persisted or fetched from the platform
      * the connection can't be saved locally.
      *
@@ -255,7 +260,7 @@ public class Mnubo {
      * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
      * has a way to fetch the User information using the user token in the
      * authorization header.
-     *
+     * <p/>
      * Read the saved username
      *
      * @return read username
@@ -283,17 +288,18 @@ public class Mnubo {
      * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
      * has a way to fetch the User information using the user token in the
      * authorization header.
-     *
+     * <p/>
      * Deletes the saved username
      */
     @Deprecated
     private void deleteSavedUsername() {
-        try {
-            boolean fis = this.applicationContext.deleteFile(FILENAME);
-        } catch (Exception ex) {
-            Log.e(TAG, "Unable to persist username", ex);
+        boolean deleted = this.applicationContext.deleteFile(FILENAME);
+
+        if (!deleted) {
+            Log.e(TAG, "Unable to delete username file.");
         }
     }
+
 
     public static interface ConnectionOperations {
         public Connection<MnuboUserApi> refreshUserConnection(Connection<MnuboUserApi> userConnection);

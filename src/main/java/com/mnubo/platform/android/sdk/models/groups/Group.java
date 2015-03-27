@@ -22,14 +22,20 @@
 
 package com.mnubo.platform.android.sdk.models.groups;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @JsonInclude(Include.NON_NULL)
-public class Group {
+public class Group implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     private String label;
 
     private String owner;

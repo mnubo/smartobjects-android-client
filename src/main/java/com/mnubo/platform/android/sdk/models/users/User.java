@@ -31,6 +31,7 @@ import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.Attribute;
 import com.mnubo.platform.android.sdk.models.groups.Group;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -42,7 +43,10 @@ import java.util.UUID;
  */
 @JsonInclude(Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class User implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
 
     private String username;
 

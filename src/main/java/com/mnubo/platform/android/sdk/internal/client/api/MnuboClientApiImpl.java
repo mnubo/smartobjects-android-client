@@ -23,9 +23,9 @@
 package com.mnubo.platform.android.sdk.internal.client.api;
 
 
-import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.client.services.impl.ClientServiceImpl;
 import com.mnubo.platform.android.sdk.internal.connect.MnuboAPIErrorHandler;
+import com.mnubo.platform.android.sdk.internal.services.ClientService;
+import com.mnubo.platform.android.sdk.internal.services.impl.ClientServiceImpl;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;

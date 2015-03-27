@@ -23,8 +23,8 @@
 package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
 import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
-import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.GroupServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.GroupService;
+import com.mnubo.platform.android.sdk.internal.services.impl.GroupServiceImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.groups.Group;
 import com.mnubo.platform.android.sdk.models.users.Users;

@@ -22,12 +22,6 @@
 
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import android.util.Log;
-
-import com.mnubo.platform.android.sdk.Strings;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.AsyncTaskFactory;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
-import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboClientConnectionUnavailableException;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboNotLoggedInException;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
@@ -36,16 +30,17 @@ import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
-import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
+import static com.mnubo.platform.android.sdk.internal.tasks.Task.ApiFetcher;
+import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
 
 public abstract class AbstractMnuboOperations {
 
     private Connection<MnuboClientApi> clientConnection;
     private Connection<MnuboUserApi> userConnection;
 
-    private AsyncTaskFactory asyncTaskFactory;
     final ConnectionOperations connectionOperations;
+
+    private boolean cacheFailedOperations = false;
 
     AbstractMnuboOperations(ConnectionOperations connectionOperations,
                             Connection<MnuboClientApi> clientConnection,
@@ -53,11 +48,14 @@ public abstract class AbstractMnuboOperations {
         this.connectionOperations = connectionOperations;
         this.userConnection = userConnection;
         this.clientConnection = clientConnection;
-        this.asyncTaskFactory = new AsyncTaskFactory(getOperationTag());
     }
 
-    public void setAsyncTaskFactory(AsyncTaskFactory asyncTaskFactory) {
-        this.asyncTaskFactory = asyncTaskFactory;
+    public void setCacheFailedOperations(boolean cacheFailedOperations) {
+        this.cacheFailedOperations = cacheFailedOperations;
+    }
+
+    public boolean isCacheFailedOperations() {
+        return cacheFailedOperations;
     }
 
     ConnectionRefresher getUserConnectionRefresher() {
@@ -78,48 +76,28 @@ public abstract class AbstractMnuboOperations {
         };
     }
 
-    MnuboUserApi getUserApi() {
-        if (this.userConnection != null) {
-            return this.userConnection.getApi();
-        }
-        throw new MnuboNotLoggedInException();
-    }
+    protected ApiFetcher getApiFetcher() {
+        return new ApiFetcher() {
+            @Override
+            public MnuboClientApi getMnuboClientApi() {
+                if (clientConnection != null) {
+                    return clientConnection.getApi();
+                }
+                clientConnection = connectionOperations.getNewClientConnection();
 
-    MnuboClientApi getClientApi() {
-        if (this.clientConnection != null) {
-            return this.clientConnection.getApi();
-        }
-        this.clientConnection = connectionOperations.getNewClientConnection();
+                if (clientConnection != null) {
+                    return clientConnection.getApi();
+                }
+                throw new MnuboClientConnectionUnavailableException();
+            }
 
-        if (this.clientConnection != null) {
-            return this.clientConnection.getApi();
-        }
-        throw new MnuboClientConnectionUnavailableException();
-    }
-
-    void execute(final Task task) {
-        MnuboResponse response = task.execute();
-        handleError(response.getError());
-    }
-
-    <Result> void execute(final Task<Result> task, final CompletionCallBack<Result> callback) {
-        if (callback == null) {
-            execute(task);
-        } else {
-            this.asyncTaskFactory.create(task, callback).execute();
-        }
-    }
-
-    abstract String getOperationTag();
-
-    private void handleError(MnuboException ex) {
-        if (ex != null) {
-            Log.e(getOperationTag(), Strings.EXCEPTION_SDK, ex);
-            throw ex;
-        }
-    }
-
-    public interface MnuboOperation<Result> {
-        Result executeMnuboCall();
+            @Override
+            public MnuboUserApi getMnuboUserApi() {
+                if (userConnection != null) {
+                    return userConnection.getApi();
+                }
+                throw new MnuboNotLoggedInException();
+            }
+        };
     }
 }

@@ -36,6 +36,8 @@ import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.springframework.social.connect.Connection;
 
+import java.io.File;
+
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 
 /**
@@ -52,14 +54,16 @@ public class MnuboApi {
 
     private final AuthenticationOperations authenticationOperations;
 
-    public MnuboApi(ConnectionOperations connectionOperations, Connection<MnuboClientApi> clientConnection, Connection<MnuboUserApi> userConnection) {
+    public MnuboApi(ConnectionOperations connectionOperations,
+                    Connection<MnuboClientApi> clientConnection,
+                    Connection<MnuboUserApi> userConnection,
+                    File applicationRootDir) {
 
         this.userOperations = new UserOperationsImpl(connectionOperations, clientConnection, userConnection);
-        this.smartObjectOperations = new SmartObjectOperationsImpl(connectionOperations, clientConnection, userConnection);
+        this.smartObjectOperations = new SmartObjectOperationsImpl(connectionOperations, clientConnection, userConnection, applicationRootDir);
         this.clientOperations = new ClientOperationsImpl(connectionOperations, clientConnection, userConnection);
         this.authenticationOperations = new AuthenticationOperationsImpl(connectionOperations, clientConnection, userConnection);
     }
-
 
     public UserOperations getUserOperations() {
         return userOperations;

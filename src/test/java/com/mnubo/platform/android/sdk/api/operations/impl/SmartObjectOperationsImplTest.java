@@ -23,7 +23,15 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
-import com.mnubo.platform.android.sdk.internal.user.services.SmartObjectService;
+import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSampleOnPublicSensorTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.CreateObjectTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.FindObjectTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.SearchSamplesTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.UpdateObjectTask;
+import com.mnubo.platform.android.sdk.api.services.cache.impl.MnuboSmartObjectFileCachingServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.models.common.IdType;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
@@ -34,14 +42,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.when;
 
+@SuppressWarnings("unchecked")
 public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
-    private final SmartObjectOperationsImpl smartObjectOperations = new SmartObjectOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
     private final SmartObjectService mockedSmartObjectService = mock(SmartObjectService.class);
 
     @SuppressWarnings("unchecked")
@@ -54,151 +64,172 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
     @SuppressWarnings("unchecked")
     private final CompletionCallBack<Boolean> mockedSuccessCallback = mock(CompletionCallBack.class);
 
+    private final MnuboSmartObjectFileCachingServiceImpl mockedCacheService = mock(MnuboSmartObjectFileCachingServiceImpl.class);
+
+
+    private SmartObjectOperationsImpl smartObjectOperations;
+
+
+
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        smartObjectOperations.setAsyncTaskFactory(mockedAsyncTaskFactory);
-
         when(mockedUserApiConnection.getApi()).thenReturn(mockedUserApi);
         when(mockedUserApi.objectService()).thenReturn(mockedSmartObjectService);
+
+        smartObjectOperations = new SmartObjectOperationsImpl(mockedConnectionOperations, mockedClientApiConnection,
+                mockedUserApiConnection, null);
+        smartObjectOperations.setMnuboSmartObjectFileCachingService(mockedCacheService);
     }
 
     @Test
     public void testFindObject() throws Exception {
+        when(AsyncTaskFactory.create(any(FindObjectTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
 
         smartObjectOperations.findObject(objectId, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).objectService();
-        verify(mockedSmartObjectService, only()).findOne(objectId);
 
     }
 
     @Test
     public void testFindObjectWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(FindObjectTask.class), eq(mockedSmartObjectCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
 
         smartObjectOperations.findObject(objectId, mockedSmartObjectCallback);
 
-        verify(mockedAsyncTask, only()).execute();
 
     }
 
     @Test
     public void testUpdate() throws Exception {
+        when(AsyncTaskFactory.create(any(UpdateObjectTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final SmartObject updatedObject = new SmartObject();
 
         smartObjectOperations.update(objectId, updatedObject, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).objectService();
-        verify(mockedSmartObjectService, only()).update(objectId, updatedObject);
+
     }
 
     @Test
     public void testUpdateWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(UpdateObjectTask.class), eq(mockedSuccessCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final SmartObject updatedObject = new SmartObject();
 
         smartObjectOperations.update(objectId, updatedObject, mockedSuccessCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 
     @Test
     public void testSearchSamples() throws Exception {
+        when(AsyncTaskFactory.create(any(SearchSamplesTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final String sensorName = "sensorName";
 
         smartObjectOperations.searchSamples(objectId, sensorName, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).objectService();
-        verify(mockedSmartObjectService, only()).searchSamples(objectId, sensorName);
+
     }
 
     @Test
     public void testSearchSamplesWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(SearchSamplesTask.class), eq(mockedSamplesCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final String sensorName = "sensorName";
 
         smartObjectOperations.searchSamples(objectId, sensorName, mockedSamplesCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 
     @Test
     public void testAddSamples() throws Exception {
+        when(AsyncTaskFactory.create(any(AddSamplesTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final Samples samples = new Samples();
 
         smartObjectOperations.addSamples(objectId, samples, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).objectService();
-        verify(mockedSmartObjectService, only()).addSamples(objectId, samples);
 
     }
 
     @Test
     public void testAddSamplesWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(AddSamplesTask.class), eq(mockedSuccessCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final Samples samples = new Samples();
 
         smartObjectOperations.addSamples(objectId, samples, mockedSuccessCallback);
 
-        verify(mockedAsyncTask, only()).execute();
 
     }
 
     @Test
     public void testAddSampleOnPublicSensor() throws Exception {
+        when(AsyncTaskFactory.create(any(AddSampleOnPublicSensorTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final String sensorName = "sensorName";
         final Sample sample = new Sample();
 
         smartObjectOperations.addSampleOnPublicSensor(objectId, sensorName, sample, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).objectService();
-        verify(mockedSmartObjectService, only()).addSampleOnPublicSensor(objectId, sensorName, sample);
 
     }
 
     @Test
     public void testAddSampleOnPublicSensorWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(AddSampleOnPublicSensorTask.class), eq(mockedSuccessCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SdkId objectId = SdkId.build("object-id", IdType.deviceid);
         final String sensorName = "sensorName";
         final Sample sample = new Sample();
 
         smartObjectOperations.addSampleOnPublicSensor(objectId, sensorName, sample, mockedSuccessCallback);
 
-        verify(mockedAsyncTask, only()).execute();
 
     }
 
     @Test
     public void testCreateObject() throws Exception {
+
+        when(AsyncTaskFactory.create(any(CreateObjectTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
         final SmartObject object = new SmartObject();
 
         smartObjectOperations.createObject(object, true, null);
 
-        verify(mockedUserApiConnection, only()).getApi();
-        verify(mockedUserApi, only()).objectService();
-        verify(mockedSmartObjectService, only()).create(object, true);
     }
 
     @Test
     public void testCreateObjectWithCallback() throws Exception {
+        when(AsyncTaskFactory.create(any(CreateObjectTask.class), eq(mockedSuccessCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final SmartObject object = new SmartObject();
 
         smartObjectOperations.createObject(object, true, mockedSuccessCallback);
 
-        verify(mockedAsyncTask, only()).execute();
     }
 }

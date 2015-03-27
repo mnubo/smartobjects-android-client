@@ -22,11 +22,19 @@
 
 package com.mnubo.platform.android.sdk.models.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
+
 /**
  * Used in the confirmation of a user creation.
  * Requires password along with the token received after the user registered.
  */
-public class UserConfirmation {
+public class UserConfirmation implements Serializable {
+
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
 
     private String password;
     private String token;

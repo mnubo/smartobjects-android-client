@@ -21,15 +21,21 @@
  */
 package com.mnubo.platform.android.sdk.models.groups;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @JsonInclude(Include.NON_NULL)
-public class Groups {
+public class Groups implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     private List<Group> groupList;
     private int count;
 

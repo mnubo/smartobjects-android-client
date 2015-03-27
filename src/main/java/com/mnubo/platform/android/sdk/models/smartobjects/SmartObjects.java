@@ -22,23 +22,29 @@
 
 package com.mnubo.platform.android.sdk.models.smartobjects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * A list of {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
- *
+ * <p/>
  * List implementation used is {@link java.util.LinkedList}
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObject
  */
 @JsonInclude(Include.NON_EMPTY)
-public class SmartObjects {
+public class SmartObjects implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     @JsonProperty("objects")
     private List<SmartObject> smartObjects;
     private int count;

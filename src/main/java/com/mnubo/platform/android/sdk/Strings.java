@@ -48,5 +48,6 @@ public interface Strings {
     public static String EXCEPTION_INVALID_REGISTRATION_TOKEN = "The token provided to confirm the user registration is invalid.";
     public static String EXCEPTION_INVALID_PREVIOUS_PASSWORD = "The provided previous password is incorrect. The password was not updated.";
     public static String EXCEPTION_OBJECT_NOT_FOUND = "The requested object was not found.";
+    public static String EXCEPTION_USER_ALREADY_EXIST = "The username you are trying to register already exists.";
 
 }

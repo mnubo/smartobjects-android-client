@@ -38,6 +38,7 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistration
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
 import com.mnubo.platform.android.sdk.exceptions.server.MnuboServerException;
 
@@ -60,7 +61,6 @@ import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPrevi
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException.OBJECT_NOT_FOUND;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException.RESET_PASSWORD_DISABLED;
-import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException.UNKNOWN_USER;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException.USER_DISABLED;
 
 public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
@@ -92,7 +92,8 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
 
             String errorMessage = extractErrorMessageFromMap(errorMap);
             if (errorMessage == null) {
-                throw new MnuboException(String.format("Unable to parse error message. [%s]", errorMap));
+                throw new MnuboClientException(String.format("Unable to parse error message. [%s]", errorMap),
+                        new HttpClientErrorException(statusCode, status, body, charset));
             }
 
             if (statusCode == HttpStatus.UNAUTHORIZED) {
@@ -102,6 +103,8 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             } else if (statusCode == HttpStatus.FORBIDDEN) {
                 throw new MnuboAccessDeniedException(new HttpClientErrorException(statusCode, status, body, charset));
             }
+
+            throw new MnuboClientException(errorMessage, new HttpClientErrorException(statusCode, status, body, charset));
         }
 
         throw new MnuboClientException(new HttpClientErrorException(statusCode, status, body, charset));
@@ -133,7 +136,7 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboBadCredentialsException();
         } else if (TextUtils.equals(RESET_PASSWORD_DISABLED, errorMessage)) {
             throw new MnuboResetPasswordDisabledException();
-        } else if (errorMessage.startsWith(UNKNOWN_USER)) {
+        } else if (MnuboUnknownUserException.matches(errorMessage)) {
             throw new MnuboUnknownUserException();
         } else if (TextUtils.equals(REGISTRATION_INVALID_TOKEN, errorMessage)) {
             throw new MnuboInvalidRegistrationTokenException();
@@ -141,6 +144,8 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboObjectNotFoundException();
         } else if (TextUtils.equals(INVALID_PREVIOUS_PASSWORD, errorMessage)) {
             throw new MnuboInvalidPreviousPasswordException();
+        } else if (MnuboUserAlreadyExistsException.matches(errorMessage)) {
+            throw new MnuboUserAlreadyExistsException();
         }
     }
 

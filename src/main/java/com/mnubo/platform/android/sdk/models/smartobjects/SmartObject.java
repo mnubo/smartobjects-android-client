@@ -26,6 +26,7 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,6 +38,7 @@ import org.geojson.Coordinate;
 import org.geojson.Feature;
 import org.geojson.Point;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +51,7 @@ import static com.mnubo.platform.android.sdk.Constants.OBJECT_MODEL;
  * A Smart object on the Mnubo Platform, it belongs to a single
  * {@link com.mnubo.platform.android.sdk.models.users.User} and can
  * be in different {@link com.mnubo.platform.android.sdk.models.collections.Collection}
- *
+ * <p/>
  * It also has a list of {@link com.mnubo.platform.android.sdk.models.common.Attribute}
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects
@@ -57,7 +59,11 @@ import static com.mnubo.platform.android.sdk.Constants.OBJECT_MODEL;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SmartObject extends AbstractOwnable {
+public class SmartObject extends AbstractOwnable implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     @JsonProperty("object_id")
     private UUID objectId;
 

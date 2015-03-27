@@ -23,9 +23,11 @@
 package com.mnubo.platform.android.sdk.models.smartobjects.samples;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,11 @@ import java.util.List;
  * @see com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples
  */
 @JsonInclude(Include.NON_NULL)
-public class Samples {
+public class Samples implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     private Sample common;
     private List<Sample> samples;
     private String status;

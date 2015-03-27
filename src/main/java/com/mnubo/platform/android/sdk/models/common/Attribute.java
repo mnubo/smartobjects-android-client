@@ -25,6 +25,7 @@ package com.mnubo.platform.android.sdk.models.common;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -33,13 +34,15 @@ import java.io.Serializable;
 /**
  * A Mnubo attribute is a name and a type. It is used to store data of any
  * kind.
- *
+ * <p/>
  * Attributes can be found in {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and
  * {@link com.mnubo.platform.android.sdk.models.users.User}.
  */
 @JsonInclude(Include.NON_NULL)
 public class Attribute implements Serializable, Parcelable {
 
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
 
     public static final String DEFAULT_CATEGORY = "default";
 

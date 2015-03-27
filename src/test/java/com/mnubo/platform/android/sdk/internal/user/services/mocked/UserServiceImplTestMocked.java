@@ -22,8 +22,8 @@
 package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
 import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
-import com.mnubo.platform.android.sdk.internal.user.services.UserService;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.UserServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.UserService;
+import com.mnubo.platform.android.sdk.internal.services.impl.UserServiceImpl;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;

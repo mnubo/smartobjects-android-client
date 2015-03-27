@@ -66,7 +66,15 @@ public interface SmartObjectOperations {
     void searchSamples(SdkId objectId, String sensorName, CompletionCallBack<Samples> completionCallBack);
 
     /**
-     * This function will add samples data to the specified object's sensor.
+     * This function will add samples data to the specified object's sensor synchronously.
+     *
+     * @param objectId SdkId built with a device_id or an object_id
+     * @param samples  the list of <code>Samples</code> to be recorded
+     */
+    void addSamples(SdkId objectId, Samples samples);
+
+    /**
+     * This function will add samples data to the specified object's sensor asynchronously.
      *
      * @param objectId           SdkId built with a device_id or an object_id
      * @param samples            the list of <code>Samples</code> to be recorded
@@ -75,7 +83,19 @@ public interface SmartObjectOperations {
     void addSamples(SdkId objectId, Samples samples, CompletionCallBack<Boolean> completionCallBack);
 
     /**
-     * This function allows you to add one sample data to a publicly available object's sensor.
+     * This function allows you to add one sample data to a publicly available object's sensor
+     * synchronously.
+     *
+     * @param objectId   SdkId built with a device_id or an object_id
+     * @param sensorName the name of the sensor the <code>Samples</code> will be fetched from.
+     *                   that sensor must belong to the object matching the <code>objectId</code>
+     * @param sample     the <code>Sample</code> to be added
+     */
+    void addSampleOnPublicSensor(SdkId objectId, String sensorName, Sample sample);
+
+    /**
+     * This function allows you to add one sample data to a publicly available object's sensor
+     * asynchronously.
      *
      * @param objectId           SdkId built with a device_id or an object_id
      * @param sensorName         the name of the sensor the <code>Samples</code> will be fetched from.

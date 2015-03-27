@@ -23,7 +23,7 @@
 package com.mnubo.platform.android.sdk.internal.client.api;
 
 
-import com.mnubo.platform.android.sdk.internal.client.services.ClientService;
+import com.mnubo.platform.android.sdk.internal.services.ClientService;
 
 public interface MnuboClientApi {
     ClientService clientService();
