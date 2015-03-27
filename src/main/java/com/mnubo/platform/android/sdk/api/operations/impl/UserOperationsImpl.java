@@ -23,7 +23,10 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.UserOperations;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.impl.TaskWithRefreshImpl;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.FindUserObjectsTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.GetUserTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdatePasswordTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdateUserTask;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
@@ -47,68 +50,38 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
 
     @Override
     public void findUserObjects(final String username, final CompletionCallBack<SmartObjects> completionCallBack) {
-        execute(new TaskWithRefreshImpl<>(new MnuboOperation<SmartObjects>() {
-            @Override
-            public SmartObjects executeMnuboCall() {
-                return getUserApi().userService().findUserObjects(username);
-            }
-        }, getUserConnectionRefresher()), completionCallBack);
+        final FindUserObjectsTask task = new FindUserObjectsTask(getApiFetcher(),username, getUserConnectionRefresher());
+        task.executeAsync(completionCallBack);
     }
 
     @Override
     public void findUserObjects(final String username, final Boolean details, final CompletionCallBack<SmartObjects> completionCallBack) {
-        execute(new TaskWithRefreshImpl<>(new MnuboOperation<SmartObjects>() {
-            @Override
-            public SmartObjects executeMnuboCall() {
-                return getUserApi().userService().findUserObjects(username, details);
-            }
-        }, getUserConnectionRefresher()), completionCallBack);
+        final FindUserObjectsTask task = new FindUserObjectsTask(getApiFetcher(),username, details, getUserConnectionRefresher());
+        task.executeAsync(completionCallBack);
     }
 
     @Override
     public void findUserObjects(final String username, final Boolean details, final String objectModelName, final CompletionCallBack<SmartObjects> completionCallBack) {
-        execute(new TaskWithRefreshImpl<>(new MnuboOperation<SmartObjects>() {
-            @Override
-            public SmartObjects executeMnuboCall() {
-                return getUserApi().userService().findUserObjects(username, details, objectModelName);
-            }
-        }, getUserConnectionRefresher()), completionCallBack);
+        final FindUserObjectsTask task = new FindUserObjectsTask(getApiFetcher(),username, details, objectModelName, getUserConnectionRefresher());
+        task.executeAsync(completionCallBack);
     }
 
     @Override
     public void getUser(final String username, final CompletionCallBack<User> completionCallBack) {
-        execute(new TaskWithRefreshImpl<>(new MnuboOperation<User>() {
-            @Override
-            public User executeMnuboCall() {
-                return getUserApi().userService().getUser(username);
-            }
-        }, getUserConnectionRefresher()), completionCallBack);
+        final GetUserTask task = new GetUserTask(getApiFetcher(),username, getUserConnectionRefresher());
+        task.executeAsync(completionCallBack);
     }
 
     @Override
     public void update(final String username, final User updatedUser, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
-            @Override
-            public Boolean executeMnuboCall() {
-                getUserApi().userService().update(username, updatedUser);
-                return true;
-            }
-        }, getUserConnectionRefresher()), completionCallBack);
+        final UpdateUserTask task = new UpdateUserTask(getApiFetcher(),username, updatedUser, getUserConnectionRefresher());
+        task.executeAsync(completionCallBack);
     }
 
     @Override
     public void updatePassword(final String username, final UpdatePassword newPassword, final CompletionCallBack<Boolean> completionCallBack) {
-        execute(new TaskWithRefreshImpl<>(new MnuboOperation<Boolean>() {
-            @Override
-            public Boolean executeMnuboCall() {
-                getUserApi().userService().updatePassword(username, newPassword);
-                return true;
-            }
-        }, getUserConnectionRefresher()), completionCallBack);
+        final UpdatePasswordTask task = new UpdatePasswordTask(getApiFetcher(),username, newPassword, getUserConnectionRefresher());
+        task.executeAsync(completionCallBack);
     }
 
-    @Override
-    public String getOperationTag() {
-        return OPERATION_TAG;
-    }
 }

@@ -40,8 +40,9 @@ def getRepositoryUsername() {
 def getRepositoryPassword() {
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
+
 def getVersionName() {
-    if(!isReleaseBuild()) {
+    if (!isReleaseBuild()) {
         ext.env = System.getenv()
         ext.buildNumber = env.BUILD_NUMBER ? env.BUILD_NUMBER : "local"
         return VERSION_NAME.replace("-SNAPSHOT", "-$buildNumber-SNAPSHOT")
@@ -107,7 +108,7 @@ afterEvaluate { project ->
         exclude '**/*.md'
         options {
             links "http://fasterxml.github.io/jackson-databind/javadoc/2.5/"
-            linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
+            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
         }
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }

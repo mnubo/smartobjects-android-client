@@ -22,22 +22,30 @@
 package com.mnubo.platform.android.sdk.api.operations;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.AsyncTaskFactory;
-import com.mnubo.platform.android.sdk.api.operations.impl.tasks.Task;
+import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
+import com.mnubo.platform.android.sdk.internal.tasks.Task;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
-import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-public class AbstractOperationsTest {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({
+        Log.class,
+        AsyncTaskFactory.class,
+        Task.class
+})
+public abstract class AbstractOperationsTest {
 
     protected final ConnectionOperations mockedConnectionOperations = mock(ConnectionOperations.class);
 
@@ -48,17 +56,11 @@ public class AbstractOperationsTest {
 
     protected final MnuboUserApi mockedUserApi = mock(MnuboUserApi.class);
     protected final MnuboClientApi mockedClientApi = mock(MnuboClientApi.class);
-
-    protected final AsyncTaskFactory mockedAsyncTaskFactory = mock(AsyncTaskFactory.class);
-
-    @SuppressWarnings("unchecked")
-    protected final AsyncTask<Void, Void, Boolean> mockedAsyncTask = mock(AsyncTask.class);
+    protected final AsyncTask mockedAsyncTask = mock(AsyncTask.class);
 
 
     @Before
     public void setUp() throws Exception {
-        //if mockedCallback, then the request should be async, the task factory is required
-        when(mockedAsyncTaskFactory.create(any(Task.class), any(CompletionCallBack.class)))
-                .thenReturn(mockedAsyncTask);
+        mockStatic(AsyncTaskFactory.class);
     }
 }

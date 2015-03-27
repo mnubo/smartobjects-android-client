@@ -25,12 +25,14 @@ import android.text.TextUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
 
 import org.junit.Before;
@@ -51,8 +53,10 @@ import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPrevi
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException.OBJECT_NOT_FOUND;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException.RESET_PASSWORD_DISABLED;
-import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException.UNKNOWN_USER;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException.USER_DISABLED;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
@@ -119,8 +123,15 @@ public class MnuboAPIErrorHandlerTest {
     }
 
     @Test(expected = MnuboUnknownUserException.class)
-    public void testUnknownUserError() throws Exception {
-        ClientHttpResponse response = prepareResponse(UNKNOWN_USER, HttpStatus.BAD_REQUEST);
+    public void testUnknownUserErrorEmail() throws Exception {
+        ClientHttpResponse response = prepareResponse("Unknown User 'test@email.com'", HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboUnknownUserException.class)
+    public void testUnknownUserErrorUsername() throws Exception {
+        ClientHttpResponse response = prepareResponse("Unknown User 'test'", HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(response);
     }
@@ -144,6 +155,44 @@ public class MnuboAPIErrorHandlerTest {
         ClientHttpResponse response = prepareResponse(OBJECT_NOT_FOUND, HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboUserAlreadyExistsException.class)
+    public void testUserAlreadyExist() throws Exception {
+        ClientHttpResponse response = prepareResponse("User 'test' already exists.", HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboUserAlreadyExistsException.class)
+    public void testUserAlreadyExistEmail() throws Exception {
+        ClientHttpResponse response = prepareResponse("User 'test@mnubo.com' already exists.", HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboClientException.class)
+    public void testNullMessage() throws Exception {
+        ClientHttpResponse response = prepareResponse(null, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test
+    public void testUnknownMessage() throws Exception {
+        final String errorMessage = "Unknown error message";
+        ClientHttpResponse response = prepareResponse(errorMessage, HttpStatus.BAD_REQUEST);
+
+        boolean catched = false;
+        String message = null;
+        try {
+            responseErrorHandler.handleError(response);
+        } catch (MnuboClientException ex) {
+            catched = true;
+            message = ex.getMessage();
+        }
+        assertThat(catched, is(equalTo(true)));
+        assertThat(message, is(equalTo(errorMessage)));
     }
 
     private ClientHttpResponse prepareResponse(String errorMessage, HttpStatus code) throws Exception {

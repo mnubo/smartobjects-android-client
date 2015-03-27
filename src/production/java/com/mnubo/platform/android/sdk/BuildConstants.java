@@ -15,7 +15,7 @@ public interface BuildConstants {
     /**
      * Path used to perform oauth request to the Mnubo API
      */
-    String OAUTH_PATH = PATH + "/oauth";
+    String OAUTH_PATH = "/oauth";
 
     /**
      * Port used to perform request to the Mnubo API

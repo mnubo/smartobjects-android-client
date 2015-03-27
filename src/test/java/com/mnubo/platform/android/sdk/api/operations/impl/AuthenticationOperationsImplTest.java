@@ -21,50 +21,60 @@
  */
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.api.MnuboApi;
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
+import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.authentication.LogInTask;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.when;
 
+@SuppressWarnings("unchecked")
 public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
     private final AuthenticationOperationsImpl authenticationOperations = new AuthenticationOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
 
     @SuppressWarnings("unchecked")
-    private final MnuboApi.CompletionCallBack<Boolean> mockedCallback = mock(MnuboApi.CompletionCallBack.class);
+    private final CompletionCallBack<Boolean> mockedCallback = mock(CompletionCallBack.class);
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        authenticationOperations.setAsyncTaskFactory(mockedAsyncTaskFactory);
     }
 
     @Test
-    public void logInAsyncTest() throws Exception {
-        authenticationOperations.logIn("username", "password", null);
+    public void logInTest() throws Exception {
+        when(AsyncTaskFactory.create(any(LogInTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
 
-        verify(mockedConnectionOperations, only()).logIn("username", "password");
+        authenticationOperations.logIn("username", "password", null);
     }
 
     @Test
     public void logInWithCallbackTest() throws Exception {
 
+        when(AsyncTaskFactory.create(any(LogInTask.class), eq(mockedCallback), any(FailedAttemptCallback.class)))
+                .thenReturn(mockedAsyncTask);
+
         final String username = "username";
         final String password = "password";
 
         authenticationOperations.logIn(username, password, mockedCallback);
-        verify(mockedAsyncTask, only()).execute();
     }
 
     @Test
@@ -76,7 +86,7 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
     @Test
     public void isUserConnected() throws Exception {
-        when(mockedConnectionOperations.isUserConnected()).thenReturn(false);
+        Mockito.when(mockedConnectionOperations.isUserConnected()).thenReturn(false);
         Boolean isUserConnected = authenticationOperations.isUserConnected();
         assertFalse(isUserConnected);
         verify(mockedConnectionOperations, only()).isUserConnected();
@@ -85,7 +95,7 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
     @Test
     public void getUsernameTest() throws Exception {
         final String expectedUsername = "username";
-        when(mockedConnectionOperations.getUsername()).thenReturn(expectedUsername);
+        Mockito.when(mockedConnectionOperations.getUsername()).thenReturn(expectedUsername);
 
         String username = authenticationOperations.getUsername();
         assertThat(username, equalTo(expectedUsername));

@@ -22,8 +22,8 @@
 package com.mnubo.platform.android.sdk.internal.user.services.mocked;
 
 import com.mnubo.platform.android.sdk.internal.MockedAbstractServiceTest;
-import com.mnubo.platform.android.sdk.internal.user.services.SmartObjectService;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.SmartObjectServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
+import com.mnubo.platform.android.sdk.internal.services.impl.SmartObjectServiceImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;

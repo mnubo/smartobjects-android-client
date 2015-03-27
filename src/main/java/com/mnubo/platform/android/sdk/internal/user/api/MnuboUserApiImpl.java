@@ -24,16 +24,14 @@ package com.mnubo.platform.android.sdk.internal.user.api;
 
 
 import com.mnubo.platform.android.sdk.internal.connect.MnuboAPIErrorHandler;
-import com.mnubo.platform.android.sdk.internal.user.services.CollectionService;
-import com.mnubo.platform.android.sdk.internal.user.services.GroupService;
-import com.mnubo.platform.android.sdk.internal.user.services.SmartObjectService;
-import com.mnubo.platform.android.sdk.internal.user.services.TokenValidationService;
-import com.mnubo.platform.android.sdk.internal.user.services.UserService;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.CollectionServiceImpl;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.GroupServiceImpl;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.SmartObjectServiceImpl;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.TokenValidationServiceImpl;
-import com.mnubo.platform.android.sdk.internal.user.services.impl.UserServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.CollectionService;
+import com.mnubo.platform.android.sdk.internal.services.GroupService;
+import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
+import com.mnubo.platform.android.sdk.internal.services.UserService;
+import com.mnubo.platform.android.sdk.internal.services.impl.CollectionServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.impl.GroupServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.impl.SmartObjectServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.impl.UserServiceImpl;
 
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
@@ -45,7 +43,6 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
     private final SmartObjectService smartObjectService;
     private final GroupService groupService;
     private final CollectionService collectionService;
-    private final TokenValidationService tokenValidationService;
 
     public MnuboUserApiImpl(final String accessToken, final String platformBaseUrl) {
         super(accessToken);
@@ -54,7 +51,6 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
         this.smartObjectService = new SmartObjectServiceImpl(platformBaseUrl, getRestTemplate());
         this.groupService = new GroupServiceImpl(platformBaseUrl, getRestTemplate());
         this.collectionService = new CollectionServiceImpl(platformBaseUrl, getRestTemplate());
-        this.tokenValidationService = new TokenValidationServiceImpl(platformBaseUrl, accessToken, getRestTemplate());
     }
 
     @Override
@@ -82,11 +78,6 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
     @Override
     public CollectionService collectionService() {
         return this.collectionService;
-    }
-
-    @Override
-    public TokenValidationService tokenValidationService() {
-        return tokenValidationService;
     }
 
 

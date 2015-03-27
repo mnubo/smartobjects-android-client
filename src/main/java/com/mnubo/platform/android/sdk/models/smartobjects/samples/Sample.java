@@ -44,6 +44,8 @@ import java.util.Map;
  */
 @JsonInclude(Include.NON_DEFAULT)
 public class Sample implements Serializable {
+
+    @JsonIgnore
     private static final long serialVersionUID = 1L;
 
     private Map<String, Object> value;

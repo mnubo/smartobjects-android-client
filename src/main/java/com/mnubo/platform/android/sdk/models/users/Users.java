@@ -23,21 +23,26 @@
 package com.mnubo.platform.android.sdk.models.users;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * A list of {@link com.mnubo.platform.android.sdk.models.users.User}
- *
+ * <p/>
  * List implementation used is {@link java.util.LinkedList}
  *
  * @see com.mnubo.platform.android.sdk.models.users.User
  */
 @JsonInclude(Include.NON_NULL)
-public class Users {
+public class Users implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
 
     private List<User> users;
     private int count;

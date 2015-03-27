@@ -28,6 +28,8 @@ import android.text.TextUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
+
 /**
  * Abstract class implemented by object that have an owner
  * field.
@@ -35,7 +37,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @see com.mnubo.platform.android.sdk.models.collections.Collection
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObject
  */
-public abstract class AbstractOwnable implements Parcelable {
+public abstract class AbstractOwnable implements Parcelable, Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     @JsonProperty("owner")
     private String owner;
 

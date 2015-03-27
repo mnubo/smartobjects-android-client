@@ -22,8 +22,11 @@
 
 package com.mnubo.platform.android.sdk.models.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.apache.commons.lang3.Validate;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import static com.mnubo.platform.android.sdk.models.common.IdType.objectid;
@@ -33,11 +36,15 @@ import static com.mnubo.platform.android.sdk.models.common.IdType.uuid;
  * SdkId is used to perform query against the Mnubo API.
  * In Mnubo, each object has an ID which is a UUID and an
  * unique human readable identifier called the natural key.
- *
+ * <p/>
  * SdkId is used to translate correctly to the good query parameters
  * to perform the correct request when fetching an object.
  */
-public class SdkId {
+public class SdkId implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private IdType idType = objectid;
 

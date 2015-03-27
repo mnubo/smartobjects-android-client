@@ -22,16 +22,25 @@
 
 package com.mnubo.platform.android.sdk.exceptions.client;
 
+import android.text.TextUtils;
+
 import com.mnubo.platform.android.sdk.Strings;
+
+import java.util.regex.Pattern;
 
 /**
  * This exception is raised when you perform a request for a
  * user that doesn't exists in the Mnubo API.
  */
 public class MnuboUnknownUserException extends MnuboClientException {
-    public final static String UNKNOWN_USER = "Unknown User";
+    public final static String UNKNDOWN_USER_PATTERN = "^Unknown User '.*'$";
+    private final static Pattern PATTERN = Pattern.compile(UNKNDOWN_USER_PATTERN);
 
     public MnuboUnknownUserException() {
         super(Strings.EXCEPTION_UNKNOWN_USER);
+    }
+
+    public static boolean matches(CharSequence s) {
+        return !TextUtils.isEmpty(s) && PATTERN.matcher(s).matches();
     }
 }

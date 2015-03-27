@@ -25,14 +25,20 @@ package com.mnubo.platform.android.sdk.models.collections;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mnubo.platform.android.sdk.models.common.AbstractOwnable;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Collection extends AbstractOwnable {
+public class Collection extends AbstractOwnable implements Serializable {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
+
     private String label;
 
     @JsonProperty("id")
