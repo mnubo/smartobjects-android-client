@@ -23,10 +23,8 @@
 package com.mnubo.platform.android.sdk.api.store.impl;
 
 import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
-import com.mnubo.platform.android.sdk.models.common.SdkId;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * Entity specifically designed to be persisted on the file system. Contains

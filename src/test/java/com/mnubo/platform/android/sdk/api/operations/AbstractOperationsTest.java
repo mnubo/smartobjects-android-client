@@ -24,9 +24,9 @@ package com.mnubo.platform.android.sdk.api.operations;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.junit.Before;

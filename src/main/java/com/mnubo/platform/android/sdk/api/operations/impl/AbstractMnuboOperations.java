@@ -50,6 +50,11 @@ public abstract class AbstractMnuboOperations {
         this.clientConnection = clientConnection;
     }
 
+    /**
+     * Enables or disable offline caching for failed requests.
+     *
+     * @param cacheFailedOperations enable if true, disable if false
+     */
     public void setCacheFailedOperations(boolean cacheFailedOperations) {
         this.cacheFailedOperations = cacheFailedOperations;
     }

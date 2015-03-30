@@ -22,8 +22,8 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AuthenticationOperations;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.authentication.LogInTask;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.authentication.LogInTask;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.springframework.social.connect.Connection;
@@ -33,30 +33,40 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class AuthenticationOperationsImpl extends AbstractMnuboOperations implements AuthenticationOperations {
 
-    private final static String OPERATION_TAG = AuthenticationOperationsImpl.class.getName();
-
     public AuthenticationOperationsImpl(ConnectionOperations connectionOperations,
                                         Connection<MnuboClientApi> clientConnection,
                                         Connection<MnuboUserApi> userConnection) {
         super(connectionOperations, clientConnection, userConnection);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void logIn(final String username, final String password, final CompletionCallBack<Boolean> completionCallBack) {
         final LogInTask task = new LogInTask(username, password, connectionOperations);
         task.executeAsync(completionCallBack);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void logOut() {
         connectionOperations.logOut();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Boolean isUserConnected() {
         return connectionOperations.isUserConnected();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getUsername() {
         return connectionOperations.getUsername();

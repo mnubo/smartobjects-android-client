@@ -23,7 +23,6 @@
 package com.mnubo.platform.android.sdk.api.store;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface that allows storage of data in queue
@@ -33,7 +32,7 @@ public interface MnuboStore {
     /**
      * Store the element in the queue.
      *
-     * @param queueName the queue name
+     * @param queueName   the queue name
      * @param mnuboEntity the entity that will be persisted on disk
      * @return true if storage is successful, false if not
      */

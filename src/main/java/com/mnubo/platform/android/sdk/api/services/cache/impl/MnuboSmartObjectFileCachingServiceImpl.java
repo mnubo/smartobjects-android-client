@@ -22,20 +22,20 @@
 
 package com.mnubo.platform.android.sdk.api.services.cache.impl;
 
-import com.mnubo.platform.android.sdk.internal.tasks.Task;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
 import com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService;
 import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
 import com.mnubo.platform.android.sdk.api.store.impl.MnuboFileStore;
+import com.mnubo.platform.android.sdk.internal.tasks.Task;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 
 import java.io.File;
 import java.util.List;
 
+import static com.mnubo.platform.android.sdk.api.store.MnuboEntity.EntityType.ADD_SAMPLES;
 import static com.mnubo.platform.android.sdk.internal.tasks.Task.ApiFetcher;
 import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
-import static com.mnubo.platform.android.sdk.api.store.MnuboEntity.EntityType.ADD_SAMPLES;
 
 /**
  * This service is used to wrap your request. If an error occurs during the request, the data is

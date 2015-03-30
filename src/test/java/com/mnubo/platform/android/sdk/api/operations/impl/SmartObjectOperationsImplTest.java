@@ -23,6 +23,8 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
+import com.mnubo.platform.android.sdk.api.services.cache.impl.MnuboSmartObjectFileCachingServiceImpl;
+import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSampleOnPublicSensorTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
@@ -30,8 +32,6 @@ import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.CreateObj
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.FindObjectTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.SearchSamplesTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.UpdateObjectTask;
-import com.mnubo.platform.android.sdk.api.services.cache.impl.MnuboSmartObjectFileCachingServiceImpl;
-import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.models.common.IdType;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
@@ -68,7 +68,6 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
 
     private SmartObjectOperationsImpl smartObjectOperations;
-
 
 
     @Override

@@ -67,6 +67,7 @@ public interface SmartObjectOperations {
 
     /**
      * This function will add samples data to the specified object's sensor synchronously.
+     * This function supports offline data store if the request fails.
      *
      * @param objectId SdkId built with a device_id or an object_id
      * @param samples  the list of <code>Samples</code> to be recorded
@@ -75,6 +76,7 @@ public interface SmartObjectOperations {
 
     /**
      * This function will add samples data to the specified object's sensor asynchronously.
+     * This function supports offline data store if the request fails.
      *
      * @param objectId           SdkId built with a device_id or an object_id
      * @param samples            the list of <code>Samples</code> to be recorded
@@ -85,6 +87,7 @@ public interface SmartObjectOperations {
     /**
      * This function allows you to add one sample data to a publicly available object's sensor
      * synchronously.
+     * This function supports offline data store if the request fails.
      *
      * @param objectId   SdkId built with a device_id or an object_id
      * @param sensorName the name of the sensor the <code>Samples</code> will be fetched from.
@@ -96,6 +99,7 @@ public interface SmartObjectOperations {
     /**
      * This function allows you to add one sample data to a publicly available object's sensor
      * asynchronously.
+     * This function supports offline data store if the request fails.
      *
      * @param objectId           SdkId built with a device_id or an object_id
      * @param sensorName         the name of the sensor the <code>Samples</code> will be fetched from.

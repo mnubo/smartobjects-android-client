@@ -57,12 +57,14 @@ public class MnuboApi {
     public MnuboApi(ConnectionOperations connectionOperations,
                     Connection<MnuboClientApi> clientConnection,
                     Connection<MnuboUserApi> userConnection,
-                    File applicationRootDir) {
+                    File applicationRootDir,
+                    boolean enableFailedAttemptCaching) {
 
         this.userOperations = new UserOperationsImpl(connectionOperations, clientConnection, userConnection);
-        this.smartObjectOperations = new SmartObjectOperationsImpl(connectionOperations, clientConnection, userConnection, applicationRootDir);
+        this.smartObjectOperations = new SmartObjectOperationsImpl(connectionOperations, clientConnection, userConnection, applicationRootDir, enableFailedAttemptCaching);
         this.clientOperations = new ClientOperationsImpl(connectionOperations, clientConnection, userConnection);
         this.authenticationOperations = new AuthenticationOperationsImpl(connectionOperations, clientConnection, userConnection);
+
     }
 
     public UserOperations getUserOperations() {

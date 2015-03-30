@@ -69,6 +69,7 @@ public class Mnubo {
     private final ConnectionRepository connectionRepository;
     private final Context applicationContext;
     private final ConnectionOperations connectionOperations;
+    private boolean failedDataSore = false;
 
     private static Mnubo instance = null;
 
@@ -122,7 +123,7 @@ public class Mnubo {
      * Returns a MnuboApi instance to be used to perform calls against the Mnubo
      * system.
      *
-     * @return an instance of MnuboApi
+     * @return an instance of {@link com.mnubo.platform.android.sdk.api.MnuboApi}
      */
     public static MnuboApi getApi() {
         if (instance == null) {
@@ -132,9 +133,27 @@ public class Mnubo {
                 instance.connectionOperations,
                 instance.clientConnection,
                 instance.getUserConnection(),
-                instance.applicationContext.getCacheDir()
+                instance.applicationContext.getCacheDir(),
+                instance.failedDataSore
         );
     }
+
+    /**
+     * The mnubo Android SDK allows failed attempts to push data to be retried later. Currently,
+     * only a specific set of actions are persisted on the disk in case of failure :
+     * <p/>
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample)}
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)}
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
+     */
+    public static void enableFailedDataStore() {
+        if (instance == null) {
+            throw new MnuboNotInitializedException();
+        }
+        instance.failedDataSore = true;
+    }
+
 
     private Connection<MnuboUserApi> getUserConnection() {
         return this.connectionRepository.findPrimaryConnection(MnuboUserApi.class);

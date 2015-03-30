@@ -22,12 +22,12 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
+import com.mnubo.platform.android.sdk.internal.services.UserService;
 import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.user.FindUserObjectsTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.user.GetUserTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdatePasswordTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdateUserTask;
-import com.mnubo.platform.android.sdk.internal.services.UserService;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 import com.mnubo.platform.android.sdk.models.users.User;
