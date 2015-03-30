@@ -50,5 +50,6 @@ public interface Strings {
     public static String EXCEPTION_INVALID_PREVIOUS_PASSWORD = "The provided previous password is incorrect. The password was not updated.";
     public static String EXCEPTION_OBJECT_NOT_FOUND = "The requested object was not found.";
     public static String EXCEPTION_USER_ALREADY_EXIST = "The username you are trying to register already exists.";
+    public static String EXCEPTION_CREDENTIALS_EXPIRED = "The username / password combination is expired. This is mostly due to a non-finished reset password process.";
 
 }
