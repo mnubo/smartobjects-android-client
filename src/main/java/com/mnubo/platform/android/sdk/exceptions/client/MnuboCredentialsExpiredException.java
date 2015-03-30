@@ -25,8 +25,9 @@ package com.mnubo.platform.android.sdk.exceptions.client;
 import com.mnubo.platform.android.sdk.Strings;
 
 /**
- * This exception is raised when you perform a request to
- * confirm an user registration but provide the wrong token.
+ * This exception is raised when you perform a user credentials have expired. It is only raised
+ * if the provided credentials are correct (good combination username/password) but they are expired.
+ * It happens if a Reset Password process is on going. The user has not completed the process yet.
  */
 public class MnuboCredentialsExpiredException extends MnuboClientException {
     public final static String USER_CREDENTIALS_EXPIRED = "User credentials have expired";
