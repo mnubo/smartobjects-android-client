@@ -22,22 +22,25 @@
 
 package com.mnubo.platform.android.sdk.api.store;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * Object that contains all the relevant information to executeSync a query :
  * id, id type and data of the payload.
  */
-public class MnuboEntity {
+public class MnuboEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static enum EntityType {
         ADD_SAMPLES, ADD_SAMPLE_PUBLIC
     }
 
-    protected String id;
-    protected Map<String, Object> idData;
-    protected EntityType type;
-    protected Object value;
+    public String id;
+    public Map<String, Object> idData;
+    public EntityType type;
+    public Object value;
 
     /**
      * Create a MnuboEntity instance

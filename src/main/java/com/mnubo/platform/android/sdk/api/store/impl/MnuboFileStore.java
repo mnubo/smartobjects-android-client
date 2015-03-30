@@ -85,8 +85,9 @@ public class MnuboFileStore implements MnuboStore {
             if (!success) {
                 Log.e(TAG, String.format("Deleting : %s has failed", fileEntity.getFile()));
             }
+        } else {
+            Log.e(TAG, "MnuboFileStore can only remove MnuboFileEntity");
         }
-        Log.e(TAG, "MnuboFileStore can only remove MnuboFileEntity");
         return success;
     }
 
