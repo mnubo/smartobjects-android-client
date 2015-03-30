@@ -10,14 +10,14 @@ or add this Gradle dependency to your build file :
 
 ```
     // Using gradle and maven dependency resolution
-    compile('com.mnubo:sdk-android:1.0.1@aar') {
+    compile('com.mnubo:sdk-android:1.0.3@aar') {
         transitive = true
     }
 ```
 
 _Sources/Javadoc are not automatically linked by Android Studio and Gradle for the moment even
 if they are downloaded properly to your local Maven repository. You can attach them manually attach them.
-See the Google group discussion [here](https://groups.google.com/forum/#!searchin/adt-dev/javadoc/adt-dev/yVPo71O_ZKM/q4LzRL1eockJ)
+See the Google group discussion [here](https://groups.google.com/forum/#!searchin/adt-dev/javadoc/adt-dev/yVPo71O_ZKM/q4LzRL1eockJ)_
 
 You also need to exclude the following files from the packaging to avoid duplicate exception during
 build :
@@ -36,13 +36,6 @@ packagingOptions {
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/ASL2.0'
     }
-```
-
-The SDK requires internet permission in order to work correctly. Add this to your
-AndroidManifest.xml:
-
-```
-<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 The SDK must be initialized. To do so, call the init() function in your application startup. For
@@ -119,7 +112,9 @@ Here is an exhaustive list of the available operations.
   * `update(final SdkId objectId, final UserObject object, final CompletionCallBack<Boolean> completionCallBack)`
   * `searchSamples(final SdkId objectId, final String sensorName, final CompletionCallBack<Samples> completionCallBack)`
   * `addSamples(final SdkId objectId, final Samples samples, final CompletionCallBack<Boolean> completionCallBack)`
+  * `addSamples(final SdkId objectId, final Samples samples)`
   * `addSampleOnPublicSensor(SdkId objectId, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack)`
+  * `addSampleOnPublicSensor(SdkId objectId, String sensorName, Sample sample)`
   * `createObject(SmartObject smartObject, Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack)`
 * ClientOperations
   * `createUser(final User user, final CompletionCallBack<User> completionCallBack)`
@@ -132,10 +127,24 @@ Here is an exhaustive list of the available operations.
   * `isUserConnected()`
   * `getUsername()`
 
-Note that if you are required to execute the request synchronously, on the current thread, you can
-pass `null` as the completion callback. This can be useful when you work in an Android `Service`.
+Note that some operations have no `CompletionCallback` required. These requests are performed
+synchronously, on the current thread. All the other operations are performed asynchronously in an
+`AsyncTask`. If you don't need the result, just pass null as the `CompletionCallback` argument.
 
 See the api doc [here](./src/main/java/com/mnubo/platform/android/sdk/api/README.md)
+
+## Offline datastore
+The mnubo Android SDK supports offline caching for requests that fails. If the request fails, the data
+is persisted to the disk in the application cache folder. You can also provide another directory when
+you enable the feature.
+
+To enable id, simply call `enableFailedDataStore` like this :
+
+```
+Mnubo.enableFailedDataStore();
+//or
+Mnubo.enableFailedDataStore(new File(PATH));
+```
 
 ## Examples
 

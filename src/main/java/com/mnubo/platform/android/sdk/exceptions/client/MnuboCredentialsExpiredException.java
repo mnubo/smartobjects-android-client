@@ -20,61 +20,19 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.api.store;
+package com.mnubo.platform.android.sdk.exceptions.client;
 
-import java.io.Serializable;
-import java.util.Map;
+import com.mnubo.platform.android.sdk.Strings;
 
 /**
- * Object that contains all the relevant information to retry a request later.
+ * This exception is raised when you perform a user credentials have expired. It is only raised
+ * if the provided credentials are correct (good combination username/password) but they are expired.
+ * It happens if a Reset Password process is on going. The user has not completed the process yet.
  */
-public class MnuboEntity implements Serializable {
+public class MnuboCredentialsExpiredException extends MnuboClientException {
+    public final static String USER_CREDENTIALS_EXPIRED = "User credentials have expired";
 
-    private static final long serialVersionUID = 1L;
-
-    public static enum EntityType {
-        ADD_SAMPLES, ADD_SAMPLE_PUBLIC
+    public MnuboCredentialsExpiredException() {
+        super(Strings.EXCEPTION_CREDENTIALS_EXPIRED);
     }
-
-    protected String id;
-    protected Map<String, Object> idData;
-    protected EntityType type;
-    protected Object value;
-
-    /**
-     * Create a MnuboEntity instance
-     */
-    public MnuboEntity() {
-    }
-
-    /**
-     * Create a MnuboEntity instance
-     *
-     * @param idData id data to query the resource (id, idtype, sensorname, etc...)
-     * @param value  data
-     */
-    public MnuboEntity(EntityType type, String id, Map<String, Object> idData, Object value) {
-        this.id = id;
-        this.idData = idData;
-        this.type = type;
-        this.value = value;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public EntityType getType() {
-        return type;
-    }
-
-    public Map<String, Object> getIdData() {
-        return idData;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-
 }

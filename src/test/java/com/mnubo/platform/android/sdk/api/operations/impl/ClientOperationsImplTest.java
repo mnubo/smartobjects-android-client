@@ -22,12 +22,12 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
+import com.mnubo.platform.android.sdk.internal.services.ClientService;
 import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmPasswordResetTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmUserCreationTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.CreateUserTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ResetPasswordTask;
-import com.mnubo.platform.android.sdk.internal.services.ClientService;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 import com.mnubo.platform.android.sdk.models.users.User;

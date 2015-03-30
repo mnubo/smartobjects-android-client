@@ -37,11 +37,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Implements a MnuboStore that saves data in folders (queue) on the disk
@@ -56,6 +54,7 @@ public class MnuboFileStore implements MnuboStore {
      * The store will create it's folder into this directory.
      * The recommended root directory is the application cache directory that can be found in
      * {link android.context.Context}
+     *
      * @param rootDir root directory where the store will operate
      */
     public MnuboFileStore(File rootDir) {
@@ -64,7 +63,7 @@ public class MnuboFileStore implements MnuboStore {
 
     /**
      * {@inheritDoc}
-     *
+     * <p/>
      * The entity will be written in <code>rootDir/queueName/{id}-timestamp</code>
      */
     @Override
@@ -86,8 +85,9 @@ public class MnuboFileStore implements MnuboStore {
             if (!success) {
                 Log.e(TAG, String.format("Deleting : %s has failed", fileEntity.getFile()));
             }
+        } else {
+            Log.e(TAG, "MnuboFileStore can only remove MnuboFileEntity");
         }
-        Log.e(TAG, "MnuboFileStore can only remove MnuboFileEntity");
         return success;
     }
 

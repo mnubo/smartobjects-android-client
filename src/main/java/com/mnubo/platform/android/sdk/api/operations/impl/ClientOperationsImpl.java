@@ -23,11 +23,11 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.ClientOperations;
+import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmPasswordResetTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmUserCreationTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.CreateUserTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ResetPasswordTask;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
@@ -40,33 +40,42 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 public class ClientOperationsImpl extends AbstractMnuboOperations implements ClientOperations {
 
-    private final static String OPERATION_TAG = ClientOperationsImpl.class.getName();
-
-
     public ClientOperationsImpl(ConnectionOperations connectionOperations,
                                 Connection<MnuboClientApi> clientConnection,
                                 Connection<MnuboUserApi> userConnection) {
         super(connectionOperations, clientConnection, userConnection);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void createUser(final User user, final CompletionCallBack<Boolean> completionCallBack) {
         final CreateUserTask task = new CreateUserTask(getApiFetcher(), user, getClientConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void confirmUserCreation(final String username, final UserConfirmation confirmation, final CompletionCallBack<Boolean> completionCallBack) {
         final ConfirmUserCreationTask task = new ConfirmUserCreationTask(getApiFetcher(), username, confirmation, getClientConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void resetPassword(final String username, final CompletionCallBack<Boolean> completionCallBack) {
         final ResetPasswordTask task = new ResetPasswordTask(getApiFetcher(), username, getClientConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void confirmPasswordReset(final String username, final ResetPassword resetPassword, final CompletionCallBack<Boolean> completionCallBack) {
         final ConfirmPasswordResetTask task = new ConfirmPasswordResetTask(getApiFetcher(), username, resetPassword, getClientConnectionRefresher());

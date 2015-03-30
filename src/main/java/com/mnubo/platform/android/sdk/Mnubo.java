@@ -44,6 +44,7 @@ import org.springframework.social.connect.sqlite.support.SQLiteConnectionReposit
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.oauth2.AccessGrant;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.MalformedURLException;
@@ -70,6 +71,9 @@ public class Mnubo {
     private final Context applicationContext;
     private final ConnectionOperations connectionOperations;
 
+    private boolean failedDataStore = false;
+    private File failedDataStoreDirectory;
+
     private static Mnubo instance = null;
 
     private Mnubo(Context applicationContext, String consumerKey, String consumerSecret, String hostname) {
@@ -79,6 +83,7 @@ public class Mnubo {
         Validate.notBlank(hostname, "The hostname cannot be null or empty");
 
         this.applicationContext = applicationContext;
+        this.failedDataStoreDirectory = applicationContext.getCacheDir();
 
         final String validatedPlatformUrl = buildPlatformUrl(hostname);
 
@@ -122,7 +127,7 @@ public class Mnubo {
      * Returns a MnuboApi instance to be used to perform calls against the Mnubo
      * system.
      *
-     * @return an instance of MnuboApi
+     * @return an instance of {@link com.mnubo.platform.android.sdk.api.MnuboApi}
      */
     public static MnuboApi getApi() {
         if (instance == null) {
@@ -132,9 +137,41 @@ public class Mnubo {
                 instance.connectionOperations,
                 instance.clientConnection,
                 instance.getUserConnection(),
-                instance.applicationContext.getCacheDir()
+                instance.failedDataStoreDirectory,
+                instance.failedDataStore
         );
     }
+
+    /**
+     * Enables the failed attempts data store to the application cache directory.
+     * The mnubo Android SDK allows failed attempts to push data to be retried later. Currently,
+     * only a specific set of actions are persisted on the disk in case of failure.
+     *
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#retryFailedAttempts()
+     */
+    public static void enableFailedDataStore() {
+        if (instance == null) {
+            throw new MnuboNotInitializedException();
+        }
+        instance.failedDataStore = true;
+    }
+
+    /**
+     * Enables the failed attempts data store to the specified directory.
+     *
+     * @see #enableFailedDataStore()
+     */
+    public static void enableFailedDataStore(File directory) {
+        if (instance == null) {
+            throw new MnuboNotInitializedException();
+        }
+        Validate.notNull(directory, "The directory cannot be null.");
+        enableFailedDataStore();
+        instance.failedDataStoreDirectory = directory;
+    }
+
 
     private Connection<MnuboUserApi> getUserConnection() {
         return this.connectionRepository.findPrimaryConnection(MnuboUserApi.class);

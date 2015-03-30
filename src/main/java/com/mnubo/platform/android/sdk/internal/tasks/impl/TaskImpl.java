@@ -21,10 +21,10 @@
  */
 package com.mnubo.platform.android.sdk.internal.tasks.impl;
 
-import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
-import com.mnubo.platform.android.sdk.internal.tasks.Task;
 import com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
+import com.mnubo.platform.android.sdk.internal.tasks.Task;
 
 public abstract class TaskImpl<Result> extends Task<Result> {
 

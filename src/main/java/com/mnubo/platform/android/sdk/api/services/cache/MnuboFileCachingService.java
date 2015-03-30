@@ -29,12 +29,30 @@ import com.mnubo.platform.android.sdk.internal.tasks.Task;
  */
 public interface MnuboFileCachingService {
 
+    /**
+     * This will try to send any data that was previously persisted to the device.
+     * This will use the current thread for networking. Make sure you call this from a
+     * thread that is not the Main/UI thread.
+     */
     public void retryFailedAttempts();
 
+    /**
+     * Gets the count of failed attempts that was written to the device
+     *
+     * @return the count of failed attempts in the store
+     */
     public int getFailedAttemptsCount();
 
+    /**
+     * Callback used when a failure occurs.
+     */
     public static interface FailedAttemptCallback {
 
+        /**
+         * This method is called when the request fails. The failed task is used to retrieve data and
+         * any information that could be used to perform a retry later.
+         * @param failedTask is used to retrieve data
+         */
         void onFailure(Task failedTask);
 
     }

@@ -24,9 +24,9 @@ package com.mnubo.platform.android.sdk.internal.tasks.impl;
 
 import android.util.Log;
 
+import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
-import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 import org.springframework.social.ExpiredAuthorizationException;
 
