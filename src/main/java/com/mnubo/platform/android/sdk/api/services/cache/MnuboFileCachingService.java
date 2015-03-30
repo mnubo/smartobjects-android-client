@@ -31,6 +31,8 @@ public interface MnuboFileCachingService {
 
     /**
      * This will try to send any data that was previously persisted to the device.
+     * This will use the current thread for networking. Make sure you call this from a
+     * thread that is not the Main/UI thread.
      */
     public void retryFailedAttempts();
 

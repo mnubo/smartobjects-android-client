@@ -26,8 +26,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * Object that contains all the relevant information to executeSync a query :
- * id, id type and data of the payload.
+ * Object that contains all the relevant information to retry a request later.
  */
 public class MnuboEntity implements Serializable {
 
@@ -37,10 +36,10 @@ public class MnuboEntity implements Serializable {
         ADD_SAMPLES, ADD_SAMPLE_PUBLIC
     }
 
-    public String id;
-    public Map<String, Object> idData;
-    public EntityType type;
-    public Object value;
+    protected String id;
+    protected Map<String, Object> idData;
+    protected EntityType type;
+    protected Object value;
 
     /**
      * Create a MnuboEntity instance

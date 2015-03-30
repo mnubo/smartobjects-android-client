@@ -64,12 +64,18 @@ public class MnuboSmartObjectFileCachingServiceImpl implements MnuboFileCachingS
         this.mnuboStore = mnuboStore;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public int getFailedAttemptsCount() {
 
         final List<MnuboEntity> queue = mnuboStore.getEntities(RETRY_QUEUE_NAME);
         return queue != null ? queue.size() : 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void retryFailedAttempts() {
         List<MnuboEntity> entities = mnuboStore.getEntities(RETRY_QUEUE_NAME);
@@ -82,6 +88,7 @@ public class MnuboSmartObjectFileCachingServiceImpl implements MnuboFileCachingS
                     addSamplesTask.executeSync(getAddSamplesFailedAttemptCallback());
                     break;
                 case ADD_SAMPLE_PUBLIC:
+                    //TODO
                     break;
             }
             mnuboStore.remove(entity);
