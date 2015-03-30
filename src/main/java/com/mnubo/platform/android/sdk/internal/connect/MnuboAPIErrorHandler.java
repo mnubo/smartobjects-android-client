@@ -32,6 +32,7 @@ import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboAccessDeniedException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
@@ -57,6 +58,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException.USER_CREDENTIALS_EXPIRED;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException.EXPIRED_REFRESH_TOKEN;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException.INVALID_PREVIOUS_PASSWORD;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
@@ -150,6 +152,8 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboUserAlreadyExistsException();
         } else if (TextUtils.equals(PASSWORD_RESET_INVALID_TOKEN, errorMessage)) {
             throw new MnuboInvalidResetPasswordTokenException();
+        }else if (TextUtils.equals(USER_CREDENTIALS_EXPIRED, errorMessage)) {
+            throw new MnuboCredentialsExpiredException();
         }
     }
 

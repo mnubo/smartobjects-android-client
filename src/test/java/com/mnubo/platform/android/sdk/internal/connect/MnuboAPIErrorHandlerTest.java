@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
@@ -49,6 +50,7 @@ import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException.USER_CREDENTIALS_EXPIRED;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException.EXPIRED_REFRESH_TOKEN;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException.INVALID_PREVIOUS_PASSWORD;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
@@ -183,6 +185,13 @@ public class MnuboAPIErrorHandlerTest {
     @Test(expected = MnuboInvalidResetPasswordTokenException.class)
     public void testInvalidPasswordResetToken() throws Exception {
         ClientHttpResponse response = prepareResponse(PASSWORD_RESET_INVALID_TOKEN, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboCredentialsExpiredException.class)
+    public void testCredentialsExpiredException() throws Exception {
+        ClientHttpResponse response = prepareResponse(USER_CREDENTIALS_EXPIRED, HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(response);
     }
