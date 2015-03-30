@@ -78,7 +78,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         when(mockedUserApi.objectService()).thenReturn(mockedSmartObjectService);
 
         smartObjectOperations = new SmartObjectOperationsImpl(mockedConnectionOperations, mockedClientApiConnection,
-                mockedUserApiConnection, null);
+                mockedUserApiConnection, null,false);
         smartObjectOperations.setMnuboSmartObjectFileCachingService(mockedCacheService);
     }
 

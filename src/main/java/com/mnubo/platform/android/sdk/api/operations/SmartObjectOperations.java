@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.api.operations;
 
+import com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample;
@@ -36,7 +37,7 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
  * @see com.mnubo.platform.android.sdk.models.common.SdkId
  * @see com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack
  */
-public interface SmartObjectOperations {
+public interface SmartObjectOperations extends MnuboFileCachingService {
     /**
      * This function is used to fetch an object on the mnubo API.
      *

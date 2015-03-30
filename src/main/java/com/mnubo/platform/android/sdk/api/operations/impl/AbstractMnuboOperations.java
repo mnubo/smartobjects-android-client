@@ -40,7 +40,7 @@ public abstract class AbstractMnuboOperations {
 
     final ConnectionOperations connectionOperations;
 
-    private boolean cacheFailedOperations = false;
+    private boolean offlineCachingEnabled = false;
 
     AbstractMnuboOperations(ConnectionOperations connectionOperations,
                             Connection<MnuboClientApi> clientConnection,
@@ -53,14 +53,14 @@ public abstract class AbstractMnuboOperations {
     /**
      * Enables or disable offline caching for failed requests.
      *
-     * @param cacheFailedOperations enable if true, disable if false
+     * @param offlineCachingEnabled enable if true, disable if false
      */
-    public void setCacheFailedOperations(boolean cacheFailedOperations) {
-        this.cacheFailedOperations = cacheFailedOperations;
+    public void setOfflineCachingEnabled(boolean offlineCachingEnabled) {
+        this.offlineCachingEnabled = offlineCachingEnabled;
     }
 
-    public boolean isCacheFailedOperations() {
-        return cacheFailedOperations;
+    public boolean isOfflineCachingEnabled() {
+        return offlineCachingEnabled;
     }
 
     ConnectionRefresher getUserConnectionRefresher() {

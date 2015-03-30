@@ -71,8 +71,8 @@ public class Mnubo {
     private final Context applicationContext;
     private final ConnectionOperations connectionOperations;
 
-    private boolean failedDataSore = false;
-    private File failedDataSoreDirectory;
+    private boolean failedDataStore = false;
+    private File failedDataStoreDirectory;
 
     private static Mnubo instance = null;
 
@@ -83,7 +83,7 @@ public class Mnubo {
         Validate.notBlank(hostname, "The hostname cannot be null or empty");
 
         this.applicationContext = applicationContext;
-        this.failedDataSoreDirectory = applicationContext.getCacheDir();
+        this.failedDataStoreDirectory = applicationContext.getCacheDir();
 
         final String validatedPlatformUrl = buildPlatformUrl(hostname);
 
@@ -137,45 +137,39 @@ public class Mnubo {
                 instance.connectionOperations,
                 instance.clientConnection,
                 instance.getUserConnection(),
-                instance.failedDataSoreDirectory,
-                instance.failedDataSore
+                instance.failedDataStoreDirectory,
+                instance.failedDataStore
         );
     }
 
     /**
      * Enables the failed attempts data store to the application cache directory.
      * The mnubo Android SDK allows failed attempts to push data to be retried later. Currently,
-     * only a specific set of actions are persisted on the disk in case of failure :
-     * <p/>
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample)}
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)}
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
+     * only a specific set of actions are persisted on the disk in case of failure.
+     *
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#retryFailedAttempts()
      */
     public static void enableFailedDataStore() {
         if (instance == null) {
             throw new MnuboNotInitializedException();
         }
-        instance.failedDataSore = true;
+        instance.failedDataStore = true;
     }
 
     /**
      * Enables the failed attempts data store to the specified directory.
-     * The mnubo Android SDK allows failed attempts to push data to be retried later. Currently,
-     * only a specific set of actions are persisted on the disk in case of failure :
-     * <p/>
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample)}
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)}
-     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
+     *
+     * @see #enableFailedDataStore()
      */
     public static void enableFailedDataStore(File directory) {
         if (instance == null) {
             throw new MnuboNotInitializedException();
         }
         Validate.notNull(directory, "The directory cannot be null.");
-        instance.failedDataSore = true;
-        instance.failedDataSoreDirectory = directory;
+        enableFailedDataStore();
+        instance.failedDataStoreDirectory = directory;
     }
 
 

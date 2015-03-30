@@ -135,7 +135,16 @@ See the api doc [here](./src/main/java/com/mnubo/platform/android/sdk/api/README
 
 ## Offline datastore
 The mnubo Android SDK supports offline caching for requests that fails. If the request fails, the data
-is persisted to the disk in the folder you provided when you enabled the feature.
+is persisted to the disk in the application cache folder. You can also provide another directory when
+you enable the feature.
+
+To enable id, simply call `enableFailedDataStore` like this :
+
+```
+Mnubo.enableFailedDataStore();
+//or
+Mnubo.enableFailedDataStore(new File(PATH));
+```
 
 ## Examples
 
