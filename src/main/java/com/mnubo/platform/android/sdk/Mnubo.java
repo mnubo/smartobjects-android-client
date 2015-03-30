@@ -44,6 +44,7 @@ import org.springframework.social.connect.sqlite.support.SQLiteConnectionReposit
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.oauth2.AccessGrant;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.MalformedURLException;
@@ -69,7 +70,9 @@ public class Mnubo {
     private final ConnectionRepository connectionRepository;
     private final Context applicationContext;
     private final ConnectionOperations connectionOperations;
+
     private boolean failedDataSore = false;
+    private File failedDataSoreDirectory;
 
     private static Mnubo instance = null;
 
@@ -80,6 +83,7 @@ public class Mnubo {
         Validate.notBlank(hostname, "The hostname cannot be null or empty");
 
         this.applicationContext = applicationContext;
+        this.failedDataSoreDirectory = applicationContext.getCacheDir();
 
         final String validatedPlatformUrl = buildPlatformUrl(hostname);
 
@@ -133,12 +137,13 @@ public class Mnubo {
                 instance.connectionOperations,
                 instance.clientConnection,
                 instance.getUserConnection(),
-                instance.applicationContext.getCacheDir(),
+                instance.failedDataSoreDirectory,
                 instance.failedDataSore
         );
     }
 
     /**
+     * Enables the failed attempts data store to the application cache directory.
      * The mnubo Android SDK allows failed attempts to push data to be retried later. Currently,
      * only a specific set of actions are persisted on the disk in case of failure :
      * <p/>
@@ -152,6 +157,25 @@ public class Mnubo {
             throw new MnuboNotInitializedException();
         }
         instance.failedDataSore = true;
+    }
+
+    /**
+     * Enables the failed attempts data store to the specified directory.
+     * The mnubo Android SDK allows failed attempts to push data to be retried later. Currently,
+     * only a specific set of actions are persisted on the disk in case of failure :
+     * <p/>
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSampleOnPublicSensor(com.mnubo.platform.android.sdk.models.common.SdkId, String, com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample)}
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)}
+     * {@link com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)}
+     */
+    public static void enableFailedDataStore(File directory) {
+        if (instance == null) {
+            throw new MnuboNotInitializedException();
+        }
+        Validate.notNull(directory, "The directory cannot be null.");
+        instance.failedDataSore = true;
+        instance.failedDataSoreDirectory = directory;
     }
 
 
