@@ -24,7 +24,6 @@ package com.mnubo.platform.android.sdk.internal.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
-import com.mnubo.platform.android.sdk.internal.services.AbstractMnuboService;
 import com.mnubo.platform.android.sdk.internal.services.UserService;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;

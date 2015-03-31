@@ -23,8 +23,8 @@
 package com.mnubo.platform.android.sdk.models.security;
 
 /**
- * Used during the RestPassword flow. This requires a password and its confirmation
- * along with the token received after initiating the reset password process.
+ * Used during the RestPassword flow. This requires a password and its confirmation along with the
+ * token received after initiating the reset password process.
  */
 public class ResetPassword extends ChangePassword {
 

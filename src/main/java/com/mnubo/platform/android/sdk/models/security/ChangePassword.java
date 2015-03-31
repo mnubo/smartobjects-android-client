@@ -30,8 +30,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 /**
- * Used to submit password changes or reset requiring a new password
- * and its confirmation.
+ * Used to submit password changes or reset requiring a new password and its confirmation.
  */
 public abstract class ChangePassword implements Serializable {
 

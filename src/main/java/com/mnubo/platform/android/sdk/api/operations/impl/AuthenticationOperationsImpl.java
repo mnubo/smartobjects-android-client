@@ -23,13 +23,15 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AuthenticationOperations;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.authentication.LogInTask;
+import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
+import com.mnubo.platform.android.sdk.internal.tasks.Task;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newLogInTask;
 
 public class AuthenticationOperationsImpl extends AbstractMnuboOperations implements AuthenticationOperations {
 
@@ -43,8 +45,17 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
      * {@inheritDoc}
      */
     @Override
-    public void logIn(final String username, final String password, final CompletionCallBack<Boolean> completionCallBack) {
-        final LogInTask task = new LogInTask(username, password, connectionOperations);
+    public MnuboResponse<Boolean> logIn(String username, String password) {
+        final Task<Boolean> task = newLogInTask(username, password, connectionOperations);
+        return task.executeSync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void logInAsync(final String username, final String password, final CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newLogInTask(username, password, connectionOperations);
         task.executeAsync(completionCallBack);
     }
 

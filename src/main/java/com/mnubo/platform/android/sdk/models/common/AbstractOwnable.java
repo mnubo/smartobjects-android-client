@@ -31,8 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 /**
- * Abstract class implemented by object that have an owner
- * field.
+ * Abstract class implemented by object that have an owner field.
  *
  * @see com.mnubo.platform.android.sdk.models.collections.Collection
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObject

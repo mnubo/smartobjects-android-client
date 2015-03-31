@@ -41,8 +41,7 @@ import java.io.File;
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 
 /**
- * Mnubo API that is used by the application developers to perform
- * requests on the Mnubo system.
+ * Mnubo API that is used by the application developers to perform requests on the Mnubo system.
  */
 public class MnuboApi {
 
@@ -84,17 +83,16 @@ public class MnuboApi {
     }
 
     /**
-     * Interface definition for a callback to be invoked when an action an request to
-     * mnubo API as returned, successful or not.
+     * Interface definition for a callback to be invoked when an action an request to mnubo API as
+     * returned, successful or not.
      *
      * @param <Result> The type of result that will be sent in the {link #onCompletion} method
      */
     public static interface CompletionCallBack<Result> {
 
         /**
-         * This method is called when the request is done, success or not.
-         * The user must ensure the result is not null and that no error arose
-         * when performing the request
+         * This method is called when the request is done, success or not. The user must ensure the
+         * result is not null and that no error arose when performing the request
          *
          * @param result the result of the async request
          * @param error  any error that might have occurred during the async request

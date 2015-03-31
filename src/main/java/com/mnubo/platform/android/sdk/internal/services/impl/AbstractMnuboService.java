@@ -20,7 +20,7 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.services;
+package com.mnubo.platform.android.sdk.internal.services.impl;
 
 
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;

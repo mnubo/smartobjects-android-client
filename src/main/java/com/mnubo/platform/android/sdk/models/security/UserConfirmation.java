@@ -27,8 +27,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 /**
- * Used in the confirmation of a user creation.
- * Requires password along with the token received after the user registered.
+ * Used in the confirmation of a user creation. Requires password along with the token received
+ * after the user registered.
  */
 public class UserConfirmation implements Serializable {
 

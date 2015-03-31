@@ -21,12 +21,8 @@
  */
 package com.mnubo.platform.android.sdk.api.operations;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
-import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
-import com.mnubo.platform.android.sdk.internal.tasks.Task;
+import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.junit.Before;
@@ -36,14 +32,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
+import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        Log.class,
-        AsyncTaskFactory.class,
-        Task.class
+        TaskFactory.class
 })
 public abstract class AbstractOperationsTest {
 
@@ -56,11 +51,13 @@ public abstract class AbstractOperationsTest {
 
     protected final MnuboUserApi mockedUserApi = mock(MnuboUserApi.class);
     protected final MnuboClientApi mockedClientApi = mock(MnuboClientApi.class);
-    protected final AsyncTask mockedAsyncTask = mock(AsyncTask.class);
+
+    @SuppressWarnings("unchecked")
+    protected final CompletionCallBack<Boolean> mockedSuccessCallback = mock(CompletionCallBack.class);
 
 
     @Before
     public void setUp() throws Exception {
-        mockStatic(AsyncTaskFactory.class);
+        mockStatic(TaskFactory.class);
     }
 }

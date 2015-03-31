@@ -22,6 +22,8 @@
 
 package com.mnubo.platform.android.sdk.api.operations;
 
+import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
+
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 /**
@@ -32,19 +34,34 @@ public interface AuthenticationOperations {
     /**
      * Log in as a user to the mnubo API. It fetch an user access token along with it's
      * refreshUserConnection token that will be persisted on the device.
-     * <p/>
-     * If the access token expires, the refreshUserConnection token is used to refreshUserConnection it. If both have expired,
-     * you should ask the user to log in again.
      *
-     * @param username           username of the user
-     * @param password           password of the user
-     * @param completionCallBack the callback that will be executed on completion of the request
+     * If the access token expires, the refreshUserConnection token is used to refreshUserConnection
+     * it. If both have expired, you should ask the user to log in again.
+     *
+     * Called url = POST : /oauth/token
+     *
+     * @param username username of the user
+     * @param password password of the user
      */
-    void logIn(String username, String password, CompletionCallBack<Boolean> completionCallBack);
+    MnuboResponse<Boolean> logIn(String username, String password);
 
     /**
-     * Logs out the user. Removes the connection data from the device (access token, refreshUserConnection token,
-     * username)
+     * Log in as a user to the mnubo API. It fetch an user access token along with it's
+     * refreshUserConnection token that will be persisted on the device.
+     *
+     * If the access token expires, the refreshUserConnection token is used to refreshUserConnection
+     * it. If both have expired, you should ask the user to log in again. The result will be available through the given callback.
+     *
+     * Called url = POST : /oauth/token
+     *
+     * @param completionCallBack callback called when query is done
+     * @see #logIn(String, String)
+     */
+    void logInAsync(String username, String password, CompletionCallBack<Boolean> completionCallBack);
+
+    /**
+     * Logs out the user. Removes the connection data from the device (access token,
+     * refreshUserConnection token, username)
      */
     void logOut();
 

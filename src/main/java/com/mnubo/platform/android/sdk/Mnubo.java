@@ -55,8 +55,8 @@ import static com.mnubo.platform.android.sdk.BuildConstants.PORT;
 import static com.mnubo.platform.android.sdk.BuildConstants.PROTOCOL;
 
 /**
- * This class is the entry point to use the SDK. The init method must be called prior
- * to anything else.
+ * This class is the entry point to use the SDK. The init method must be called prior to anything
+ * else.
  */
 public class Mnubo {
 
@@ -105,12 +105,12 @@ public class Mnubo {
     }
 
     /**
-     * This method is used to initialise the SDK. Call it once, before you do anything
-     * else with the SDK.
+     * This method is used to initialise the SDK. Call it once, before you do anything else with the
+     * SDK.
      *
      * @param context        Android context of the application using the SDK
-     * @param hostname       Hostname where your Mnubo services are available
-     *                       ( Eg : mycompany.api.mnubo.com)
+     * @param hostname       Hostname where your Mnubo services are available ( Eg :
+     *                       mycompany.api.mnubo.com)
      * @param consumerKey    The consumer key provided by Mnubo
      * @param consumerSecret The consumer secret that came along the key given above
      */
@@ -124,8 +124,7 @@ public class Mnubo {
     }
 
     /**
-     * Returns a MnuboApi instance to be used to perform calls against the Mnubo
-     * system.
+     * Returns a MnuboApi instance to be used to perform calls against the Mnubo system.
      *
      * @return an instance of {@link com.mnubo.platform.android.sdk.api.MnuboApi}
      */
@@ -143,12 +142,15 @@ public class Mnubo {
     }
 
     /**
-     * Enables the failed attempts data store to the application cache directory.
-     * The mnubo Android SDK allows failed attempts to push data to be retried later. Currently,
-     * only a specific set of actions are persisted on the disk in case of failure.
+     * Enables the failed attempts data store to the application cache directory. The mnubo Android
+     * SDK allows failed attempts to push data to be retried later. Currently, only a specific set
+     * of actions are persisted on the disk in case of failure.
      *
-     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)
-     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId, com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamples(com.mnubo.platform.android.sdk.models.common.SdkId,
+     * com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples)
+     * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#addSamplesAsync(com.mnubo.platform.android.sdk.models.common.SdkId,
+     * com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples,
+     * com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
      * @see com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations#retryFailedAttempts()
      */
     public static void enableFailedDataStore() {
@@ -270,13 +272,10 @@ public class Mnubo {
     }
 
     /**
-     * This method is used to save the username locally. It shouldn't
-     * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
-     * has a way to fetch the User information using the user token in the
-     * authorization header.
-     * <p/>
-     * If the username can't be persisted or fetched from the platform
-     * the connection can't be saved locally.
+     * This method is used to save the username locally. It shouldn't be required if the {@link
+     * com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter} has a way to fetch the
+     * User information using the user token in the authorization header. <p/> If the username can't
+     * be persisted or fetched from the platform the connection can't be saved locally.
      *
      * @param username username to save
      */
@@ -293,12 +292,10 @@ public class Mnubo {
     }
 
     /**
-     * This method is used to save the username locally. It shouldn't
-     * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
-     * has a way to fetch the User information using the user token in the
-     * authorization header.
-     * <p/>
-     * Read the saved username
+     * This method is used to save the username locally. It shouldn't be required if the {@link
+     * com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter} has a way to fetch the
+     * User information using the user token in the authorization header. <p/> Read the saved
+     * username
      *
      * @return read username
      */
@@ -321,12 +318,10 @@ public class Mnubo {
     }
 
     /**
-     * This method is used to save the username locally. It shouldn't
-     * be required if the {@link com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter}
-     * has a way to fetch the User information using the user token in the
-     * authorization header.
-     * <p/>
-     * Deletes the saved username
+     * This method is used to save the username locally. It shouldn't be required if the {@link
+     * com.mnubo.platform.android.sdk.internal.user.connect.MnuboUserAdapter} has a way to fetch the
+     * User information using the user token in the authorization header. <p/> Deletes the saved
+     * username
      */
     @Deprecated
     private void deleteSavedUsername() {

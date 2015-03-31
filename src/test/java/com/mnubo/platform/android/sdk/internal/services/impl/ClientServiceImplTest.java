@@ -19,7 +19,8 @@
  *     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *     THE SOFTWARE.
  */
-package com.mnubo.platform.android.sdk.internal.client.services.impl;
+
+package com.mnubo.platform.android.sdk.internal.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
 import com.mnubo.platform.android.sdk.internal.services.ClientService;
@@ -37,9 +38,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-
-public class ClientSdkOperationsImplTest extends AbstractServicesTest {
-
+public class ClientServiceImplTest extends AbstractServicesTest {
     private ClientService clientService;
 
     @Override

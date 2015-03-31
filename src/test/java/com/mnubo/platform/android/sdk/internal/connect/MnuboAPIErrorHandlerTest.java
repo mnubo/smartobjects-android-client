@@ -219,13 +219,9 @@ public class MnuboAPIErrorHandlerTest {
     }
 
     /**
-     * {
-     * "timestamp": "2015-03-12T19:40:49.344Z",
-     * "errorCode": 400,
-     * "message": "Unknown User 'dfrancoeur@mnubo.com44'",
-     * "path": "/users/dfrancoeur@mnubo.com44",
-     * "requestId": "38c75428-cb78-4305-a20e-4259ad3d653b"
-     * }
+     * { "timestamp": "2015-03-12T19:40:49.344Z", "errorCode": 400, "message": "Unknown User
+     * 'dfrancoeur@mnubo.com44'", "path": "/users/dfrancoeur@mnubo.com44", "requestId":
+     * "38c75428-cb78-4305-a20e-4259ad3d653b" }
      */
     private class MnuboAPIResponse {
         String timestamp;

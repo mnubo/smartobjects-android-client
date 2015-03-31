@@ -24,7 +24,6 @@ package com.mnubo.platform.android.sdk.internal.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
-import com.mnubo.platform.android.sdk.internal.services.AbstractMnuboService;
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
@@ -47,7 +46,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
 
     @Override
     public void delete(SdkId objectId) {
-        Validate.notNull(objectId, "The objectId is required.");
+        Validate.notNull(objectId, "The objectId shouldn't be null.");
 
         PlatformQuery query = this.getQuery();
 
@@ -59,7 +58,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
 
     @Override
     public SmartObject create(SmartObject object, boolean updateIfExists) {
-        Validate.notNull(object, "The object to update shouldn't be null.");
+        Validate.notNull(object, "The object shouldn't be null.");
 
         PlatformQuery query = this.getQuery();
 
@@ -71,8 +70,8 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
 
     @Override
     public void update(SdkId objectId, SmartObject object) {
-        Validate.notNull(object, "The object to update shouldn't be null.");
-        Validate.notNull(objectId, "The objectId to update shouldn't be null.");
+        Validate.notNull(object, "The object shouldn't be null.");
+        Validate.notNull(objectId, "The objectId shouldn't be null.");
 
         PlatformQuery query = this.getQuery();
 
@@ -91,7 +90,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
 
     @Override
     public SmartObject findOne(SdkId objectId, List<String> attributes) {
-        Validate.notNull(objectId, "The object to update shouldn't be null.");
+        Validate.notNull(objectId, "The object shouldn't be null.");
 
         PlatformQuery query = this.getQuery();
 
@@ -119,7 +118,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
 
     @Override
     public Samples searchSamples(SdkId objectId, String sensorName, ValueType value, String from, String to, int resultSizeLimit) {
-        Validate.notNull(objectId, "The objectId to update shouldn't be null.");
+        Validate.notNull(objectId, "The objectId  shouldn't be null.");
         Validate.notBlank(sensorName, "The sensor name shouldn't be null or empty.");
 
         PlatformQuery query = this.getQuery();

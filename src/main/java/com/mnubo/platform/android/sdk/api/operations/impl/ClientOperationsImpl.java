@@ -24,10 +24,8 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.ClientOperations;
 import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmPasswordResetTask;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmUserCreationTask;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.client.CreateUserTask;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ResetPasswordTask;
+import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
+import com.mnubo.platform.android.sdk.internal.tasks.Task;
 import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
@@ -37,6 +35,10 @@ import org.springframework.social.connect.Connection;
 
 import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
+import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newConfirmPasswordResetTask;
+import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newConfirmUserCreationTask;
+import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newCreateUserTask;
+import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newResetPasswordTask;
 
 public class ClientOperationsImpl extends AbstractMnuboOperations implements ClientOperations {
 
@@ -50,8 +52,17 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
      * {@inheritDoc}
      */
     @Override
-    public void createUser(final User user, final CompletionCallBack<Boolean> completionCallBack) {
-        final CreateUserTask task = new CreateUserTask(getApiFetcher(), user, getClientConnectionRefresher());
+    public MnuboResponse<Boolean> createUser(User user) {
+        final Task<Boolean> task = newCreateUserTask(getApiFetcher(), user, getClientConnectionRefresher());
+        return task.executeSync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createUserAsync(final User user, final CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newCreateUserTask(getApiFetcher(), user, getClientConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
@@ -59,8 +70,17 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
      * {@inheritDoc}
      */
     @Override
-    public void confirmUserCreation(final String username, final UserConfirmation confirmation, final CompletionCallBack<Boolean> completionCallBack) {
-        final ConfirmUserCreationTask task = new ConfirmUserCreationTask(getApiFetcher(), username, confirmation, getClientConnectionRefresher());
+    public MnuboResponse<Boolean> confirmUserCreation(String username, UserConfirmation confirmation) {
+        final Task<Boolean> task = newConfirmUserCreationTask(getApiFetcher(), username, confirmation, getClientConnectionRefresher());
+        return task.executeSync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void confirmUserCreationAsync(final String username, final UserConfirmation confirmation, final CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newConfirmUserCreationTask(getApiFetcher(), username, confirmation, getClientConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
@@ -68,8 +88,18 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
      * {@inheritDoc}
      */
     @Override
-    public void resetPassword(final String username, final CompletionCallBack<Boolean> completionCallBack) {
-        final ResetPasswordTask task = new ResetPasswordTask(getApiFetcher(), username, getClientConnectionRefresher());
+    public MnuboResponse<Boolean> resetPassword(String username) {
+        final Task<Boolean> task = newResetPasswordTask(getApiFetcher(), username, getClientConnectionRefresher());
+        return task.executeSync();
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetPasswordAsync(final String username, final CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newResetPasswordTask(getApiFetcher(), username, getClientConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
@@ -77,8 +107,17 @@ public class ClientOperationsImpl extends AbstractMnuboOperations implements Cli
      * {@inheritDoc}
      */
     @Override
-    public void confirmPasswordReset(final String username, final ResetPassword resetPassword, final CompletionCallBack<Boolean> completionCallBack) {
-        final ConfirmPasswordResetTask task = new ConfirmPasswordResetTask(getApiFetcher(), username, resetPassword, getClientConnectionRefresher());
+    public MnuboResponse<Boolean> confirmPasswordReset(String username, ResetPassword resetPassword) {
+        final Task<Boolean> task = newConfirmPasswordResetTask(getApiFetcher(), username, resetPassword, getClientConnectionRefresher());
+        return task.executeSync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void confirmPasswordResetAsync(final String username, final ResetPassword resetPassword, final CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newConfirmPasswordResetTask(getApiFetcher(), username, resetPassword, getClientConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 }

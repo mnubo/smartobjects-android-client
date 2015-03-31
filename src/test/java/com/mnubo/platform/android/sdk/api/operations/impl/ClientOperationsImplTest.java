@@ -23,7 +23,10 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
 import com.mnubo.platform.android.sdk.internal.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.tasks.AsyncTaskFactory;
+import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
+import com.mnubo.platform.android.sdk.internal.tasks.Task;
+import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmPasswordResetTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmUserCreationTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.CreateUserTask;
@@ -36,11 +39,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @SuppressWarnings("unchecked")
@@ -48,8 +53,6 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
 
     private final ClientOperationsImpl clientOperations = new ClientOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
     private final ClientService mockedClientService = mock(ClientService.class);
-    @SuppressWarnings("unchecked")
-    private final CompletionCallBack<Boolean> mockedCallback = mock(CompletionCallBack.class);
 
     @Override
     @Before
@@ -61,93 +64,169 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
     }
 
     @Test
-    public void createUser() throws Exception {
-        when(AsyncTaskFactory.create(any(CreateUserTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
-
+    public void testSyncCreateUser() throws Exception {
         final User createdUser = new User();
-        createdUser.setUsername("username");
+        final CreateUserTask mockedTask = mock(CreateUserTask.class);
+        when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
+        when(TaskFactory.newCreateUserTask(any(Task.ApiFetcher.class), eq(createdUser), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
 
-        clientOperations.createUser(createdUser, null);
+        final Boolean result = clientOperations.createUser(createdUser).getResult();
+
+        assertEquals(true, result);
+        verify(mockedTask, only()).executeSync();
     }
 
     @Test
-    public void createUserWithCallback() throws Exception {
-
-        when(AsyncTaskFactory.create(any(CreateUserTask.class), eq(mockedCallback), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
-
+    public void testAsyncCreateUser() throws Exception {
         final User createdUser = new User();
-        createdUser.setUsername("username");
 
-        clientOperations.createUser(createdUser, mockedCallback);
+        final CreateUserTask mockedTask = mock(CreateUserTask.class);
+        when(TaskFactory.newCreateUserTask(any(Task.ApiFetcher.class), eq(createdUser), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        clientOperations.createUserAsync(createdUser, null);
+
+        verify(mockedTask, only()).executeAsync(isNull(CompletionCallBack.class));
+    }
+
+    @Test
+    public void testAsyncCreateUserWithCallback() throws Exception {
+        final User createdUser = new User();
+
+        final CreateUserTask mockedTask = mock(CreateUserTask.class);
+        when(TaskFactory.newCreateUserTask(any(Task.ApiFetcher.class), eq(createdUser), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        clientOperations.createUserAsync(createdUser, mockedSuccessCallback);
+
+        verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
 
     }
 
     @Test
-    public void confirmUserCreation() throws Exception {
-
-        when(AsyncTaskFactory.create(any(ConfirmUserCreationTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
-
+    public void testSyncConfirmUserCreation() throws Exception {
         final UserConfirmation userConfirmation = new UserConfirmation("token", "password");
         final String username = "username";
 
-        clientOperations.confirmUserCreation(username, userConfirmation, null);
+        final ConfirmUserCreationTask mockedTask = mock(ConfirmUserCreationTask.class);
+        when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
+        when(TaskFactory.newConfirmUserCreationTask(any(Task.ApiFetcher.class), eq(username), eq(userConfirmation), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        final Boolean result = clientOperations.confirmUserCreation(username, userConfirmation).getResult();
+
+        assertEquals(true, result);
+        verify(mockedTask, only()).executeSync();
     }
 
     @Test
-    public void confirmUserCreationWithCallback() throws Exception {
-        when(AsyncTaskFactory.create(any(ConfirmUserCreationTask.class), eq(mockedCallback), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
-
+    public void testAsyncConfirmUserCreation() throws Exception {
         final UserConfirmation userConfirmation = new UserConfirmation("token", "password");
+        final String username = "username";
 
-        clientOperations.confirmUserCreation("username", userConfirmation, mockedCallback);
+        final ConfirmUserCreationTask mockedTask = mock(ConfirmUserCreationTask.class);
+        when(TaskFactory.newConfirmUserCreationTask(any(Task.ApiFetcher.class), eq(username), eq(userConfirmation), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        clientOperations.confirmUserCreationAsync(username, userConfirmation, null);
+
+        verify(mockedTask, only()).executeAsync(isNull(CompletionCallBack.class));
+
     }
 
     @Test
-    public void testResetPassword() throws Exception {
-        when(AsyncTaskFactory.create(any(ResetPasswordTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
+    public void testAsyncConfirmUserCreationWithCallback() throws Exception {
+        final UserConfirmation userConfirmation = new UserConfirmation("token", "password");
+        final String username = "username";
+
+        final ConfirmUserCreationTask mockedTask = mock(ConfirmUserCreationTask.class);
+        when(TaskFactory.newConfirmUserCreationTask(any(Task.ApiFetcher.class), eq(username), eq(userConfirmation), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        clientOperations.confirmUserCreationAsync(username, userConfirmation, mockedSuccessCallback);
+
+        verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
+
+    }
+
+    @Test
+    public void testSyncResetPassword() throws Exception {
+        final String username = "username";
+
+        final ResetPasswordTask mockedTask = mock(ResetPasswordTask.class);
+        when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
+        when(TaskFactory.newResetPasswordTask(any(Task.ApiFetcher.class), eq(username), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        final Boolean result = clientOperations.resetPassword(username).getResult();
+
+        assertEquals(true, result);
+        verify(mockedTask, only()).executeSync();
+
+    }
+
+    @Test
+    public void testAsyncResetPassword() throws Exception {
+        final String username = "username";
+
+        final ResetPasswordTask mockedTask = mock(ResetPasswordTask.class);
+        when(TaskFactory.newResetPasswordTask(any(Task.ApiFetcher.class), eq(username), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        clientOperations.resetPasswordAsync(username, null);
+
+        verify(mockedTask, only()).executeAsync(isNull(CompletionCallBack.class));
+
+    }
+
+    @Test
+    public void testAsyncResetPasswordWithCallback() throws Exception {
 
         final String username = "username";
 
-        clientOperations.resetPassword(username, null);
+        final ResetPasswordTask mockedTask = mock(ResetPasswordTask.class);
+        when(TaskFactory.newResetPasswordTask(any(Task.ApiFetcher.class), eq(username), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        clientOperations.resetPasswordAsync(username, mockedSuccessCallback);
+
+        verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
 
     }
 
     @Test
-    public void testResetPasswordWithCallback() throws Exception {
-
-        when(AsyncTaskFactory.create(any(ResetPasswordTask.class), eq(mockedCallback), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
-
+    public void testSyncConfirmPasswordReset() throws Exception {
         final String username = "username";
+        final ResetPassword resetPassword = new ResetPassword("token", "password", "password");
 
-        clientOperations.resetPassword(username, mockedCallback);
+        final ConfirmPasswordResetTask mockedTask = mock(ConfirmPasswordResetTask.class);
+        when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
+        when(TaskFactory.newConfirmPasswordResetTask(any(Task.ApiFetcher.class), eq(username), eq(resetPassword), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        final Boolean result = clientOperations.confirmPasswordReset(username, resetPassword).getResult();
+
+        assertEquals(true, result);
+        verify(mockedTask, only()).executeSync();
+    }
+
+    @Test
+    public void testAsyncConfirmPasswordReset() throws Exception {
+        final String username = "username";
+        final ResetPassword resetPassword = new ResetPassword("token", "password", "password");
+
+        final ConfirmPasswordResetTask mockedTask = mock(ConfirmPasswordResetTask.class);
+        when(TaskFactory.newConfirmPasswordResetTask(any(Task.ApiFetcher.class), eq(username), eq(resetPassword), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
+        clientOperations.confirmPasswordResetAsync(username, resetPassword, null);
+
+        verify(mockedTask, only()).executeAsync(isNull(CompletionCallBack.class));
 
     }
 
     @Test
-    public void testConfirmPasswordReset() throws Exception {
-        when(AsyncTaskFactory.create(any(ConfirmPasswordResetTask.class), isNull(CompletionCallBack.class), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
+    public void testAsyncConfirmPasswordResetWithCallback() throws Exception {
 
         final String username = "username";
         final ResetPassword resetPassword = new ResetPassword("token", "password", "password");
 
-        clientOperations.confirmPasswordReset(username, resetPassword, null);
-    }
+        final ConfirmPasswordResetTask mockedTask = mock(ConfirmPasswordResetTask.class);
+        when(TaskFactory.newConfirmPasswordResetTask(any(Task.ApiFetcher.class), eq(username), eq(resetPassword), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
 
-    @Test
-    public void testConfirmPasswordResetWithCallback() throws Exception {
-        when(AsyncTaskFactory.create(any(ConfirmPasswordResetTask.class), eq(mockedCallback), any(FailedAttemptCallback.class)))
-                .thenReturn(mockedAsyncTask);
+        clientOperations.confirmPasswordResetAsync(username, resetPassword, mockedSuccessCallback);
 
-        final String username = "username";
-        final ResetPassword resetPassword = new ResetPassword("token", "password", "password");
+        verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
 
-        clientOperations.confirmPasswordReset(username, resetPassword, mockedCallback);
     }
 }

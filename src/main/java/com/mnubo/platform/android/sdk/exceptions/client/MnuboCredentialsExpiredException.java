@@ -25,8 +25,8 @@ package com.mnubo.platform.android.sdk.exceptions.client;
 import com.mnubo.platform.android.sdk.Strings;
 
 /**
- * This exception is raised when you perform a user credentials have expired. It is only raised
- * if the provided credentials are correct (good combination username/password) but they are expired.
+ * This exception is raised when you perform a user credentials have expired. It is only raised if
+ * the provided credentials are correct (good combination username/password) but they are expired.
  * It happens if a Reset Password process is on going. The user has not completed the process yet.
  */
 public class MnuboCredentialsExpiredException extends MnuboClientException {

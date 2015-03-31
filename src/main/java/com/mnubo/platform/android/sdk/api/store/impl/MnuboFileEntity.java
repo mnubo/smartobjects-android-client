@@ -27,8 +27,8 @@ import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
 import java.io.Serializable;
 
 /**
- * Entity specifically designed to be persisted on the file system. Contains
- * it's location on the disk.
+ * Entity specifically designed to be persisted on the file system. Contains it's location on the
+ * disk.
  */
 class MnuboFileEntity extends MnuboEntity implements Serializable {
 

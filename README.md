@@ -10,13 +10,14 @@ or add this Gradle dependency to your build file :
 
 ```
     // Using gradle and maven dependency resolution
-    compile('com.mnubo:sdk-android:1.0.3@aar') {
+    compile('com.mnubo:sdk-android:1.1.0@aar') {
         transitive = true
     }
 ```
 
 _Sources/Javadoc are not automatically linked by Android Studio and Gradle for the moment even
-if they are downloaded properly to your local Maven repository. You can attach them manually attach them.
+if they are downloaded properly to your local Maven repository. You can attach them manually. They
+should be in $HOME/.m2/repository/com/mnubo/sdk-android.
 See the Google group discussion [here](https://groups.google.com/forum/#!searchin/adt-dev/javadoc/adt-dev/yVPo71O_ZKM/q4LzRL1eockJ)_
 
 You also need to exclude the following files from the packaging to avoid duplicate exception during
@@ -78,7 +79,7 @@ To get the `MnuboApi` object, use this (after initialization) :
 You can sign in on behalf of the user once and start using the SDK to it's fullest by calling the
 API like this:
 ```
-mnuboApi.getAuthenticationOperations().logIn(username, password, new CompletionCallBack<Boolean>() {
+mnuboApi.getAuthenticationOperations().logInAsync(username, password, new CompletionCallBack<Boolean>() {
             @Override
             public void onCompletion(Boolean success, MnuboSdkException error) {
             if (error == null && success) {
@@ -94,44 +95,11 @@ mnuboApi.getAuthenticationOperations().logIn(username, password, new CompletionC
 
 ## Available API operations ##
 All operations except the ClientOperations and the AuthenticationOperations will perform a token
-refresh if the current access\_token has expired. Most of these operations requires a
-CompletionCallBack, the requests that don't are not using the network and they are synchronous.
+refresh if the current access\_token has expired. Operations have both synchronous and asynchronous
+signature.
 
-All of the asynchronous operations are executed in an `AsyncTask`. Therefore, none of them run on the main thread.
-Here is an exhaustive list of the available operations.
-
-* UserOperations
-  * `findUserObjects(final String username, final CompletionCallBack<UserObjects> completionCallBack)`
-  * `findUserObjects(String username, final Boolean details, CompletionCallBack<SmartObjects> completionCallBack)`
-  * `findUserObjects(String username, final Boolean details, final String objectModelName, CompletionCallBack<SmartObjects> completionCallBack)`
-  * `getUser(final CompletionCallBack<User> completionCallBack)`
-  * `update(final String username, final User updatedUser, final CompletionCallBack<Boolean> completionCallBack)`
-  * `updatePassword(String username, UpdatePassword newPassword, MnuboApi.CompletionCallBack<Boolean> completionCallBack)`
-* SmartObjectOperations
-  * `findObject(final SdkId objectId, final CompletionCallBack<UserObject> completionCallBack)`
-  * `update(final SdkId objectId, final UserObject object, final CompletionCallBack<Boolean> completionCallBack)`
-  * `searchSamples(final SdkId objectId, final String sensorName, final CompletionCallBack<Samples> completionCallBack)`
-  * `addSamples(final SdkId objectId, final Samples samples, final CompletionCallBack<Boolean> completionCallBack)`
-  * `addSamples(final SdkId objectId, final Samples samples)`
-  * `addSampleOnPublicSensor(SdkId objectId, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack)`
-  * `addSampleOnPublicSensor(SdkId objectId, String sensorName, Sample sample)`
-  * `createObject(SmartObject smartObject, Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack)`
-* ClientOperations
-  * `createUser(final User user, final CompletionCallBack<User> completionCallBack)`
-  * `confirmUserCreation(final String username, final UserConfirmation userConfirmation, final CompletionCallBack<Boolean> completionCallBack)`
-  * `resetPassword(final String username, final CompletionCallBack<Boolean> completionCallBack)`
-  * `confirmPasswordReset(final String username, final ResetPassword resetPassword, final CompletionCallBack<Boolean> completionCallBack)`
-* AuthenticationOperations
-  * `logIn(final String username, final String password, final CompletionCallBack<Boolean> completionCallBack)`
-  * `logOut()`
-  * `isUserConnected()`
-  * `getUsername()`
-
-Note that some operations have no `CompletionCallback` required. These requests are performed
-synchronously, on the current thread. All the other operations are performed asynchronously in an
-`AsyncTask`. If you don't need the result, just pass null as the `CompletionCallback` argument.
-
-See the api doc [here](./src/main/java/com/mnubo/platform/android/sdk/api/README.md)
+Synchronous request are performed on the current thread. Asynchronous request runs in an `AsyncTask`
+and the result is passed through the callback if it is available.
 
 ## Offline datastore
 The mnubo Android SDK supports offline caching for requests that fails. If the request fails, the data

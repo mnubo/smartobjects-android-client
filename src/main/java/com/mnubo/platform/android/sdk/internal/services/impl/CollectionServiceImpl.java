@@ -24,7 +24,6 @@ package com.mnubo.platform.android.sdk.internal.services.impl;
 
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformPath;
 import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
-import com.mnubo.platform.android.sdk.internal.services.AbstractMnuboService;
 import com.mnubo.platform.android.sdk.internal.services.CollectionService;
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -53,7 +52,7 @@ public class CollectionServiceImpl extends AbstractMnuboService implements Colle
 
     @Override
     public Collection create(Collection collection) {
-        Validate.notNull(collection, "The collection to createUser shouldn't be null is required.");
+        Validate.notNull(collection, "The collection to createUserAsync shouldn't be null is required.");
 
         PlatformQuery query = this.getQuery();
         query.setBody(collection);

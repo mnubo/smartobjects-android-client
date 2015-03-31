@@ -152,7 +152,7 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboUserAlreadyExistsException();
         } else if (TextUtils.equals(PASSWORD_RESET_INVALID_TOKEN, errorMessage)) {
             throw new MnuboInvalidResetPasswordTokenException();
-        }else if (TextUtils.equals(USER_CREDENTIALS_EXPIRED, errorMessage)) {
+        } else if (TextUtils.equals(USER_CREDENTIALS_EXPIRED, errorMessage)) {
             throw new MnuboCredentialsExpiredException();
         }
     }

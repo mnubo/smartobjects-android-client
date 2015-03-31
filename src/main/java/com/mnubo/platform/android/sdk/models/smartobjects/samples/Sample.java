@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A Mnubo Sample is a liste of values for a specific sensor at
- * a moment in time. Coordinates are also recorded  for analytics.
+ * A Mnubo Sample is a liste of values for a specific sensor at a moment in time. Coordinates are
+ * also recorded  for analytics.
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples
  */

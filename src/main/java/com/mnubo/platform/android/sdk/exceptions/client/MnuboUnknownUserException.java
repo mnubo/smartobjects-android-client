@@ -29,8 +29,8 @@ import com.mnubo.platform.android.sdk.Strings;
 import java.util.regex.Pattern;
 
 /**
- * This exception is raised when you perform a request for a
- * user that doesn't exists in the Mnubo API.
+ * This exception is raised when you perform a request for a user that doesn't exists in the Mnubo
+ * API.
  */
 public class MnuboUnknownUserException extends MnuboClientException {
     public final static String UNKNDOWN_USER_PATTERN = "^Unknown User '.*'$";

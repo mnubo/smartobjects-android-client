@@ -51,9 +51,8 @@ public class MnuboFileStore implements MnuboStore {
     private final File rootDir;
 
     /**
-     * The store will create it's folder into this directory.
-     * The recommended root directory is the application cache directory that can be found in
-     * {link android.context.Context}
+     * The store will create it's folder into this directory. The recommended root directory is the
+     * application cache directory that can be found in {link android.context.Context}
      *
      * @param rootDir root directory where the store will operate
      */
@@ -62,9 +61,7 @@ public class MnuboFileStore implements MnuboStore {
     }
 
     /**
-     * {@inheritDoc}
-     * <p/>
-     * The entity will be written in <code>rootDir/queueName/{id}-timestamp</code>
+     * {@inheritDoc} <p/> The entity will be written in <code>rootDir/queueName/{id}-timestamp</code>
      */
     @Override
     public boolean put(String queueName, MnuboEntity entity) {

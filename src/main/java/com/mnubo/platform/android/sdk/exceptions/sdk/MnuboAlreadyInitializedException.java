@@ -26,8 +26,8 @@ import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 /**
- * This exception is raised when you run call the {@link com.mnubo.platform.android.sdk.Mnubo#init(android.content.Context, String, String, String)}
- * function more than once.
+ * This exception is raised when you run call the {@link com.mnubo.platform.android.sdk.Mnubo#init(android.content.Context,
+ * String, String, String)} function more than once.
  */
 public class MnuboAlreadyInitializedException extends MnuboException {
 

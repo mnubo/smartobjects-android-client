@@ -29,8 +29,8 @@ import com.mnubo.platform.android.sdk.Strings;
 import java.util.regex.Pattern;
 
 /**
- * This exception is raised when you perform a request to
- * confirm an user registration but provide the wrong token.
+ * This exception is raised when you perform a request to confirm an user registration but provide
+ * the wrong token.
  */
 public class MnuboUserAlreadyExistsException extends MnuboClientException {
     public final static String USER_ALREADY_EXISTS_PATTERN = "^User '.*' already exists\\.$";

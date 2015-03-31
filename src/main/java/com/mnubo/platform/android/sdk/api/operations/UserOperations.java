@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.api.operations;
 
+import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 import com.mnubo.platform.android.sdk.models.users.User;
@@ -29,66 +30,102 @@ import com.mnubo.platform.android.sdk.models.users.User;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 /**
- * The UserOperations interface allows you to query the mnubo API the user resources of the
- * mnubo API.
+ * The UserOperations interface allows you to query the mnubo API the user resources of the mnubo
+ * API.
  */
 public interface UserOperations {
-    /**
-     * Fetch all of the objects that belongs to the username. Only minimal information about the
-     * objects in the list will be returned.
-     *
-     * @param username           owner of the objects
-     * @param completionCallBack the callback that will be executed on completion of the request
-     * @see com.mnubo.platform.android.sdk.api.operations.UserOperations#findUserObjects(String, Boolean, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
-     */
-    void findUserObjects(String username, CompletionCallBack<SmartObjects> completionCallBack);
 
     /**
-     * Fetch all of the objects that belongs to the username.
+     * Fetch all of the objects that belongs to the username that matches a specific object model.
      *
-     * @param username           owner of the objects
-     * @param details            true will return all data, false will return minimal data
-     * @param completionCallBack the callback that will be executed on completion of the request
-     * @see com.mnubo.platform.android.sdk.api.operations.UserOperations#findUserObjects(String, Boolean, String, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
+     * Called url = GET : /users/{username}/objects
+     *
+     * @param username        owner of the objects
+     * @param details         true will return all data, false will return minimal data
+     * @param objectModelName specific object model name, null doesn't specify the object model
      */
-    void findUserObjects(String username, final Boolean details, CompletionCallBack<SmartObjects> completionCallBack);
+    MnuboResponse<SmartObjects> findUserObjects(String username, final Boolean details, final String objectModelName);
 
     /**
-     * Fetch all of the objects that belongs to the username that has a specific object model.
+     * Fetch all of the objects that belongs to the username that matches a specific object model.
+     * The result will be available through the given callback.
+     *
+     * Called url = GET : /users/{username}/objects
      *
      * @param username           owner of the objects
      * @param details            true will return all data, false will return minimal data
      * @param objectModelName    specific object model name
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void findUserObjects(String username, final Boolean details, final String objectModelName, CompletionCallBack<SmartObjects> completionCallBack);
+    void findUserObjectsAsync(String username, final Boolean details, final String objectModelName, CompletionCallBack<SmartObjects> completionCallBack);
 
     /**
      * Fetch a specific user information.
      *
+     * Called url = GET : /users/{username}
+     *
+     * @param username username of the user
+     */
+    MnuboResponse<User> getUser(String username);
+
+    /**
+     * Fetch a specific user information. The result will be available through the given callback.
+     *
+     * Called url = GET : /users/{username}
+     *
      * @param username           username of the user
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void getUser(String username, CompletionCallBack<User> completionCallBack);
+    void getUserAsync(String username, CompletionCallBack<User> completionCallBack);
 
     /**
      * This method allow you to update user's information
+     *
+     * Called url = PUT : /users/{username}
+     *
+     * @param username    username of the user to be updated
+     * @param updatedUser the user's data
+     */
+    MnuboResponse<Boolean> update(String username, User updatedUser);
+
+    /**
+     * This method allow you to update user's information. The result will be available through the
+     * give callback.
+     *
+     * Called url = PUT : /users/{username}
      *
      * @param username           username of the user to be updated
      * @param updatedUser        the user's data
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void update(String username, User updatedUser, CompletionCallBack<Boolean> completionCallBack);
+    void updateAsync(String username, User updatedUser, CompletionCallBack<Boolean> completionCallBack);
 
     /**
-     * This method allow you to update user's password. The user has to be currently logged in
-     * to use this method.
+     * This method allow you to update user's password. The user has to be currently logged in to
+     * use this method.
+     *
+     * Called url = PUT : /users/{username}/password
+     *
+     * @param username    username of the user to be updated
+     * @param newPassword the <code>UpdatePassword</code> contains the old password, the new
+     *                    password and it's confirmation.
+     * @see com.mnubo.platform.android.sdk.api.operations.ClientOperations#resetPasswordAsync(String,
+     * com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
+     */
+    MnuboResponse<Boolean> updatePassword(String username, UpdatePassword newPassword);
+
+    /**
+     * This method allow you to update user's password. The user has to be currently logged in to
+     * use this method. The result will be available through the given callback.
+     *
+     * Called url = PUT : /users/{username}/password
      *
      * @param username           username of the user to be updated
      * @param newPassword        the <code>UpdatePassword</code> contains the old password, the new
      *                           password and it's confirmation.
      * @param completionCallBack the callback that will be executed on completion of the request
-     * @see com.mnubo.platform.android.sdk.api.operations.ClientOperations#resetPassword(String, com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
+     * @see com.mnubo.platform.android.sdk.api.operations.ClientOperations#resetPasswordAsync(String,
+     * com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack)
      */
-    void updatePassword(String username, UpdatePassword newPassword, CompletionCallBack<Boolean> completionCallBack);
+    void updatePasswordAsync(String username, UpdatePassword newPassword, CompletionCallBack<Boolean> completionCallBack);
 }
