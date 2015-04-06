@@ -22,22 +22,27 @@
 
 package com.mnubo.platform.android.sdk.exceptions.server;
 
-import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import android.text.TextUtils;
+
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
+
+import java.util.regex.Pattern;
 
 /**
- * MnuboServerException is raised when a 500ish error is the result of a request to the Mnubo
- * Platform.
+ * This exception is raised when you perform a request for a user that doesn't exists in the Mnubo
+ * API.
  */
-public class MnuboServerException extends MnuboException {
-    public MnuboServerException(Throwable t) {
-        super(t);
+public class MnuboInvalidUUIDException extends MnuboServerException {
+    private static String EXCEPTION_INVALID_UUID = "The value you provided is not a valid UUID.";
+
+    public final static String INVALID_UUID_PATTERN = "^Invalid UUID string: .*$";
+    private final static Pattern PATTERN = Pattern.compile(INVALID_UUID_PATTERN);
+
+    public MnuboInvalidUUIDException() {
+        super(EXCEPTION_INVALID_UUID);
     }
 
-    public MnuboServerException(String detailMessage) {
-        super(detailMessage);
-    }
-
-    public MnuboServerException(String detailMessage, Throwable t) {
-        super(detailMessage, t);
+    public static boolean matches(CharSequence s) {
+        return !TextUtils.isEmpty(s) && PATTERN.matcher(s).matches();
     }
 }

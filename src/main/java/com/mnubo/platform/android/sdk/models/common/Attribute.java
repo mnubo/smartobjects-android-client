@@ -32,8 +32,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
 /**
- * A Mnubo attribute is a name and a type. It is used to store data of any kind. <p/> Attributes can
- * be found in {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and {@link
+ * A Mnubo attribute is a name, a value and a type. It is used to store data of any kind. If you
+ * leave the type blank, STRING will be used. <p/> Attributes can be found in {@link
+ * com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and {@link
  * com.mnubo.platform.android.sdk.models.users.User}.
  */
 @JsonInclude(Include.NON_NULL)
@@ -42,8 +43,6 @@ public class Attribute implements Serializable, Parcelable {
     @JsonIgnore
     private static final long serialVersionUID = 1L;
 
-    public static final String DEFAULT_CATEGORY = "default";
-
     private String name;
 
     private String type;
@@ -51,6 +50,10 @@ public class Attribute implements Serializable, Parcelable {
     private String value;
 
     public Attribute() {
+
+    }
+
+    public Attribute(String name, String value) {
 
     }
 
@@ -86,16 +89,17 @@ public class Attribute implements Serializable, Parcelable {
         this.value = value;
     }
 
-
     @Override
     public String toString() {
         return "Attribute{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
                 ", value='" + value + '\'' +
                 '}';
     }
 
-    /*
+
+/*
     *  Implements Parcelable
     */
 

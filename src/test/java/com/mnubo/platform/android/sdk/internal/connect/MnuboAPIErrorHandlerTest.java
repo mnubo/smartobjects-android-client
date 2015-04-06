@@ -39,6 +39,7 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabl
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
+import com.mnubo.platform.android.sdk.exceptions.server.MnuboInvalidUUIDException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +51,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.mock.http.client.MockClientHttpResponse;
-import org.springframework.web.client.ResponseErrorHandler;
 
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException.USER_CREDENTIALS_EXPIRED;
@@ -219,6 +219,13 @@ public class MnuboAPIErrorHandlerTest {
     @Test(expected = MnuboObjectAlreadyExistsException.class)
     public void testObjectAlreadyExistsException() throws Exception {
         ClientHttpResponse response = prepareResponse(OBJECT_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboInvalidUUIDException.class)
+    public void testInvalidUUIDException() throws Exception {
+        ClientHttpResponse response = prepareResponse("Invalid UUID string: invalid", HttpStatus.INTERNAL_SERVER_ERROR);
 
         responseErrorHandler.handleError(response);
     }
