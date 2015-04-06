@@ -36,10 +36,11 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidResetPasswor
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboSensorNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
-import com.mnubo.platform.android.sdk.exceptions.server.MnuboInvalidUUIDException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidUUIDException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -225,7 +226,14 @@ public class MnuboAPIErrorHandlerTest {
 
     @Test(expected = MnuboInvalidUUIDException.class)
     public void testInvalidUUIDException() throws Exception {
-        ClientHttpResponse response = prepareResponse("Invalid UUID string: invalid", HttpStatus.INTERNAL_SERVER_ERROR);
+        ClientHttpResponse response = prepareResponse("Invalid UUID string: invalid", HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboSensorNotFoundException.class)
+    public void testSensorNotFoundException() throws Exception {
+        ClientHttpResponse response = prepareResponse("sensor name(invalid) not found", HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(response);
     }

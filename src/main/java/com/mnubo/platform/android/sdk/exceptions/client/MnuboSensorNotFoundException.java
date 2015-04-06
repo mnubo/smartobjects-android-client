@@ -20,26 +20,24 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.exceptions.server;
+package com.mnubo.platform.android.sdk.exceptions.client;
 
 import android.text.TextUtils;
-
-import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 
 import java.util.regex.Pattern;
 
 /**
- * This exception is raised when you perform a request for a user that doesn't exists in the Mnubo
- * API.
+ * This exception is raised when you perform a request for a sensor that doesn't exists for the
+ * current object. API.
  */
-public class MnuboInvalidUUIDException extends MnuboServerException {
-    private static String EXCEPTION_INVALID_UUID = "The value you provided is not a valid UUID.";
+public class MnuboSensorNotFoundException extends MnuboClientException {
+    private static String EXCEPTION_SENSOR_NOT_FOUND = "The given sensor name was not found.";
 
-    public final static String INVALID_UUID_PATTERN = "^Invalid UUID string: .*$";
-    private final static Pattern PATTERN = Pattern.compile(INVALID_UUID_PATTERN);
+    public final static String SENSOR_NOT_FOUND_PATTERN = "sensor name\\(.*\\) not found$";
+    private final static Pattern PATTERN = Pattern.compile(SENSOR_NOT_FOUND_PATTERN);
 
-    public MnuboInvalidUUIDException() {
-        super(EXCEPTION_INVALID_UUID);
+    public MnuboSensorNotFoundException() {
+        super(EXCEPTION_SENSOR_NOT_FOUND);
     }
 
     public static boolean matches(CharSequence s) {

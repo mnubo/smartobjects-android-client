@@ -28,8 +28,6 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mnubo.platform.android.sdk.exceptions.MnuboException;
-import com.mnubo.platform.android.sdk.exceptions.client.MnuboAccessDeniedException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException;
@@ -39,13 +37,14 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidConfirmPassw
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidResetPasswordTokenException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidUUIDException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboSensorNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
-import com.mnubo.platform.android.sdk.exceptions.server.MnuboInvalidUUIDException;
 import com.mnubo.platform.android.sdk.exceptions.server.MnuboServerException;
 
 import org.springframework.http.HttpStatus;
@@ -130,9 +129,7 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
     }
 
     private void handleServerErrors(HttpStatus statusCode, String errorMessage) throws IOException {
-        if(MnuboInvalidUUIDException.matches(errorMessage)){
-            throw new MnuboInvalidUUIDException();
-        }
+
     }
 
     private void handleUnauthorize(final String errorMessage) {
@@ -170,6 +167,10 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboDuplicateAttributeException();
         } else if (TextUtils.equals(OBJECT_ALREADY_EXISTS, errorMessage)) {
             throw new MnuboObjectAlreadyExistsException();
+        } else if (MnuboInvalidUUIDException.matches(errorMessage)) {
+            throw new MnuboInvalidUUIDException();
+        } else if (MnuboSensorNotFoundException.matches(errorMessage)) {
+            throw new MnuboSensorNotFoundException();
         }
     }
 
