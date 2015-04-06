@@ -98,10 +98,6 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         assertEquals(expectedResult, result);
         verify(mockedTask, only()).executeSync();
-
-        smartObjectOperations.findObjectAsync(objectId, null);
-
-        verify(mockedTask, only()).executeAsync(isNull(CompletionCallBack.class));
     }
 
     @Test
@@ -142,10 +138,6 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         assertEquals(true, result);
         verify(mockedTask, only()).executeSync();
 
-        smartObjectOperations.updateAsync(objectId, updatedObject, mockedSuccessCallback);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
-
     }
 
     @Test
@@ -173,11 +165,6 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         smartObjectOperations.updateAsync(objectId, updatedObject, mockedSuccessCallback);
 
         verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
-
-        Samples result = smartObjectOperations.searchSamples(objectId, sensorName).getResult();
-
-        assertEquals(expectedResult, result);
-        verify(mockedTask, only()).executeSync();
     }
 
     @Test
@@ -208,18 +195,8 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         when(TaskFactory.newSearchSamplesTask(any(ApiFetcher.class), eq(objectId), eq(sensorName), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
 
         smartObjectOperations.searchSamplesAsync(objectId, sensorName, null);
+
         verify(mockedTask, only()).executeAsync(isNull(CompletionCallBack.class));
-
-
-        final AddSamplesTask mockedTask = mock(AddSamplesTask.class);
-        when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newAddSamplesTask(any(Task.ApiFetcher.class), eq(objectId), eq(samples), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
-
-
-        Boolean result = smartObjectOperations.addSamples(objectId, samples).getResult();
-
-        assertEquals(true, result);
-        verify(mockedTask, only()).executeSync();
     }
 
     @Test
@@ -230,7 +207,9 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         final SearchSamplesTask mockedTask = mock(SearchSamplesTask.class);
         when(TaskFactory.newSearchSamplesTask(any(ApiFetcher.class), eq(objectId), eq(sensorName), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+
         smartObjectOperations.searchSamplesAsync(objectId, sensorName, mockedSamplesCallback);
+
         verify(mockedTask, only()).executeAsync(eq(mockedSamplesCallback));
 
 
@@ -292,8 +271,6 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final AddSampleOnPublicSensorTask mockedTask = mock(AddSampleOnPublicSensorTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
         when(TaskFactory.newAddSamplesOnPublicSensor(any(ApiFetcher.class), eq(objectId), eq(sensorName), eq(sample), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
-
-        smartObjectOperations.addSampleOnPublicSensorAsync(objectId, sensorName, sample, null);
 
         Boolean result = smartObjectOperations.addSampleOnPublicSensor(objectId, sensorName, sample).getResult();
 

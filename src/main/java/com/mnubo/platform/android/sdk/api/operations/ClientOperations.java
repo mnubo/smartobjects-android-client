@@ -47,18 +47,6 @@ public interface ClientOperations {
     /**
      * This function allows you to register an user on the mnubo API. The result will be available
      * through the given callback.
-     * <p/>
-     * Called url = POST : /users/{username}
-     *
-     * Called url = POST : /users/{username}
-     *
-     * @param user the <code>User</code> that contains all the information
-     */
-    MnuboResponse<Boolean> createUser(User user);
-
-    /**
-     * This function allows you to register an user on the mnubo API. The result will be available
-     * through the given callback.
      *
      * Called url = POST : /users/{username}
      *

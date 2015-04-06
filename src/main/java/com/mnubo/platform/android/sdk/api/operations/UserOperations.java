@@ -91,19 +91,6 @@ public interface UserOperations {
     /**
      * This method allow you to update user's information. The result will be available through the
      * give callback.
-     * <p/>
-     * Called url = PUT : /users/{username}
-     *
-     * Called url = PUT : /users/{username}
-     *
-     * @param username    username of the user to be updated
-     * @param updatedUser the user's data
-     */
-    MnuboResponse<Boolean> update(String username, User updatedUser);
-
-    /**
-     * This method allow you to update user's information. The result will be available through the
-     * give callback.
      *
      * Called url = PUT : /users/{username}
      *
