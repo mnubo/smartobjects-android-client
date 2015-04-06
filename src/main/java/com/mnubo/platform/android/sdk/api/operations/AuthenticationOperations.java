@@ -34,10 +34,10 @@ public interface AuthenticationOperations {
     /**
      * Log in as a user to the mnubo API. It fetch an user access token along with it's
      * refreshUserConnection token that will be persisted on the device.
-     *
+     * <p/>
      * If the access token expires, the refreshUserConnection token is used to refreshUserConnection
      * it. If both have expired, you should ask the user to log in again.
-     *
+     * <p/>
      * Called url = POST : /oauth/token
      *
      * @param username username of the user
@@ -48,10 +48,11 @@ public interface AuthenticationOperations {
     /**
      * Log in as a user to the mnubo API. It fetch an user access token along with it's
      * refreshUserConnection token that will be persisted on the device.
-     *
+     * <p/>
      * If the access token expires, the refreshUserConnection token is used to refreshUserConnection
-     * it. If both have expired, you should ask the user to log in again. The result will be available through the given callback.
-     *
+     * it. If both have expired, you should ask the user to log in again. The result will be
+     * available through the given callback.
+     * <p/>
      * Called url = POST : /oauth/token
      *
      * @param completionCallBack callback called when query is done

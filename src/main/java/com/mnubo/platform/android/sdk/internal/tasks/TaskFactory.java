@@ -30,6 +30,7 @@ import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ResetPasswordTa
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSampleOnPublicSensorTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.CreateObjectTask;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.DeleteObjectTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.FindObjectTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.SearchSamplesTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.UpdateObjectTask;
@@ -95,6 +96,10 @@ public class TaskFactory {
 
     public static Task<Boolean> newCreateObjectTask(ApiFetcher apiFetcher, SmartObject object, Boolean updateIfExists, ConnectionRefresher connectionRefresher) {
         return new CreateObjectTask(apiFetcher, object, updateIfExists, connectionRefresher);
+    }
+
+    public static Task<Boolean> newDeleteObjectTask(ApiFetcher apiFetcher, SdkId id, ConnectionRefresher connectionRefresher) {
+        return new DeleteObjectTask(apiFetcher, id, connectionRefresher);
     }
 
     public static Task<Boolean> newCreateUserTask(ApiFetcher apiFetcher, User object, ConnectionRefresher connectionRefresher) {

@@ -22,7 +22,6 @@
 
 package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 /**
@@ -31,7 +30,9 @@ import com.mnubo.platform.android.sdk.exceptions.MnuboException;
  */
 public class MnuboAlreadyInitializedException extends MnuboException {
 
+    private static String EXCEPTION_ALREADY_INITIALIZED = "Mnubo.init() method can only be called once.";
+
     public MnuboAlreadyInitializedException() {
-        super(Strings.EXCEPTION_ALREADY_INITIALIZED);
+        super(EXCEPTION_ALREADY_INITIALIZED);
     }
 }

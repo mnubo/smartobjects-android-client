@@ -20,28 +20,17 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.models.common;
+package com.mnubo.platform.android.sdk.exceptions.client;
 
 /**
- * Deviceid and objectid are basically the same but they translate to different query parameters which
- * are currently required by the Mnubo API. <p/> deviceid and natural are also the same. They are
- * human readable unique identifier to be used along with the uuid of the identity. <p/> objectid
- * and deviceid shouldn't be and they will be removed in a near future. The objectid was originally
- * the uuid of a {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and the
- * deviceid was the natural key of an {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
- *
- * @see com.mnubo.platform.android.sdk.models.common.SdkId
+ * This exception is raised when you perform a password change and the confirm password and the new
+ * password are not the same.
  */
-public enum IdType {
+public class MnuboInvalidConfirmPasswordException extends MnuboClientException {
+    private static String EXCEPTION_INVALID_CONFIRM_PASSWORD = "The new password and it's confirmation must be the same when changing password.";
+    public final static String INVALID_CONFIRM_PASSWORD = "Both passwords must be identical.";
 
-    deviceid, objectid, natural, uuid;
-
-    public boolean isUUID() {
-        return this.equals(uuid) || this.equals(objectid);
+    public MnuboInvalidConfirmPasswordException() {
+        super(EXCEPTION_INVALID_CONFIRM_PASSWORD);
     }
-
-    public boolean isString() {
-        return !isUUID();
-    }
-
 }

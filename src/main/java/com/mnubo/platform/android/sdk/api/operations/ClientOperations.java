@@ -37,6 +37,18 @@ public interface ClientOperations {
 
     /**
      * This function allows you to register an user on the mnubo API.
+     * <p/>
+     * Called url = POST : /users/{username}
+     *
+     * @param user the <code>User</code> that contains all the information
+     */
+    MnuboResponse<Boolean> createUser(User user);
+
+    /**
+     * This function allows you to register an user on the mnubo API. The result will be available
+     * through the given callback.
+     * <p/>
+     * Called url = POST : /users/{username}
      *
      * Called url = POST : /users/{username}
      *
@@ -58,7 +70,7 @@ public interface ClientOperations {
 
     /**
      * After user creation, use the token here to confirm the creation of that user.
-     *
+     * <p/>
      * Called url = POST : /users/{username}/confirmation
      *
      * @param username     the username of the user that need a confirmation
@@ -70,7 +82,7 @@ public interface ClientOperations {
     /**
      * After user creation, use the token here to confirm the creation of that user. The result will
      * be available through the given callback.
-     *
+     * <p/>
      * Called url = POST : /users/{username}/confirmation
      *
      * @param username           the username of the user that need a confirmation
@@ -83,7 +95,7 @@ public interface ClientOperations {
 
     /**
      * This functions allows you to initiate the reset password for the specified username.
-     *
+     * <p/>
      * Called url = DELETE : /users/{username}/password
      *
      * @param username username that initiate password reset process
@@ -93,7 +105,7 @@ public interface ClientOperations {
     /**
      * This functions allows you to initiate the reset password for the specified username. The
      * result will be available through the given callback.
-     *
+     * <p/>
      * Called url = DELETE : /users/{username}/password
      *
      * @param username           username that initiate password reset process
@@ -103,7 +115,7 @@ public interface ClientOperations {
 
     /**
      * This function allows you to finish the password reset process of a specific user.
-     *
+     * <p/>
      * Called url = POST : /users/{username}/password
      *
      * @param username      the username of the user that completes a password reset
@@ -117,7 +129,7 @@ public interface ClientOperations {
     /**
      * This function allows you to finish the password reset process of a specific user. The result
      * will be available through the given callback.
-     *
+     * <p/>
      * Called url = POST : /users/{username}/password
      *
      * @param username           the username of the user that completes a password reset

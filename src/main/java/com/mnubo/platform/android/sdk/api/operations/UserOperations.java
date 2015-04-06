@@ -37,7 +37,7 @@ public interface UserOperations {
 
     /**
      * Fetch all of the objects that belongs to the username that matches a specific object model.
-     *
+     * <p/>
      * Called url = GET : /users/{username}/objects
      *
      * @param username        owner of the objects
@@ -49,7 +49,7 @@ public interface UserOperations {
     /**
      * Fetch all of the objects that belongs to the username that matches a specific object model.
      * The result will be available through the given callback.
-     *
+     * <p/>
      * Called url = GET : /users/{username}/objects
      *
      * @param username           owner of the objects
@@ -61,7 +61,7 @@ public interface UserOperations {
 
     /**
      * Fetch a specific user information.
-     *
+     * <p/>
      * Called url = GET : /users/{username}
      *
      * @param username username of the user
@@ -70,7 +70,7 @@ public interface UserOperations {
 
     /**
      * Fetch a specific user information. The result will be available through the given callback.
-     *
+     * <p/>
      * Called url = GET : /users/{username}
      *
      * @param username           username of the user
@@ -80,6 +80,19 @@ public interface UserOperations {
 
     /**
      * This method allow you to update user's information
+     * <p/>
+     * Called url = PUT : /users/{username}
+     *
+     * @param username    username of the user to be updated
+     * @param updatedUser the user's data
+     */
+    MnuboResponse<Boolean> update(String username, User updatedUser);
+
+    /**
+     * This method allow you to update user's information. The result will be available through the
+     * give callback.
+     * <p/>
+     * Called url = PUT : /users/{username}
      *
      * Called url = PUT : /users/{username}
      *
@@ -103,7 +116,7 @@ public interface UserOperations {
     /**
      * This method allow you to update user's password. The user has to be currently logged in to
      * use this method.
-     *
+     * <p/>
      * Called url = PUT : /users/{username}/password
      *
      * @param username    username of the user to be updated
@@ -117,7 +130,7 @@ public interface UserOperations {
     /**
      * This method allow you to update user's password. The user has to be currently logged in to
      * use this method. The result will be available through the given callback.
-     *
+     * <p/>
      * Called url = PUT : /users/{username}/password
      *
      * @param username           username of the user to be updated

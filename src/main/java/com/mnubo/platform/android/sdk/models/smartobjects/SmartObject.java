@@ -85,6 +85,11 @@ public class SmartObject extends AbstractOwnable implements Serializable {
     public SmartObject() {
     }
 
+    public SmartObject(String deviceId, String objectModelName) {
+        this.deviceId = deviceId;
+        this.objectModelName = objectModelName;
+    }
+
     private SmartObject(Parcel in) {
         this.setOwner(in.readString());
         this.objectId = UUID.fromString(in.readString());

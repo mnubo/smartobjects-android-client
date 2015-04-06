@@ -42,6 +42,7 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesOnPublicSensor;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newCreateObjectTask;
+import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newDeleteObjectTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newFindObjectTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newSearchSamplesTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newUpdateObjectTask;
@@ -68,8 +69,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public MnuboResponse<SmartObject> findObject(SdkId objectId) {
-        final Task<SmartObject> task = newFindObjectTask(getApiFetcher(), objectId, getUserConnectionRefresher());
+    public MnuboResponse<SmartObject> findObject(SdkId id) {
+        final Task<SmartObject> task = newFindObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
         return task.executeSync();
     }
 
@@ -77,8 +78,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public void findObjectAsync(final SdkId objectId, final CompletionCallBack<SmartObject> completionCallBack) {
-        final Task<SmartObject> task = newFindObjectTask(getApiFetcher(), objectId, getUserConnectionRefresher());
+    public void findObjectAsync(final SdkId id, final CompletionCallBack<SmartObject> completionCallBack) {
+        final Task<SmartObject> task = newFindObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
@@ -86,8 +87,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public MnuboResponse<Boolean> update(SdkId objectId, SmartObject object) {
-        final Task<Boolean> task = newUpdateObjectTask(getApiFetcher(), objectId, object, getUserConnectionRefresher());
+    public MnuboResponse<Boolean> update(SdkId id, SmartObject object) {
+        final Task<Boolean> task = newUpdateObjectTask(getApiFetcher(), id, object, getUserConnectionRefresher());
         return task.executeSync();
     }
 
@@ -95,8 +96,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public void updateAsync(final SdkId objectId, final SmartObject object, final CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newUpdateObjectTask(getApiFetcher(), objectId, object, getUserConnectionRefresher());
+    public void updateAsync(final SdkId id, final SmartObject object, final CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newUpdateObjectTask(getApiFetcher(), id, object, getUserConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
@@ -105,8 +106,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public MnuboResponse<Samples> searchSamples(SdkId objectId, String sensorName) {
-        final Task<Samples> task = newSearchSamplesTask(getApiFetcher(), objectId, sensorName, getUserConnectionRefresher());
+    public MnuboResponse<Samples> searchSamples(SdkId id, String sensorName) {
+        final Task<Samples> task = newSearchSamplesTask(getApiFetcher(), id, sensorName, getUserConnectionRefresher());
         return task.executeSync();
     }
 
@@ -114,8 +115,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public void searchSamplesAsync(final SdkId objectId, final String sensorName, final CompletionCallBack<Samples> completionCallBack) {
-        final Task<Samples> task = newSearchSamplesTask(getApiFetcher(), objectId, sensorName, getUserConnectionRefresher());
+    public void searchSamplesAsync(final SdkId id, final String sensorName, final CompletionCallBack<Samples> completionCallBack) {
+        final Task<Samples> task = newSearchSamplesTask(getApiFetcher(), id, sensorName, getUserConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
@@ -123,8 +124,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public MnuboResponse<Boolean> addSamples(SdkId objectId, Samples samples) {
-        final Task<Boolean> task = newAddSamplesTask(getApiFetcher(), objectId, samples, getUserConnectionRefresher());
+    public MnuboResponse<Boolean> addSamples(SdkId id, Samples samples) {
+        final Task<Boolean> task = newAddSamplesTask(getApiFetcher(), id, samples, getUserConnectionRefresher());
         final MnuboResponse<Boolean> result;
         if (isOfflineCachingEnabled()) {
             result = task.executeSync(mnuboSmartObjectFileCachingService.getAddSamplesFailedAttemptCallback());
@@ -138,8 +139,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public void addSamplesAsync(final SdkId objectId, final Samples samples, final CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newAddSamplesTask(getApiFetcher(), objectId, samples, getUserConnectionRefresher());
+    public void addSamplesAsync(final SdkId id, final Samples samples, final CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newAddSamplesTask(getApiFetcher(), id, samples, getUserConnectionRefresher());
         if (isOfflineCachingEnabled()) {
             task.executeAsync(completionCallBack, mnuboSmartObjectFileCachingService.getAddSamplesFailedAttemptCallback());
         } else {
@@ -151,8 +152,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId objectId, String sensorName, Sample sample) {
-        final Task<Boolean> task = newAddSamplesOnPublicSensor(getApiFetcher(), objectId, sensorName, sample, getUserConnectionRefresher());
+    public MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId id, String sensorName, Sample sample) {
+        final Task<Boolean> task = newAddSamplesOnPublicSensor(getApiFetcher(), id, sensorName, sample, getUserConnectionRefresher());
         return task.executeSync();
     }
 
@@ -160,8 +161,8 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
-    public void addSampleOnPublicSensorAsync(SdkId objectId, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newAddSamplesOnPublicSensor(getApiFetcher(), objectId, sensorName, sample, getUserConnectionRefresher());
+    public void addSampleOnPublicSensorAsync(SdkId id, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newAddSamplesOnPublicSensor(getApiFetcher(), id, sensorName, sample, getUserConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 
@@ -177,6 +178,24 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
     @Override
     public void createObjectAsync(SmartObject smartObject, Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack) {
         final Task<Boolean> task = newCreateObjectTask(getApiFetcher(), smartObject, updateIfExists, getUserConnectionRefresher());
+        task.executeAsync(completionCallBack);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MnuboResponse<Boolean> deleteObject(SdkId id) {
+        final Task<Boolean> task = newDeleteObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
+        return task.executeSync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteObjectAsync(SdkId id, CompletionCallBack<Boolean> completionCallBack) {
+        final Task<Boolean> task = newDeleteObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
         task.executeAsync(completionCallBack);
     }
 

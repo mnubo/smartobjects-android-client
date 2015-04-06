@@ -20,28 +20,18 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.models.common;
+package com.mnubo.platform.android.sdk.exceptions.client;
 
 /**
- * Deviceid and objectid are basically the same but they translate to different query parameters which
- * are currently required by the Mnubo API. <p/> deviceid and natural are also the same. They are
- * human readable unique identifier to be used along with the uuid of the identity. <p/> objectid
- * and deviceid shouldn't be and they will be removed in a near future. The objectid was originally
- * the uuid of a {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and the
- * deviceid was the natural key of an {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
- *
- * @see com.mnubo.platform.android.sdk.models.common.SdkId
+ * This exception is raised when you attempt to update or create a user and the payload contains
+ * duplicate attributes.
  */
-public enum IdType {
+public class MnuboDuplicateAttributeException extends MnuboClientException {
 
-    deviceid, objectid, natural, uuid;
+    public final static String DUPLICATE_ATTRIBUTE = "Duplicate attribute.";
+    private final static String EXCEPTION_DUPLICATE_ATTRIBUTE = "The payload contains duplicate attributes.";
 
-    public boolean isUUID() {
-        return this.equals(uuid) || this.equals(objectid);
+    public MnuboDuplicateAttributeException() {
+        super(EXCEPTION_DUPLICATE_ATTRIBUTE);
     }
-
-    public boolean isString() {
-        return !isUUID();
-    }
-
 }

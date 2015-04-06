@@ -63,6 +63,17 @@ public abstract class Task<Result> {
         }
     }
 
+    protected Result validateResult(Result result, Exception ex) {
+        if (ex != null) {
+            if (result instanceof Boolean) {
+                return (Result) Boolean.FALSE;
+            }
+            return null;
+        } else {
+            return result;
+        }
+    }
+
     protected abstract Result executeMnuboCall();
 
     public static interface ApiFetcher {

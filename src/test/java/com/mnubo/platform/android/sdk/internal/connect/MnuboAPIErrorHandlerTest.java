@@ -27,10 +27,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboDuplicateAttributeException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidConfirmPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidResetPasswordTokenException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
@@ -51,10 +54,13 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException.BAD_CREDENTIALS;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException.USER_CREDENTIALS_EXPIRED;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboDuplicateAttributeException.DUPLICATE_ATTRIBUTE;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException.EXPIRED_REFRESH_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidConfirmPasswordException.INVALID_CONFIRM_PASSWORD;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException.INVALID_PREVIOUS_PASSWORD;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException.REGISTRATION_INVALID_TOKEN;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidResetPasswordTokenException.PASSWORD_RESET_INVALID_TOKEN;
+import static com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectAlreadyExistsException.OBJECT_ALREADY_EXISTS;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException.OBJECT_NOT_FOUND;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException.RESET_PASSWORD_DISABLED;
 import static com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException.USER_DISABLED;
@@ -69,7 +75,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest(TextUtils.class)
 public class MnuboAPIErrorHandlerTest {
 
-    private final ResponseErrorHandler responseErrorHandler = new MnuboAPIErrorHandler();
+    private final MnuboAPIErrorHandler responseErrorHandler = new MnuboAPIErrorHandler();
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Before
@@ -192,6 +198,27 @@ public class MnuboAPIErrorHandlerTest {
     @Test(expected = MnuboCredentialsExpiredException.class)
     public void testCredentialsExpiredException() throws Exception {
         ClientHttpResponse response = prepareResponse(USER_CREDENTIALS_EXPIRED, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboInvalidConfirmPasswordException.class)
+    public void testInvalidConfirmPasswordException() throws Exception {
+        ClientHttpResponse response = prepareResponse(INVALID_CONFIRM_PASSWORD, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboDuplicateAttributeException.class)
+    public void testDuplicateAttributeException() throws Exception {
+        ClientHttpResponse response = prepareResponse(DUPLICATE_ATTRIBUTE, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboObjectAlreadyExistsException.class)
+    public void testObjectAlreadyExistsException() throws Exception {
+        ClientHttpResponse response = prepareResponse(OBJECT_ALREADY_EXISTS, HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(response);
     }

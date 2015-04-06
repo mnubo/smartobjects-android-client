@@ -22,7 +22,6 @@
 
 package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 /**
@@ -32,8 +31,9 @@ import com.mnubo.platform.android.sdk.exceptions.MnuboException;
  * https://mycompany.api.mnubo.com:443
  */
 public class MnuboInvalidHostname extends MnuboException {
+    private static String EXCEPTION_INVALID_HOSTNAME = "Provided hostname is invalid. The hostname is [example.com] is this URL https://example.com:443.";
 
     public MnuboInvalidHostname(Throwable ex) {
-        super(Strings.EXCEPTION_INVALID_HOSTNAME, ex);
+        super(EXCEPTION_INVALID_HOSTNAME, ex);
     }
 }

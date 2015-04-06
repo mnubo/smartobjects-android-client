@@ -20,28 +20,17 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.models.common;
+package com.mnubo.platform.android.sdk.exceptions.client;
 
 /**
- * Deviceid and objectid are basically the same but they translate to different query parameters which
- * are currently required by the Mnubo API. <p/> deviceid and natural are also the same. They are
- * human readable unique identifier to be used along with the uuid of the identity. <p/> objectid
- * and deviceid shouldn't be and they will be removed in a near future. The objectid was originally
- * the uuid of a {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and the
- * deviceid was the natural key of an {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
- *
- * @see com.mnubo.platform.android.sdk.models.common.SdkId
+ * This exception is raised when you try to fetch an object that doesn't exists in the mnubo API.
  */
-public enum IdType {
+public class MnuboObjectAlreadyExistsException extends MnuboClientException {
+    private static String EXCEPTION_OBJECT_ALREADY_EXISTS = "The object you are attempting to create already exists. The device id is already used.";
 
-    deviceid, objectid, natural, uuid;
+    public final static String OBJECT_ALREADY_EXISTS = "Object already exist";
 
-    public boolean isUUID() {
-        return this.equals(uuid) || this.equals(objectid);
+    public MnuboObjectAlreadyExistsException() {
+        super(EXCEPTION_OBJECT_ALREADY_EXISTS);
     }
-
-    public boolean isString() {
-        return !isUUID();
-    }
-
 }

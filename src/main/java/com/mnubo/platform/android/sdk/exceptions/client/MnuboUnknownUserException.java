@@ -24,8 +24,6 @@ package com.mnubo.platform.android.sdk.exceptions.client;
 
 import android.text.TextUtils;
 
-import com.mnubo.platform.android.sdk.Strings;
-
 import java.util.regex.Pattern;
 
 /**
@@ -33,11 +31,13 @@ import java.util.regex.Pattern;
  * API.
  */
 public class MnuboUnknownUserException extends MnuboClientException {
+    private static String EXCEPTION_UNKNOWN_USER = "The user was not found.";
+
     public final static String UNKNDOWN_USER_PATTERN = "^Unknown User '.*'$";
     private final static Pattern PATTERN = Pattern.compile(UNKNDOWN_USER_PATTERN);
 
     public MnuboUnknownUserException() {
-        super(Strings.EXCEPTION_UNKNOWN_USER);
+        super(EXCEPTION_UNKNOWN_USER);
     }
 
     public static boolean matches(CharSequence s) {

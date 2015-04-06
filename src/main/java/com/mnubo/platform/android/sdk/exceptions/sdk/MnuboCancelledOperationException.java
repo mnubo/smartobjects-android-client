@@ -22,7 +22,6 @@
 
 package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 /**
@@ -30,8 +29,9 @@ import com.mnubo.platform.android.sdk.exceptions.MnuboException;
  * happens whenever {@link android.os.AsyncTask#onCancelled()} is called.
  */
 public class MnuboCancelledOperationException extends MnuboException {
+    private static String EXCEPTION_CANCELLED_OPERATION = "The operation was cancelled.";
 
     public MnuboCancelledOperationException() {
-        super(Strings.EXCEPTION_CANCELLED_OPERATION);
+        super(EXCEPTION_CANCELLED_OPERATION);
     }
 }

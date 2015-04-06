@@ -110,6 +110,9 @@ afterEvaluate { project ->
             links "http://fasterxml.github.io/jackson-databind/javadoc/2.5/"
             linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
         }
+        if (JavaVersion.current().isJava8Compatible()) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
 

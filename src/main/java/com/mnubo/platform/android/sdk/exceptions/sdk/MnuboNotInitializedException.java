@@ -22,7 +22,6 @@
 
 package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 /**
@@ -32,7 +31,9 @@ import com.mnubo.platform.android.sdk.exceptions.MnuboException;
  */
 public class MnuboNotInitializedException extends MnuboException {
 
+    private static String EXCEPTION_NOT_INITIALIZED = "Mnubo.init() must be called prior to this call.";
+
     public MnuboNotInitializedException() {
-        super(Strings.EXCEPTION_NOT_INITIALIZED);
+        super(EXCEPTION_NOT_INITIALIZED);
     }
 }

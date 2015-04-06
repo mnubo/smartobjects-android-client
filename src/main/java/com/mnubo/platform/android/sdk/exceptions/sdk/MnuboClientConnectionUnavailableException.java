@@ -22,7 +22,6 @@
 
 package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 /**
@@ -31,8 +30,9 @@ import com.mnubo.platform.android.sdk.exceptions.MnuboException;
  * error or Mnubo API problem.
  */
 public class MnuboClientConnectionUnavailableException extends MnuboException {
+    private static String EXCEPTION_CLIENT_CONNECTION_UNAVAILABLE = "Unable to authenticate as the client.";
 
     public MnuboClientConnectionUnavailableException() {
-        super(Strings.EXCEPTION_CLIENT_CONNECTION_UNAVAILABLE);
+        super(EXCEPTION_CLIENT_CONNECTION_UNAVAILABLE);
     }
 }

@@ -24,8 +24,6 @@ package com.mnubo.platform.android.sdk.exceptions.client;
 
 import android.text.TextUtils;
 
-import com.mnubo.platform.android.sdk.Strings;
-
 import java.util.regex.Pattern;
 
 /**
@@ -33,11 +31,13 @@ import java.util.regex.Pattern;
  * the wrong token.
  */
 public class MnuboUserAlreadyExistsException extends MnuboClientException {
+    private static String EXCEPTION_USER_ALREADY_EXIST = "The username you are trying to register already exists.";
+
     public final static String USER_ALREADY_EXISTS_PATTERN = "^User '.*' already exists\\.$";
     private final static Pattern PATTERN = Pattern.compile(USER_ALREADY_EXISTS_PATTERN);
 
     public MnuboUserAlreadyExistsException() {
-        super(Strings.EXCEPTION_USER_ALREADY_EXIST);
+        super(EXCEPTION_USER_ALREADY_EXIST);
     }
 
     public static boolean matches(CharSequence s) {

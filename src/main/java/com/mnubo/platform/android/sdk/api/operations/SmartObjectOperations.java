@@ -40,128 +40,128 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 public interface SmartObjectOperations extends MnuboFileCachingService {
     /**
      * This function is used to fetch an object on the mnubo API.
-     *
+     * <p/>
      * Called url = GET : /objects/{id}
      *
-     * @param objectId SdkId built with a device_id or an object_id
+     * @param id SdkId built with a device_id or an object_id
      */
-    MnuboResponse<SmartObject> findObject(SdkId objectId);
+    MnuboResponse<SmartObject> findObject(SdkId id);
 
     /**
      * This function is used to fetch an object on the mnubo API. The result will be available
      * through the given callback.
-     *
+     * <p/>
      * Called url = GET : /objects/{id}
      *
-     * @param objectId           SdkId built with a device_id or an object_id
+     * @param id                 SdkId built with a device_id or an object_id
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void findObjectAsync(SdkId objectId, CompletionCallBack<SmartObject> completionCallBack);
+    void findObjectAsync(SdkId id, CompletionCallBack<SmartObject> completionCallBack);
 
     /**
      * This function update the object matching the provided id with the information contained in
      * the provided <code>object</code>.
-     *
+     * <p/>
      * Called url = PUT : /objects/{id}
      *
-     * @param objectId SdkId built with a device_id or an object_id
-     * @param object   the updated {link SmartObject}
+     * @param id     SdkId built with a device_id or an object_id
+     * @param object the updated {link SmartObject}
      */
-    MnuboResponse<Boolean> update(SdkId objectId, SmartObject object);
+    MnuboResponse<Boolean> update(SdkId id, SmartObject object);
 
     /**
      * This function update the object matching the provided id with the information contained in
      * the provided <code>object</code>. The result will be available through the given callback.
-     *
+     * <p/>
      * Called url = PUT : /objects/{id}
      *
-     * @param objectId           SdkId built with a device_id or an object_id
+     * @param id                 SdkId built with a device_id or an object_id
      * @param object             the updated {link SmartObject}
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void updateAsync(SdkId objectId, SmartObject object, CompletionCallBack<Boolean> completionCallBack);
+    void updateAsync(SdkId id, SmartObject object, CompletionCallBack<Boolean> completionCallBack);
 
     /**
      * This function will fetch all of the samples recorded for a specific object's sensor.
-     *
+     * <p/>
      * Called url = GET : /objects/{id}/sensors/{sensorname}/samples
      *
-     * @param objectId   SdkId built with a device_id or an object_id
+     * @param id         SdkId built with a device_id or an object_id
      * @param sensorName the name of the sensor the <code>Samples</code> will be fetched from. that
-     *                   sensor must belong to the object matching the <code>objectId</code>
+     *                   sensor must belong to the object matching the <code>id</code>
      */
-    MnuboResponse<Samples> searchSamples(SdkId objectId, String sensorName);
+    MnuboResponse<Samples> searchSamples(SdkId id, String sensorName);
 
     /**
      * This function will fetch all of the samples recorded for a specific object's sensor. The
      * result will be available through the given callback.
-     *
+     * <p/>
      * Called url = GET : /objects/{id}/sensors/{sensorname}/samples
      *
-     * @param objectId           SdkId built with a device_id or an object_id
+     * @param id                 SdkId built with a device_id or an object_id
      * @param sensorName         the name of the sensor the <code>Samples</code> will be fetched
      *                           from. that sensor must belong to the object matching the
-     *                           <code>objectId</code>
+     *                           <code>id</code>
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void searchSamplesAsync(SdkId objectId, String sensorName, CompletionCallBack<Samples> completionCallBack);
+    void searchSamplesAsync(SdkId id, String sensorName, CompletionCallBack<Samples> completionCallBack);
 
     /**
      * This function will add samples data to the specified object's sensor synchronously. This
      * function supports offline data store if the request fails.
-     *
+     * <p/>
      * Called url = POST : /objects/{id}/sensors/{sensorname}/samples
      *
-     * @param objectId SdkId built with a device_id or an object_id
-     * @param samples  the list of <code>Samples</code> to be recorded
+     * @param id      SdkId built with a device_id or an object_id
+     * @param samples the list of <code>Samples</code> to be recorded
      */
-    MnuboResponse<Boolean> addSamples(SdkId objectId, Samples samples);
+    MnuboResponse<Boolean> addSamples(SdkId id, Samples samples);
 
     /**
      * This function will add samples data to the specified object's sensor asynchronously. This
      * function supports offline data store if the request fails. The result will be available
      * through the given callback.
-     *
+     * <p/>
      * Called url = POST : /objects/{id}/sensors/{sensorname}/samples
      *
-     * @param objectId           SdkId built with a device_id or an object_id
+     * @param id                 SdkId built with a device_id or an object_id
      * @param samples            the list of <code>Samples</code> to be recorded
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void addSamplesAsync(SdkId objectId, Samples samples, CompletionCallBack<Boolean> completionCallBack);
+    void addSamplesAsync(SdkId id, Samples samples, CompletionCallBack<Boolean> completionCallBack);
 
     /**
      * This function allows you to add one sample data to a publicly available object's sensor
      * synchronously. This function supports offline data store if the request fails.
+     * <p/>
+     * Called url = POST : /objects/{id}/sensors/{sensorName}/sample
      *
-     * Called url = POST : /objects/{objectId}/sensors/{sensorName}/sample
-     *
-     * @param objectId   SdkId built with a device_id or an object_id
+     * @param id         SdkId built with a device_id or an object_id
      * @param sensorName the name of the sensor the <code>Samples</code> will be fetched from. that
-     *                   sensor must belong to the object matching the <code>objectId</code>
+     *                   sensor must belong to the object matching the <code>id</code>
      * @param sample     the <code>Sample</code> to be added
      */
-    MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId objectId, String sensorName, Sample sample);
+    MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId id, String sensorName, Sample sample);
 
     /**
      * This function allows you to add one sample data to a publicly available object's sensor
      * asynchronously. This function supports offline data store if the request fails. The result
      * will be available through the given callback.
+     * <p/>
+     * Called url = POST : /objects/{id}/sensors/{sensorName}/sample
      *
-     * Called url = POST : /objects/{objectId}/sensors/{sensorName}/sample
-     *
-     * @param objectId           SdkId built with a device_id or an object_id
+     * @param id                 SdkId built with a device_id or an object_id
      * @param sensorName         the name of the sensor the <code>Samples</code> will be fetched
      *                           from. that sensor must belong to the object matching the
-     *                           <code>objectId</code>
+     *                           <code>id</code>
      * @param sample             the <code>Sample</code> to be added
      * @param completionCallBack the callback that will be executed on completion of the request
      */
-    void addSampleOnPublicSensorAsync(SdkId objectId, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack);
+    void addSampleOnPublicSensorAsync(SdkId id, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack);
 
     /**
      * This function allows you to add an object in the mnubo platform.
-     *
+     * <p/>
      * Called url = POST : /objects
      *
      * @param smartObject    the <code>SmartObject</code> to be added Its owner field must be set to
@@ -175,7 +175,7 @@ public interface SmartObjectOperations extends MnuboFileCachingService {
     /**
      * This function allows you to add an object in the mnubo platform. The result will be available
      * through the given callback.
-     *
+     * <p/>
      * Called url = POST : /objects
      *
      * @param smartObject        the <code>SmartObject</code> to be added Its owner field must be
@@ -186,4 +186,25 @@ public interface SmartObjectOperations extends MnuboFileCachingService {
      * @param completionCallBack the callback that will be executed on completion of the request
      */
     void createObjectAsync(SmartObject smartObject, Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack);
+
+    /**
+     * This function allows you to delete an object from the mnubo platform.The result will be
+     * available through the given callback.
+     * <p/>
+     * Called url = DELETE : /objects/{id}
+     *
+     * @param id SdkId built with a device_id or an object_id
+     * @return true if deleted, false or null otherwise
+     */
+    MnuboResponse<Boolean> deleteObject(SdkId id);
+
+    /**
+     * This function allows you to delete an object from the mnubo platform.
+     * <p/>
+     * Called url = DELETE : /objects/{id}
+     *
+     * @param id                 SdkId built with a device_id or an object_id
+     * @param completionCallBack the callback that will be executed on completion of the request
+     */
+    void deleteObjectAsync(SdkId id, CompletionCallBack<Boolean> completionCallBack);
 }
