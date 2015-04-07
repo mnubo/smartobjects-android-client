@@ -187,10 +187,68 @@ public class User implements Parcelable, Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s", this.getUsername());
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmedPassword='" + confirmedPassword + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", collections=" + collections +
+                ", groups=" + groups +
+                ", attributes=" + attributes +
+                ", isAdmin=" + isAdmin +
+                ", id=" + id +
+                '}';
     }
 
-        /*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (isAdmin != user.isAdmin) return false;
+        if (attributes != null ? !attributes.equals(user.attributes) : user.attributes != null)
+            return false;
+        if (collections != null ? !collections.equals(user.collections) : user.collections != null)
+            return false;
+        if (confirmedPassword != null ? !confirmedPassword.equals(user.confirmedPassword) : user.confirmedPassword != null)
+            return false;
+        if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null)
+            return false;
+        if (groups != null ? !groups.equals(user.groups) : user.groups != null) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null)
+            return false;
+        if (password != null ? !password.equals(user.password) : user.password != null)
+            return false;
+        if (registrationDate != null ? !registrationDate.equals(user.registrationDate) : user.registrationDate != null)
+            return false;
+        if (username != null ? !username.equals(user.username) : user.username != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = username != null ? username.hashCode() : 0;
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (confirmedPassword != null ? confirmedPassword.hashCode() : 0);
+        result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
+        result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
+        result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
+        result = 31 * result + (collections != null ? collections.hashCode() : 0);
+        result = 31 * result + (groups != null ? groups.hashCode() : 0);
+        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+        result = 31 * result + (isAdmin ? 1 : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
+    }
+
+    /*
      * Implements Parcelable
      */
 

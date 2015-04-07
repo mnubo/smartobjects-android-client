@@ -21,42 +21,50 @@
  */
 package com.mnubo.platform.android.sdk.models.groups;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @JsonInclude(Include.NON_NULL)
-public class Groups implements Serializable {
+public class Groups implements Parcelable, Serializable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
 
-    private List<Group> groupList;
+    private List<Group> groups;
     private int count;
 
     public Groups() {
-        groupList = new ArrayList<>(0);
+        groups = new ArrayList<>();
     }
 
-    public List<Group> getGroupList() {
-        if (groupList == null) {
-            groupList = new LinkedList<>();
+    @SuppressWarnings("unchecked")
+    public Groups(Parcel in) {
+        this.count = in.readInt();
+        this.groups = in.readArrayList(null);
+    }
+
+    public List<Group> getGroups() {
+        if (groups == null) {
+            groups = new ArrayList<>();
         }
 
-        return groupList;
+        return groups;
     }
 
-    public void setGroupList(List<Group> groupList) {
-        this.groupList = groupList;
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     public void addGroup(Group group) {
-        groupList.add(group);
+        groups.add(group);
     }
 
     public int getCount() {
@@ -69,11 +77,55 @@ public class Groups implements Serializable {
 
     @Override
     public String toString() {
-        String out = "";
-        for (int i = 0; i < groupList.size(); i++) {
-            out = out + "GroupLabel: " + groupList.get(i).getLabel() + ", owner: "
-                    + groupList.get(i).getOwner() + "\n";
-        }
-        return out;
+        return "Groups{" +
+                "groups=" + groups +
+                ", count=" + count +
+                '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Groups)) return false;
+
+        Groups groups1 = (Groups) o;
+
+        if (count != groups1.count) return false;
+        if (groups != null ? !groups.equals(groups1.groups) : groups1.groups != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = groups != null ? groups.hashCode() : 0;
+        result = 31 * result + count;
+        return result;
+    }
+
+    /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.count);
+        dest.writeList(this.groups);
+    }
+
+    public static final Parcelable.Creator<Groups> CREATOR
+            = new Parcelable.Creator<Groups>() {
+        public Groups createFromParcel(Parcel in) {
+            return new Groups(in);
+        }
+
+        public Groups[] newArray(int size) {
+            return new Groups[size];
+        }
+    };
 }

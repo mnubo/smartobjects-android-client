@@ -289,7 +289,7 @@ public class SmartObject extends AbstractOwnable implements Serializable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.owner);
-        dest.writeString(this.objectId != null ? this.objectId.toString() : "");
+        dest.writeString(this.objectId != null ? this.objectId.toString() : null);
         dest.writeString(this.deviceId);
         dest.writeString(this.objectModelName);
         dest.writeString(this.registrationDate);

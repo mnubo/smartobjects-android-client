@@ -93,15 +93,33 @@ public class Users implements Parcelable, Serializable {
 
     @Override
     public String toString() {
-        String out = "";
-        for (int i = 0; i < users.size(); i++) {
-
-            out = out + "Name: " + users.get(i) + "\n";
-        }
-        return out;
+        return "Users{" +
+                "users=" + users +
+                ", count=" + count +
+                '}';
     }
 
-            /*
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Users)) return false;
+
+        Users users1 = (Users) o;
+
+        if (count != users1.count) return false;
+        if (users != null ? !users.equals(users1.users) : users1.users != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = users != null ? users.hashCode() : 0;
+        result = 31 * result + count;
+        return result;
+    }
+
+    /*
      * Implements Parcelable
      */
 
