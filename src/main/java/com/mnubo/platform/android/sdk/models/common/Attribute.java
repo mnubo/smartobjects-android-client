@@ -32,10 +32,16 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
 /**
- * A Mnubo attribute is a name, a value and a type. It is used to store data of any kind. If you
- * leave the type blank, STRING will be used. <p/> Attributes can be found in {@link
- * com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and {@link
- * com.mnubo.platform.android.sdk.models.users.User}.
+ * Attributes are used in {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and
+ * {@link com.mnubo.platform.android.sdk.models.users.User}.
+ * <p/>
+ * {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} <code>Attribute</code> are
+ * defined in the ObjectModel of the object. The type will automatically be resolved according to
+ * the type defined for this <code>Attribute</code> in the definition.
+ * <p/>
+ * {@link com.mnubo.platform.android.sdk.models.users.User} <code>Attribute</code> are currently
+ * used to store any information. The default type is STRING. Soon the User's Attribute will be
+ * defined by a Model definition too.
  */
 @JsonInclude(Include.NON_NULL)
 public class Attribute implements Serializable, Parcelable {
@@ -54,7 +60,8 @@ public class Attribute implements Serializable, Parcelable {
     }
 
     public Attribute(String name, String value) {
-
+        this.name = name;
+        this.value = value;
     }
 
     private Attribute(Parcel in) {

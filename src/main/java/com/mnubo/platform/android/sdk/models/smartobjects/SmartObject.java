@@ -48,10 +48,17 @@ import static com.mnubo.platform.android.sdk.Constants.DEVICE_ID;
 import static com.mnubo.platform.android.sdk.Constants.OBJECT_MODEL;
 
 /**
- * A Smart object on the Mnubo Platform, it belongs to a single {@link
+ * A <code>SmartObject</code> on the Mnubo Platform, it belongs to a single {@link
  * com.mnubo.platform.android.sdk.models.users.User} and can be in different {@link
  * com.mnubo.platform.android.sdk.models.collections.Collection} <p/> It also has a list of {@link
- * com.mnubo.platform.android.sdk.models.common.Attribute}
+ * com.mnubo.platform.android.sdk.models.common.Attribute}.
+ * <p/>
+ * The required fields for the <code>SmartObject</code> are:
+ * <ul>
+ *      <li>deviceId</li>
+ *      <li>owner : defaults to the currently signed in user</li>
+ *      <li>objectModelName</li>
+ * </ul>
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects
  * @see com.mnubo.platform.android.sdk.models.common.AbstractOwnable
@@ -83,6 +90,12 @@ public class SmartObject extends AbstractOwnable implements Serializable {
     private List<Collection> collections = new ArrayList<>();
 
     public SmartObject() {
+    }
+
+    public SmartObject(String deviceId, String owner, String objectModelName) {
+        this.deviceId = deviceId;
+        this.setOwner(owner);
+        this.objectModelName = objectModelName;
     }
 
     public SmartObject(String deviceId, String objectModelName) {

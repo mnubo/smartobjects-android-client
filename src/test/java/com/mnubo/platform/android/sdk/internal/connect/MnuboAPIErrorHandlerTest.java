@@ -30,9 +30,11 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredE
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboDuplicateAttributeException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidConfirmPasswordException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidObjectException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidResetPasswordTokenException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidUUIDException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
@@ -40,7 +42,6 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboSensorNotFoundExcep
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
-import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidUUIDException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -78,6 +79,8 @@ public class MnuboAPIErrorHandlerTest {
 
     private final MnuboAPIErrorHandler responseErrorHandler = new MnuboAPIErrorHandler();
     private final ObjectMapper mapper = new ObjectMapper();
+
+    private final String INVALID_OBJECT_MODEL = "Validation failed for argument at index 1 in method: public org.springframework.http.ResponseEntity<java.lang.Object> com.mnubo.platform.server.rest.ugoc.objects.ObjectsResource.addObject(org.springframework.web.util.UriComponentsBuilder,com.mnubo.common.models.sdk.ObjectBean,boolean), with 1 error(s): [Field error in object 'objectBean' on field 'objectModelName': rejected value [null]; codes [NotBlank.objectBean.objectModelName,NotBlank.objectModelName,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [objectBean.objectModelName,objectModelName]; arguments []; default message [objectModelName]]; default message [Missing object model]]";
 
     @Before
     public void setUp() throws Exception {
@@ -234,6 +237,27 @@ public class MnuboAPIErrorHandlerTest {
     @Test(expected = MnuboSensorNotFoundException.class)
     public void testSensorNotFoundException() throws Exception {
         ClientHttpResponse response = prepareResponse("sensor name(invalid) not found", HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboInvalidObjectException.class)
+    public void testInvalidObjectMissingDeviceIdException() throws Exception {
+        ClientHttpResponse response = prepareResponse("Invalid id", HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboInvalidObjectException.class)
+    public void testInvalidObjectMissingObjectModelException() throws Exception {
+        ClientHttpResponse response = prepareResponse(INVALID_OBJECT_MODEL, HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboInvalidObjectException.class)
+    public void testInvalidObjectUnknownAttributeException() throws Exception {
+        ClientHttpResponse response = prepareResponse("Attribute unknown_attribute undefined in object model", HttpStatus.BAD_REQUEST);
 
         responseErrorHandler.handleError(response);
     }

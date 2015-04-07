@@ -34,6 +34,7 @@ import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredE
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboDuplicateAttributeException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidConfirmPasswordException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidObjectException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidResetPasswordTokenException;
@@ -171,6 +172,8 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboInvalidUUIDException();
         } else if (MnuboSensorNotFoundException.matches(errorMessage)) {
             throw new MnuboSensorNotFoundException();
+        } else if (MnuboInvalidObjectException.matches(errorMessage)) {
+            throw new MnuboInvalidObjectException();
         }
     }
 
