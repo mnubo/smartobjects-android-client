@@ -25,6 +25,7 @@ package com.mnubo.platform.android.sdk.models.smartobjects;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -40,7 +41,6 @@ import org.geojson.Point;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,9 +55,9 @@ import static com.mnubo.platform.android.sdk.Constants.OBJECT_MODEL;
  * <p/>
  * The required fields for the <code>SmartObject</code> are:
  * <ul>
- *      <li>deviceId</li>
- *      <li>owner : defaults to the currently signed in user</li>
- *      <li>objectModelName</li>
+ * <li>deviceId</li>
+ * <li>owner : defaults to the currently signed in user</li>
+ * <li>objectModelName</li>
  * </ul>
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects
@@ -94,7 +94,7 @@ public class SmartObject extends AbstractOwnable implements Serializable {
 
     public SmartObject(String deviceId, String owner, String objectModelName) {
         this.deviceId = deviceId;
-        this.setOwner(owner);
+        this.owner = owner;
         this.objectModelName = objectModelName;
     }
 
@@ -103,16 +103,17 @@ public class SmartObject extends AbstractOwnable implements Serializable {
         this.objectModelName = objectModelName;
     }
 
+    @SuppressWarnings("unchecked")
     private SmartObject(Parcel in) {
         this.setOwner(in.readString());
-        this.objectId = UUID.fromString(in.readString());
+        final String objectIdFromParcel = in.readString();
+        this.objectId = !TextUtils.isEmpty(objectIdFromParcel) ? UUID.fromString(objectIdFromParcel) : null;
         this.deviceId = in.readString();
         this.objectModelName = in.readString();
         this.registrationDate = in.readString();
-        //TODO give geojson-jackson-android a try
-        //this.registrationLocation = in.readParcelable(Feature.class.getClassLoader());
-        this.attributes = Arrays.asList(in.createTypedArray(Attribute.CREATOR));
-        this.collections = Arrays.asList(in.createTypedArray(Collection.CREATOR));
+        this.registrationLocation = in.readParcelable(null);
+        this.attributes = in.readArrayList(null);
+        this.collections = in.readArrayList(null);
     }
 
     public UUID getObjectId() {
@@ -224,7 +225,56 @@ public class SmartObject extends AbstractOwnable implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("ObjectID : %s", this.objectId != null ? this.objectId.toString() : "null");
+        return "SmartObject{" +
+                "objectId=" + objectId +
+                ", deviceId='" + deviceId + '\'' +
+                ", owner='" + owner + '\'' +
+                ", objectModelName='" + objectModelName + '\'' +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", registrationLocation=" + registrationLocation +
+                ", attributes=" + attributes +
+                ", collections=" + collections +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SmartObject)) return false;
+
+        SmartObject that = (SmartObject) o;
+
+        if (attributes != null ? !attributes.equals(that.attributes) : that.attributes != null)
+            return false;
+        if (collections != null ? !collections.equals(that.collections) : that.collections != null)
+            return false;
+        if (deviceId != null ? !deviceId.equals(that.deviceId) : that.deviceId != null)
+            return false;
+        if (owner != null ? !owner.equals(that.owner) : that.owner != null)
+            return false;
+        if (objectId != null ? !objectId.equals(that.objectId) : that.objectId != null)
+            return false;
+        if (objectModelName != null ? !objectModelName.equals(that.objectModelName) : that.objectModelName != null)
+            return false;
+        if (registrationDate != null ? !registrationDate.equals(that.registrationDate) : that.registrationDate != null)
+            return false;
+        if (registrationLocation != null ? !registrationLocation.equals(that.registrationLocation) : that.registrationLocation != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = objectId != null ? objectId.hashCode() : 0;
+        result = 31 * result + (deviceId != null ? deviceId.hashCode() : 0);
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + (objectModelName != null ? objectModelName.hashCode() : 0);
+        result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
+        result = 31 * result + (registrationLocation != null ? registrationLocation.hashCode() : 0);
+        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+        result = 31 * result + (collections != null ? collections.hashCode() : 0);
+        return result;
     }
 
     /*
@@ -238,15 +288,14 @@ public class SmartObject extends AbstractOwnable implements Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.getOwner());
-        dest.writeString(this.objectId.toString());
+        dest.writeString(this.owner);
+        dest.writeString(this.objectId != null ? this.objectId.toString() : "");
         dest.writeString(this.deviceId);
         dest.writeString(this.objectModelName);
         dest.writeString(this.registrationDate);
-        //TODO give geojson-jackson-android a try
-        //dest.writeParcelable(this.registrationLocation, flags);
-        dest.writeTypedArray(this.attributes.toArray(new Parcelable[this.attributes.size()]), flags);
-        dest.writeTypedArray(this.collections.toArray(new Parcelable[this.collections.size()]), flags);
+        dest.writeParcelable(this.registrationLocation, flags);
+        dest.writeList(this.attributes);
+        dest.writeList(this.collections);
 
     }
 

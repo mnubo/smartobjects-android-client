@@ -34,6 +34,7 @@ import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doAnswer;
@@ -79,6 +80,7 @@ public class MockParcel {
         doAnswer(writeValueAnswer).when(mockedParcel).writeString(anyString());
         doAnswer(writeValueAnswer).when(mockedParcel).writeMap(any(Map.class));
         doAnswer(writeValueAnswer).when(mockedParcel).writeDoubleArray(any(double[].class));
+        doAnswer(writeValueAnswer).when(mockedParcel).writeList(anyList());
     }
 
     private void setupReads() {
@@ -119,6 +121,14 @@ public class MockParcel {
             @Override
             public double[] answer(InvocationOnMock invocation) throws Throwable {
                 final double[] value = (double[]) objects.get(position);
+                position++;
+                return value;
+            }
+        });
+        when(mockedParcel.readArrayList(any(ClassLoader.class))).thenAnswer(new Answer<ArrayList>() {
+            @Override
+            public ArrayList answer(InvocationOnMock invocation) throws Throwable {
+                final ArrayList value = (ArrayList) objects.get(position);
                 position++;
                 return value;
             }
