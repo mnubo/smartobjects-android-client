@@ -23,11 +23,15 @@
 package com.mnubo.platform.android.sdk.models.users;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,7 +42,7 @@ import java.util.List;
  * @see com.mnubo.platform.android.sdk.models.users.User
  */
 @JsonInclude(Include.NON_NULL)
-public class Users implements Serializable {
+public class Users implements Parcelable, Serializable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
@@ -47,8 +51,14 @@ public class Users implements Serializable {
     private int count;
 
     public Users() {
-        users = new LinkedList<>();
+        users = new ArrayList<>();
         count = 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Users(Parcel in) {
+        this.count = in.readInt();
+        this.users = in.readArrayList(null);
     }
 
     public List<User> getUsers() {
@@ -90,4 +100,30 @@ public class Users implements Serializable {
         }
         return out;
     }
+
+            /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.count);
+        dest.writeList(this.users);
+    }
+
+    public static final Parcelable.Creator<Users> CREATOR
+            = new Parcelable.Creator<Users>() {
+        public Users createFromParcel(Parcel in) {
+            return new Users(in);
+        }
+
+        public Users[] newArray(int size) {
+            return new Users[size];
+        }
+    };
 }

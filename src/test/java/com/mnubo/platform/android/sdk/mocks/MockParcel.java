@@ -81,9 +81,18 @@ public class MockParcel {
         doAnswer(writeValueAnswer).when(mockedParcel).writeMap(any(Map.class));
         doAnswer(writeValueAnswer).when(mockedParcel).writeDoubleArray(any(double[].class));
         doAnswer(writeValueAnswer).when(mockedParcel).writeList(anyList());
+        doAnswer(writeValueAnswer).when(mockedParcel).writeInt(anyInt());
     }
 
     private void setupReads() {
+        when(mockedParcel.readInt()).thenAnswer(new Answer<Integer>() {
+            @Override
+            public Integer answer(InvocationOnMock invocation) throws Throwable {
+                final Integer value = (Integer) objects.get(position);
+                position++;
+                return value;
+            }
+        });
         when(mockedParcel.readLong()).thenAnswer(new Answer<Long>() {
             @Override
             public Long answer(InvocationOnMock invocation) throws Throwable {

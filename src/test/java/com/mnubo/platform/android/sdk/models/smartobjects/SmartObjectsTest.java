@@ -24,58 +24,27 @@ package com.mnubo.platform.android.sdk.models.smartobjects;
 
 import android.location.Location;
 import android.os.Parcel;
-import android.text.TextUtils;
 
 import com.mnubo.platform.android.sdk.mocks.MockParcel;
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({
-        TextUtils.class,
-})
-public class SmartObjectTest {
-
-    private final Location mockedLocation = mock(Location.class);
-
-    @Before
-    public void setUp() throws Exception {
-        mockStatic(TextUtils.class);
-        when(TextUtils.isEmpty(any(CharSequence.class))).thenAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                CharSequence a = (CharSequence) invocation.getArguments()[0];
-                return a == null || a.length() == 0;
-            }
-        });
-
-        when(mockedLocation.toString()).thenReturn("location");
-
-    }
+public class SmartObjectsTest {
 
     @Test
     public void testWriteToParcel() throws Exception {
-        SmartObject smartObject = new SmartObject();
+        SmartObjects smartObjects = new SmartObjects();
 
         Parcel parcel = MockParcel.obtain();
-        smartObject.writeToParcel(parcel, 0);
+        smartObjects.writeToParcel(parcel, 0);
 
-        SmartObject smartObjectFromParcel = SmartObject.CREATOR.createFromParcel(parcel);
+        SmartObjects smartObjectsFromParcel = SmartObjects.CREATOR.createFromParcel(parcel);
 
-        assertEquals(smartObject, smartObjectFromParcel);
+        assertEquals(smartObjects, smartObjectsFromParcel);
     }
 
     @Test
@@ -86,11 +55,14 @@ public class SmartObjectTest {
         smartObject.setRegistrationLocationWithLocation(location);
         smartObject.getCollections().add(new Collection());
 
+        SmartObjects smartObjects = new SmartObjects();
+        smartObjects.addObject(smartObject);
+
         Parcel parcel = MockParcel.obtain();
-        smartObject.writeToParcel(parcel, 0);
+        smartObjects.writeToParcel(parcel, 0);
 
-        SmartObject smartObjectFromParcel = SmartObject.CREATOR.createFromParcel(parcel);
+        SmartObjects smartObjectsFromParcel = SmartObjects.CREATOR.createFromParcel(parcel);
 
-        assertEquals(smartObject, smartObjectFromParcel);
+        assertEquals(smartObjects, smartObjectsFromParcel);
     }
 }

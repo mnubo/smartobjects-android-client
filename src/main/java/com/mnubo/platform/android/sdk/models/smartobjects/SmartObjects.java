@@ -22,6 +22,9 @@
 
 package com.mnubo.platform.android.sdk.models.smartobjects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -39,7 +42,7 @@ import java.util.List;
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObject
  */
 @JsonInclude(Include.NON_EMPTY)
-public class SmartObjects implements Serializable {
+public class SmartObjects implements Parcelable, Serializable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
@@ -51,6 +54,13 @@ public class SmartObjects implements Serializable {
     public SmartObjects() {
         smartObjects = new ArrayList<>();
     }
+
+    @SuppressWarnings("unchecked")
+    public SmartObjects(Parcel in) {
+        this.count = in.readInt();
+        this.smartObjects = in.readArrayList(null);
+    }
+
 
     public List<SmartObject> getSmartObjects() {
         if (smartObjects == null) {
@@ -82,13 +92,58 @@ public class SmartObjects implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder out = new StringBuilder("");
-
-        for (SmartObject object : smartObjects) {
-            out.append(String.format("ObjectId: %s, owner: %s\n", object.getObjectId(), object.getOwner()));
-        }
-        return out.toString();
+        return "SmartObjects{" +
+                "smartObjects=" + smartObjects +
+                ", count=" + count +
+                '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SmartObjects)) return false;
+
+        SmartObjects that = (SmartObjects) o;
+
+        if (count != that.count) return false;
+        if (smartObjects != null ? !smartObjects.equals(that.smartObjects) : that.smartObjects != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = smartObjects != null ? smartObjects.hashCode() : 0;
+        result = 31 * result + count;
+        return result;
+    }
+
+    /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.count);
+        dest.writeList(this.smartObjects);
+    }
+
+    public static final Parcelable.Creator<SmartObjects> CREATOR
+            = new Parcelable.Creator<SmartObjects>() {
+        public SmartObjects createFromParcel(Parcel in) {
+            return new SmartObjects(in);
+        }
+
+        public SmartObjects[] newArray(int size) {
+            return new SmartObjects[size];
+        }
+    };
 
 
 }

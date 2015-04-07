@@ -23,6 +23,8 @@
 package com.mnubo.platform.android.sdk.models.smartobjects.samples;
 
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -37,24 +39,37 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A Mnubo Sample is a liste of values for a specific sensor at a moment in time. Coordinates are
+ * A {@link com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample} is a list of values
+ * for a specific sensor at a moment in time. Coordinates are
  * also recorded  for analytics.
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples
  */
 @JsonInclude(Include.NON_DEFAULT)
-public class Sample implements Serializable {
+public class Sample implements Parcelable, Serializable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
 
-    private Map<String, Object> value;
-    private String name;
+    private Map<String, Object> value = new HashMap<>();
+    @JsonProperty("name")
+    private String sensorName;
     private String timestamp;
-    List<Double> coordinates = new ArrayList<>();
+    private List<Double> coordinates = new ArrayList<>();
 
     public Sample() {
-        value = new HashMap<>();
+    }
+
+    public Sample(String sensorName) {
+        this.sensorName = sensorName;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Sample(Parcel in) {
+        this.value = in.readHashMap(null);
+        this.sensorName = in.readString();
+        this.timestamp = in.readString();
+        this.coordinates = in.readArrayList(null);
     }
 
     public Map<String, Object> getValue() {
@@ -69,13 +84,12 @@ public class Sample implements Serializable {
         this.value.put(key, value);
     }
 
-    public String getName() {
-        return name;
+    public String getSensorName() {
+        return sensorName;
     }
 
-    @JsonProperty("name")
     public void setSensorName(String name) {
-        this.name = name;
+        this.sensorName = name;
     }
 
     public void setTimestamp(String ts) {
@@ -89,7 +103,11 @@ public class Sample implements Serializable {
     public void setLocation(final Location location) {
         if (location != null) {
             this.coordinates = Arrays.asList(location.getLatitude(), location.getLongitude());
+            if (location.getAltitude() != 0.0d) {
+                this.coordinates.add(location.getAltitude());
+            }
         }
+
     }
 
     public List<Double> getCoordinates() {
@@ -127,9 +145,65 @@ public class Sample implements Serializable {
     @Override
     public String toString() {
         return "Sample{" +
-                "timestamp='" + timestamp + '\'' +
-                ", name='" + name + '\'' +
-                ", value=" + value +
+                "value=" + value +
+                ", sensorName='" + sensorName + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", coordinates=" + coordinates +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Sample)) return false;
+
+        Sample sample = (Sample) o;
+
+        if (coordinates != null ? !coordinates.equals(sample.coordinates) : sample.coordinates != null)
+            return false;
+        if (sensorName != null ? !sensorName.equals(sample.sensorName) : sample.sensorName != null)
+            return false;
+        if (timestamp != null ? !timestamp.equals(sample.timestamp) : sample.timestamp != null)
+            return false;
+        if (value != null ? !value.equals(sample.value) : sample.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + (sensorName != null ? sensorName.hashCode() : 0);
+        result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
+        result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
+        return result;
+    }
+
+    /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeMap(this.value);
+        dest.writeString(this.sensorName);
+        dest.writeString(this.timestamp);
+        dest.writeList(this.coordinates);
+    }
+
+    public static final Parcelable.Creator<Sample> CREATOR
+            = new Parcelable.Creator<Sample>() {
+        public Sample createFromParcel(Parcel in) {
+            return new Sample(in);
+        }
+
+        public Sample[] newArray(int size) {
+            return new Sample[size];
+        }
+    };
 }

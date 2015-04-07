@@ -22,6 +22,9 @@
 
 package com.mnubo.platform.android.sdk.models.users;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -43,7 +46,7 @@ import java.util.UUID;
  */
 @JsonInclude(Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements Serializable {
+public class User implements Parcelable, Serializable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
@@ -72,6 +75,23 @@ public class User implements Serializable {
 
     @JsonIgnore
     private UUID id;
+
+    public User() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public User(Parcel in) {
+        this.username = in.readString();
+        this.password = in.readString();
+        this.confirmedPassword = in.readString();
+        this.firstname= in.readString();
+        this.lastname= in.readString();
+        this.registrationDate= in.readString();
+        this.collections= in.readArrayList(null);
+        this.groups= in.readArrayList(null);
+        this.attributes= in.readArrayList(null);
+        this.isAdmin = in.readInt() == 1;
+    }
 
     public String getUsername() {
         return username;
@@ -169,4 +189,38 @@ public class User implements Serializable {
     public String toString() {
         return String.format("%s", this.getUsername());
     }
+
+        /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.username);
+        dest.writeString(this.password);
+        dest.writeString(this.confirmedPassword);
+        dest.writeString(this.firstname);
+        dest.writeString(this.lastname);
+        dest.writeString(this.registrationDate);
+        dest.writeList(this.collections);
+        dest.writeList(this.groups);
+        dest.writeList(this.attributes);
+        dest.writeInt(isAdmin ? 1 : 0);
+    }
+
+    public static final Parcelable.Creator<User> CREATOR
+            = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
