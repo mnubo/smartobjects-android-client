@@ -18,6 +18,7 @@
 
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'io.codearte.nexus-staging'
 
 def isReleaseBuild() {
     return !VERSION_NAME.contains("SNAPSHOT")
@@ -34,11 +35,15 @@ def getSnapshotRepositoryUrl() {
 }
 
 def getRepositoryUsername() {
-    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+    return hasProperty('nexusUsername') ? nexusUsername : ""
 }
 
 def getRepositoryPassword() {
-    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+    return hasProperty('nexusPassword') ? nexusPassword : ""
+}
+
+def getStagingProfileId() {
+    return hasProperty('nexusStagingProfile') ? nexusStagingProfile : ""
 }
 
 def getVersionName() {
@@ -131,3 +136,12 @@ afterEvaluate { project ->
         archives androidJavadocsJar
     }
 }
+//automatic closing of staging repositories
+nexusStaging {
+    packageGroup = GROUP
+    stagingProfileId = getStagingProfileId()//f1540904758d
+    delayBetweenRetriesInMillis = 2000
+}
+
+closeRepository.onlyIf { isReleaseBuild() }
+promoteRepository.onlyIf { isReleaseBuild() }
