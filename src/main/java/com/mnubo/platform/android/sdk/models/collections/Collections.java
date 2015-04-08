@@ -43,7 +43,8 @@ public class Collections implements Serializable {
     private int count;
 
     public Collections() {
-        collections = new ArrayList<>(0);
+        collections = new ArrayList<>();
+        count = 0;
     }
 
     public List<Collection> getCollections() {
@@ -68,11 +69,30 @@ public class Collections implements Serializable {
 
     @Override
     public String toString() {
-        String out = "";
-        for (int i = 0; i < collections.size(); i++) {
-            out = out + "CollectionLabel: " + collections.get(i).getLabel() + ", owner: "
-                    + collections.get(i).getOwner() + "\n";
-        }
-        return out;
+        return "Collections{" +
+                "collections=" + collections +
+                ", count=" + count +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Collections)) return false;
+
+        Collections that = (Collections) o;
+
+        if (count != that.count) return false;
+        if (collections != null ? !collections.equals(that.collections) : that.collections != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = collections != null ? collections.hashCode() : 0;
+        result = 31 * result + count;
+        return result;
     }
 }

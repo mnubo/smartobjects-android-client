@@ -43,6 +43,7 @@ public class Groups implements Parcelable, Serializable {
 
     public Groups() {
         groups = new ArrayList<>();
+        this.count = 0;
     }
 
     @SuppressWarnings("unchecked")

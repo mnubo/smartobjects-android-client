@@ -53,6 +53,7 @@ public class SmartObjects implements Parcelable, Serializable {
 
     public SmartObjects() {
         smartObjects = new ArrayList<>();
+        count = 0;
     }
 
     @SuppressWarnings("unchecked")
