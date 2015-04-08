@@ -22,7 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.services.impl;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 import com.mnubo.platform.android.sdk.internal.services.GroupService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.groups.Group;
@@ -48,18 +48,21 @@ public class GroupServiceImplTest extends AbstractServicesTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        this.mnuboUserApi = new MnuboSDKApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL);
+        setUpMockServer();
+
         groupService = mnuboUserApi.groupService();
     }
 
     @Test
     public void testDelete() throws Exception {
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/groups/groupId?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/groups/groupId?id_type=objectid")))
                 .andExpect(method(DELETE))
                 .andRespond(withNoContent());
 
         groupService.delete(SdkId.valueOf("groupId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -68,14 +71,14 @@ public class GroupServiceImplTest extends AbstractServicesTest {
         groupToCreate.setOwner("owner");
         groupToCreate.setLabel("label");
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/groups")))
+        mockServiceServer.expect(requestTo(expectedUrl("/groups")))
                 .andExpect(method(POST))
                 .andExpect(content().string(toJson(groupToCreate)))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andRespond(withSuccess(toJson(groupToCreate), APPLICATION_JSON_UTF8));
 
         groupService.create(groupToCreate);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -84,59 +87,59 @@ public class GroupServiceImplTest extends AbstractServicesTest {
         expectedGroup.setOwner("owner");
         expectedGroup.setLabel("label");
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/groups/groupId?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/groups/groupId?id_type=objectid")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedGroup), APPLICATION_JSON_UTF8));
 
         Group group = groupService.findOne(SdkId.valueOf("groupId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testListAllUsers() throws Exception {
         final Users expectedUsers = new Users();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users?id_type=objectid")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedUsers), APPLICATION_JSON_UTF8));
 
         Users users = groupService.listAllUsers(SdkId.valueOf("groupId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testListAllUsersWithLimit() throws Exception {
         final Users expectedUsers = new Users();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users?id_type=objectid&limit=10")))
+        mockServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users?id_type=objectid&limit=10")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedUsers), APPLICATION_JSON_UTF8));
 
         Users users = groupService.listAllUsers(SdkId.valueOf("groupId"), 10);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testAddUser() throws Exception {
-        mockUserServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users/username?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users/username?id_type=objectid")))
                 .andExpect(method(PUT))
                 .andRespond(withNoContent());
 
         groupService.addUser(SdkId.valueOf("groupId"), "username");
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testRemoveUser() throws Exception {
-        mockUserServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users/username?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/groups/groupId/users/username?id_type=objectid")))
                 .andExpect(method(DELETE))
                 .andRespond(withNoContent());
 
         groupService.removeUser(SdkId.valueOf("groupId"), "username");
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
 }

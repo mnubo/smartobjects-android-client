@@ -20,23 +20,12 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.client.connect;
+package com.mnubo.platform.android.sdk.internal.connect.connection.refreshable;
 
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApiImpl;
-import com.mnubo.platform.android.sdk.internal.connect.MnuboServiceProvider;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
 
+public interface RefreshableConnection {
+    void refresh();
 
-class MnuboClientServiceProvider extends MnuboServiceProvider<MnuboClientApi> {
-
-    public MnuboClientServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                      String authorizeUrl, String accessTokenUrl) {
-        super(platformBaseUrl, consumerKey, consumerSecret,
-                authorizeUrl, accessTokenUrl);
-    }
-
-    public MnuboClientApi getApi(String accessToken) {
-        return new MnuboClientApiImpl(accessToken, getPlatformBaseUrl());
-    }
-
+    MnuboSDKApi getMnuboSDKApi();
 }

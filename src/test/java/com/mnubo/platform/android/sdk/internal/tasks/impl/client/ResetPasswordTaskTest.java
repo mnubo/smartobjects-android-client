@@ -20,37 +20,24 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.connect;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.client;
 
-import com.mnubo.platform.android.sdk.Mnubo;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
 
-import org.springframework.social.connect.ApiAdapter;
-import org.springframework.social.connect.ConnectionValues;
-import org.springframework.social.connect.UserProfile;
+import org.junit.Test;
 
-class MnuboUserAdapter implements ApiAdapter<MnuboUserApi> {
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
-    public boolean test(MnuboUserApi mnuboUserApi) {
-        return true;
+public class ResetPasswordTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final String username = "username";
+        ResetPasswordTask resetPasswordTask = new ResetPasswordTask(connection, username);
+
+        resetPasswordTask.executeMnuboCall();
+
+        verify(clientService).resetPassword(eq(username));
     }
-
-    public void setConnectionValues(MnuboUserApi mnuboUserApi, ConnectionValues values) {
-        String username = Mnubo.getUsername();
-        if (username != null) {
-            values.setProviderUserId(username);
-        }
-    }
-
-    public UserProfile fetchUserProfile(MnuboUserApi mnuboUserApi) {
-        return null;
-//        User currentUser = mnuboUserApi.userService().getUser();
-//        return new UserProfileBuilder().setName(currentUser.getFullname())
-//                .setUsername(currentUser.getUsername()).build();
-    }
-
-    public void updateStatus(MnuboUserApi mnuboUserApi, String message) {
-        throw new UnsupportedOperationException();
-    }
-
 }

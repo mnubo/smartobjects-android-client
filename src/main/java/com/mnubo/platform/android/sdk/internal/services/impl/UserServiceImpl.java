@@ -96,22 +96,6 @@ public class UserServiceImpl extends AbstractMnuboService implements UserService
     }
 
     @Override
-    public SmartObjects findUserObjects(String username) {
-        return this.findUserObjects(username, false, null, false);
-    }
-
-    @Override
-    public SmartObjects findUserObjects(String username, boolean details) {
-
-        return this.findUserObjects(username, details, null, false);
-    }
-
-    @Override
-    public SmartObjects findUserObjects(String username, boolean details, String model) {
-        return this.findUserObjects(username, details, model, false);
-    }
-
-    @Override
     public SmartObjects findUserObjects(String username, boolean details, String model, boolean showHistory) {
         Validate.notBlank(username, "The username shouldn't be null or empty.");
 

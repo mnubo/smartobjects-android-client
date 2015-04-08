@@ -22,7 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.services.impl;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
@@ -55,6 +55,9 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        this.mnuboUserApi = new MnuboSDKApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL);
+        setUpMockServer();
+
         smartObjectService = mnuboUserApi.objectService();
     }
 
@@ -66,13 +69,13 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
         objectToCreate.setDeviceId("deviceid");
         objectToCreate.setObjectId(new UUID(48, 16));
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects?update_if_exists=true")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects?update_if_exists=true")))
                 .andExpect(method(POST))
                 .andExpect(content().string(toJson(objectToCreate)))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andRespond(withSuccess(toJson(objectToCreate), APPLICATION_JSON_UTF8));
         smartObjectService.create(objectToCreate, true);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -85,23 +88,23 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
 
         final SdkId objecSdkId = SdkId.withUuid(objectToUpdate.getObjectId());
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/" + objecSdkId.getId() + "?id_type=" + objecSdkId.getIdType())))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/" + objecSdkId.getId() + "?id_type=" + objecSdkId.getIdType())))
                 .andExpect(method(PUT))
                 .andExpect(content().string(toJson(objectToUpdate)))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andRespond(withSuccess());
         smartObjectService.update(objecSdkId, objectToUpdate);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void deleteObjectTest() throws Exception {
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid?id_type=objectid")))
                 .andExpect(method(DELETE))
                 .andRespond(withNoContent());
         smartObjectService.delete(SdkId.valueOf("objectid"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -111,13 +114,13 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
         expectedObject.setDeviceId("deviceid");
         expectedObject.setObjectId(new UUID(48, 16));
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid?id_type=objectid")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedObject), APPLICATION_JSON_UTF8));
 
         SmartObject SmartObject = smartObjectService.findOne(SdkId.valueOf("objectid"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -127,92 +130,92 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
         expectedObject.setDeviceId("deviceid");
         expectedObject.setObjectId(new UUID(48, 16));
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid?id_type=objectid&attributes=attributes1&attributes=attributes2")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid?id_type=objectid&attributes=attributes1&attributes=attributes2")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedObject), APPLICATION_JSON_UTF8));
 
         List<String> attributes = Arrays.asList("attributes1", "attributes2");
         SmartObject SmartObject = smartObjectService.findOne(SdkId.valueOf("objectid"), attributes);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void getObjectOwnerHistory() throws Exception {
         final Users expectedUsers = new Users();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid/owners_history?id_type=objectid&details=false")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/owners_history?id_type=objectid&details=false")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedUsers), APPLICATION_JSON_UTF8));
 
         Users users = smartObjectService.listOwnersHistory(SdkId.valueOf("objectid"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void getObjectOwnerHistoryWithDetail() throws Exception {
         final Users expectedUsers = new Users();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid/owners_history?id_type=objectid&details=true")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/owners_history?id_type=objectid&details=true")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedUsers), APPLICATION_JSON_UTF8));
 
         Users users = smartObjectService.listOwnersHistory(SdkId.valueOf("objectid"), true);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void getObjectSamples() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName");
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void getObjectSamplesWithValueType() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void getObjectSamplesWithValueTypeWithTimeRange() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last, "from", "to");
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void getObjectSamplesWithValueTypeWithTimeRangeAndLimit() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&limit=10")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&limit=10")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last, "from", "to", 10);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -226,13 +229,13 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
 
         samplesToCreate.addSample(sample);
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/objects/objectid/samples?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/samples?id_type=objectid")))
                 .andExpect(method(POST))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string(toJson(samplesToCreate)))
                 .andRespond(withNoContent());
         smartObjectService.addSamples(SdkId.valueOf("objectid"), samplesToCreate);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
 }

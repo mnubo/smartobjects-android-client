@@ -35,7 +35,8 @@ public interface AuthenticationOperations {
      * Log in as a user to the mnubo API. It fetch an user access token along with it's
      * refreshUserConnection token that will be persisted on the device.
      * <p/>
-     * If the access token expires, the refreshUserConnection token is used to refreshUserConnection
+     * If the access token expires, the refreshUserConnection token is used to
+     * refreshUserConnection
      * it. If both have expired, you should ask the user to log in again.
      * <p/>
      * Called url = POST : /oauth/token
@@ -49,7 +50,8 @@ public interface AuthenticationOperations {
      * Log in as a user to the mnubo API. It fetch an user access token along with it's
      * refreshUserConnection token that will be persisted on the device.
      * <p/>
-     * If the access token expires, the refreshUserConnection token is used to refreshUserConnection
+     * If the access token expires, the refreshUserConnection token is used to
+     * refreshUserConnection
      * it. If both have expired, you should ask the user to log in again. The result will be
      * available through the given callback.
      * <p/>
@@ -67,7 +69,11 @@ public interface AuthenticationOperations {
     void logOut();
 
     /**
-     * Useful method to know if a user is currently connected
+     * Useful method to know if a user is currently connected.
+     * <p/>
+     * It is possible that the connection has expired (access and refresh tokens). If this is the
+     * case, this call will still return true until a call is performed. This call will trigger a
+     * log out and the connection will be removed. Any further call will return false.
      *
      * @return true if a user is connected, false otherwise
      */
@@ -76,7 +82,7 @@ public interface AuthenticationOperations {
     /**
      * This method gives the username of the connected user.
      *
-     * @return the username of the currently connected username, null if no use connected.
+     * @return the username of the currently connected username, null if no user is connected.
      */
     String getUsername();
 }

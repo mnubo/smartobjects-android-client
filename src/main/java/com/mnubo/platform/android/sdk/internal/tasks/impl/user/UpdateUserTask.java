@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.user;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.users.User;
 
@@ -31,8 +32,8 @@ public class UpdateUserTask extends TaskWithRefreshImpl<Boolean> {
     final User updatedUser;
 
 
-    public UpdateUserTask(ApiFetcher apiFetcher, String username, User updatedUser, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public UpdateUserTask(RefreshableConnection refreshableConnection,String username, User updatedUser) {
+        super(refreshableConnection);
         this.username = username;
         this.updatedUser = updatedUser;
 
@@ -40,7 +41,7 @@ public class UpdateUserTask extends TaskWithRefreshImpl<Boolean> {
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboUserApi().userService().update(username, updatedUser);
+        refreshableConnection.getMnuboSDKApi().userService().update(username, updatedUser);
         return true;
     }
 }

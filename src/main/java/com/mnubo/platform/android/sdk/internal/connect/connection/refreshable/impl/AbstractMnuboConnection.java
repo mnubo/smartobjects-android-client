@@ -20,23 +20,15 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.client.connect;
+package com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl;
 
-import com.mnubo.platform.android.sdk.BuildConstants;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 
-import org.springframework.social.connect.support.OAuth2ConnectionFactory;
+import org.springframework.social.connect.Connection;
 
-public class MnuboClientConnectionFactory extends OAuth2ConnectionFactory<MnuboClientApi> {
+abstract class AbstractMnuboConnection implements RefreshableConnection {
 
-
-    public MnuboClientConnectionFactory(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                        String authorizeUrl, String accessTokenUrl) {
-        super(BuildConstants.MNUBO_PROVIDER,
-                new MnuboClientServiceProvider(platformBaseUrl, consumerKey, consumerSecret,
-                        authorizeUrl, accessTokenUrl),
-                new MnuboClientAdapter());
-    }
+    protected Connection<MnuboSDKApi> connection;
 
 }
-

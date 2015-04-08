@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
@@ -35,8 +36,8 @@ public class AddSamplesTask extends TaskWithRefreshImpl<Boolean> {
     final Samples samples;
 
 
-    public AddSamplesTask(ApiFetcher apiFetcher, SdkId id, Samples samples, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public AddSamplesTask(RefreshableConnection refreshableConnection,SdkId id, Samples samples) {
+        super(refreshableConnection);
         this.id = id;
         this.samples = samples;
 
@@ -44,7 +45,7 @@ public class AddSamplesTask extends TaskWithRefreshImpl<Boolean> {
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboUserApi().objectService().addSamples(id, samples);
+        refreshableConnection.getMnuboSDKApi().objectService().addSamples(id, samples);
         return true;
     }
 

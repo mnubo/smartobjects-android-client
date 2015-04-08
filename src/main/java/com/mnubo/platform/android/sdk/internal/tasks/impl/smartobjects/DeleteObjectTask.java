@@ -22,24 +22,24 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
-import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
 public class DeleteObjectTask extends TaskWithRefreshImpl<Boolean> {
 
     final SdkId objectId;
 
 
-    public DeleteObjectTask(ApiFetcher apiFetcher, SdkId objectId, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public DeleteObjectTask(RefreshableConnection refreshableConnection,SdkId objectId) {
+        super(refreshableConnection);
         this.objectId = objectId;
 
     }
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboUserApi().objectService().delete(objectId);
+        refreshableConnection.getMnuboSDKApi().objectService().delete(objectId);
         return true;
     }
 }

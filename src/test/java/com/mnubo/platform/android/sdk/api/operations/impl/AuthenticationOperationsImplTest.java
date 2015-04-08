@@ -44,7 +44,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @SuppressWarnings("unchecked")
 public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
-    private final AuthenticationOperationsImpl authenticationOperations = new AuthenticationOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
+    private final AuthenticationOperationsImpl authenticationOperations = new AuthenticationOperationsImpl(mockedConnectionManager);
 
     @SuppressWarnings("unchecked")
     private final CompletionCallBack<Boolean> mockedCallback = mock(CompletionCallBack.class);
@@ -63,7 +63,7 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
 
         final LogInTask mockedTask = mock(LogInTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newLogInTask(eq(username), eq(password), eq(mockedConnectionOperations))).thenReturn(mockedTask);
+        when(TaskFactory.newLogInTask(eq(mockedConnectionManager), eq(username), eq(password))).thenReturn(mockedTask);
 
         Boolean success = authenticationOperations.logIn(username, password).getResult();
 
@@ -77,7 +77,7 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
         final String password = "password";
 
         final LogInTask mockedTask = mock(LogInTask.class);
-        when(TaskFactory.newLogInTask(eq(username), eq(password), eq(mockedConnectionOperations))).thenReturn(mockedTask);
+        when(TaskFactory.newLogInTask(eq(mockedConnectionManager), eq(username), eq(password))).thenReturn(mockedTask);
 
         authenticationOperations.logInAsync(username, password, null);
 
@@ -90,7 +90,7 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
         final String password = "password";
 
         final LogInTask mockedTask = mock(LogInTask.class);
-        when(TaskFactory.newLogInTask(eq(username), eq(password), eq(mockedConnectionOperations))).thenReturn(mockedTask);
+        when(TaskFactory.newLogInTask(eq(mockedConnectionManager), eq(username), eq(password))).thenReturn(mockedTask);
 
         authenticationOperations.logInAsync(username, password, mockedCallback);
         verify(mockedTask, only()).executeAsync(eq(mockedCallback));
@@ -100,27 +100,27 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
     public void logOutAsyncTest() throws Exception {
         authenticationOperations.logOut();
 
-        verify(mockedConnectionOperations, only()).logOut();
+        verify(mockedConnectionManager, only()).logOut();
     }
 
     @Test
     public void isUserConnected() throws Exception {
-        when(mockedConnectionOperations.isUserConnected()).thenReturn(false);
+        when(mockedConnectionManager.isUserConnected()).thenReturn(false);
 
         Boolean isUserConnected = authenticationOperations.isUserConnected();
 
         assertFalse(isUserConnected);
-        verify(mockedConnectionOperations, only()).isUserConnected();
+        verify(mockedConnectionManager, only()).isUserConnected();
     }
 
     @Test
     public void getUsernameTest() throws Exception {
         final String expectedUsername = "username";
-        when(mockedConnectionOperations.getUsername()).thenReturn(expectedUsername);
+        when(mockedConnectionManager.getUsername()).thenReturn(expectedUsername);
 
         String username = authenticationOperations.getUsername();
         assertThat(username, equalTo(expectedUsername));
 
-        verify(mockedConnectionOperations, only()).getUsername();
+        verify(mockedConnectionManager, only()).getUsername();
     }
 }

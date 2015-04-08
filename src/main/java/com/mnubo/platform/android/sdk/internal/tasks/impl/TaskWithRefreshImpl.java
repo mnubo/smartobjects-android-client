@@ -25,6 +25,7 @@ package com.mnubo.platform.android.sdk.internal.tasks.impl;
 import android.util.Log;
 
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
 
@@ -34,11 +35,9 @@ import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCaching
 
 public abstract class TaskWithRefreshImpl<Result> extends Task<Result> {
     public final static String TASK_REFRESHING = "Refreshing token";
-    private final ConnectionRefresher connectionRefresher;
 
-    public TaskWithRefreshImpl(ApiFetcher apiFetcher, ConnectionRefresher connectionRefresher) {
-        super(apiFetcher);
-        this.connectionRefresher = connectionRefresher;
+    public TaskWithRefreshImpl(RefreshableConnection refreshableConnection) {
+        super(refreshableConnection);
     }
 
     @Override
@@ -53,7 +52,7 @@ public abstract class TaskWithRefreshImpl<Result> extends Task<Result> {
             } catch (ExpiredAuthorizationException eax) {
                 Log.d(this.getClass().getName(), TASK_REFRESHING, eax);
 
-                connectionRefresher.refresh();
+                refreshableConnection.refresh();
 
                 result = executeMnuboCall();
             }
@@ -69,10 +68,5 @@ public abstract class TaskWithRefreshImpl<Result> extends Task<Result> {
 
         return new MnuboResponse<>(result, error);
 
-    }
-
-
-    public static interface ConnectionRefresher {
-        void refresh();
     }
 }

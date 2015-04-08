@@ -24,8 +24,7 @@ package com.mnubo.platform.android.sdk.internal.tasks;
 
 import android.util.Log;
 
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
@@ -33,10 +32,10 @@ import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCaching
 public abstract class Task<Result> {
     public final static String ERROR_EXECUTING = "Error executing task.";
 
-    protected final ApiFetcher apiFetcher;
+    protected final RefreshableConnection refreshableConnection;
 
-    protected Task(ApiFetcher apiFetcher) {
-        this.apiFetcher = apiFetcher;
+    protected Task(RefreshableConnection refreshableConnection) {
+        this.refreshableConnection = refreshableConnection;
     }
 
     public MnuboResponse<Result> executeSync() {
@@ -63,22 +62,5 @@ public abstract class Task<Result> {
         }
     }
 
-    protected Result validateResult(Result result, Exception ex) {
-        if (ex != null) {
-            if (result instanceof Boolean) {
-                return (Result) Boolean.FALSE;
-            }
-            return null;
-        } else {
-            return result;
-        }
-    }
-
     protected abstract Result executeMnuboCall();
-
-    public static interface ApiFetcher {
-        MnuboClientApi getMnuboClientApi();
-
-        MnuboUserApi getMnuboUserApi();
-    }
 }

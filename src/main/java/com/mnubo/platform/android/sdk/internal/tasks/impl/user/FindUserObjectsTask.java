@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.user;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 
@@ -29,27 +30,33 @@ public class FindUserObjectsTask extends TaskWithRefreshImpl<SmartObjects> {
 
     final String username;
     final Boolean details;
+    final Boolean history;
     final String objectModelName;
 
-
-    public FindUserObjectsTask(ApiFetcher apiFetcher, String username, ConnectionRefresher refresher) {
-        this(apiFetcher, username, false, refresher);
+    public FindUserObjectsTask(RefreshableConnection refreshableConnection, String username) {
+        this(refreshableConnection, username, false);
     }
 
-    public FindUserObjectsTask(ApiFetcher apiFetcher, String username, Boolean details, ConnectionRefresher refresher) {
-        this(apiFetcher, username, false, null, refresher);
+    public FindUserObjectsTask(RefreshableConnection refreshableConnection, String username, Boolean details) {
+        this(refreshableConnection, username, details, null, false);
     }
 
-    public FindUserObjectsTask(ApiFetcher apiFetcher, String username, Boolean details, String objectModelName, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public FindUserObjectsTask(RefreshableConnection refreshableConnection, String username, Boolean details, String objectModelName) {
+        this(refreshableConnection, username, details, objectModelName, false);
+
+    }
+
+    public FindUserObjectsTask(RefreshableConnection refreshableConnection, String username, Boolean details, String objectModelName, Boolean history) {
+        super(refreshableConnection);
         this.username = username;
         this.details = details;
+        this.history = history;
         this.objectModelName = objectModelName;
 
     }
 
     @Override
     protected SmartObjects executeMnuboCall() {
-        return apiFetcher.getMnuboUserApi().userService().findUserObjects(username, details, objectModelName);
+        return refreshableConnection.getMnuboSDKApi().userService().findUserObjects(username, details, objectModelName, history);
     }
 }

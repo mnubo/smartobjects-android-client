@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
@@ -31,8 +32,8 @@ public class CreateObjectTask extends TaskWithRefreshImpl<Boolean> {
     final Boolean updateIfExists;
 
 
-    public CreateObjectTask(ApiFetcher apiFetcher, SmartObject smartObject, Boolean updateIfExists, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public CreateObjectTask(RefreshableConnection refreshableConnection,SmartObject smartObject, Boolean updateIfExists) {
+        super(refreshableConnection);
         this.smartObject = smartObject;
         this.updateIfExists = updateIfExists;
 
@@ -40,7 +41,7 @@ public class CreateObjectTask extends TaskWithRefreshImpl<Boolean> {
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboUserApi().objectService().create(smartObject, updateIfExists);
+        refreshableConnection.getMnuboSDKApi().objectService().create(smartObject, updateIfExists);
         return true;
     }
 }

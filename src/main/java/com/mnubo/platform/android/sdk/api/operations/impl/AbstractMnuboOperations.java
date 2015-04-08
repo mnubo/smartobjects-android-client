@@ -22,32 +22,15 @@
 
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
-import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboClientConnectionUnavailableException;
-import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboNotLoggedInException;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
-
-import org.springframework.social.connect.Connection;
-
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
-import static com.mnubo.platform.android.sdk.internal.tasks.Task.ApiFetcher;
-import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 
 public abstract class AbstractMnuboOperations {
 
-    private Connection<MnuboClientApi> clientConnection;
-    private Connection<MnuboUserApi> userConnection;
-
-    final ConnectionOperations connectionOperations;
-
+    protected MnuboConnectionManager mnuboConnectionManager;
     private boolean offlineCachingEnabled = false;
 
-    AbstractMnuboOperations(ConnectionOperations connectionOperations,
-                            Connection<MnuboClientApi> clientConnection,
-                            Connection<MnuboUserApi> userConnection) {
-        this.connectionOperations = connectionOperations;
-        this.userConnection = userConnection;
-        this.clientConnection = clientConnection;
+    AbstractMnuboOperations(MnuboConnectionManager mnuboConnectionManager) {
+        this.mnuboConnectionManager = mnuboConnectionManager;
     }
 
     /**
@@ -63,46 +46,4 @@ public abstract class AbstractMnuboOperations {
         return offlineCachingEnabled;
     }
 
-    ConnectionRefresher getUserConnectionRefresher() {
-        return new ConnectionRefresher() {
-            @Override
-            public void refresh() {
-                userConnection = connectionOperations.refreshUserConnection(userConnection);
-            }
-        };
-    }
-
-    ConnectionRefresher getClientConnectionRefresher() {
-        return new ConnectionRefresher() {
-            @Override
-            public void refresh() {
-                clientConnection = connectionOperations.getNewClientConnection();
-            }
-        };
-    }
-
-    protected ApiFetcher getApiFetcher() {
-        return new ApiFetcher() {
-            @Override
-            public MnuboClientApi getMnuboClientApi() {
-                if (clientConnection != null) {
-                    return clientConnection.getApi();
-                }
-                clientConnection = connectionOperations.getNewClientConnection();
-
-                if (clientConnection != null) {
-                    return clientConnection.getApi();
-                }
-                throw new MnuboClientConnectionUnavailableException();
-            }
-
-            @Override
-            public MnuboUserApi getMnuboUserApi() {
-                if (userConnection != null) {
-                    return userConnection.getApi();
-                }
-                throw new MnuboNotLoggedInException();
-            }
-        };
-    }
 }

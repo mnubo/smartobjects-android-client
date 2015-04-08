@@ -21,20 +21,20 @@
  */
 package com.mnubo.platform.android.sdk.api.operations;
 
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.social.connect.Connection;
 
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
@@ -42,15 +42,11 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 })
 public abstract class AbstractOperationsTest {
 
-    protected final ConnectionOperations mockedConnectionOperations = mock(ConnectionOperations.class);
+    protected final MnuboConnectionManager mockedConnectionManager = mock(MnuboConnectionManager.class);
 
-    @SuppressWarnings("unchecked")
-    protected final Connection<MnuboClientApi> mockedClientApiConnection = mock(Connection.class);
-    @SuppressWarnings("unchecked")
-    protected final Connection<MnuboUserApi> mockedUserApiConnection = mock(Connection.class);
+    protected final RefreshableConnection mockedRefreshableConnection = mock(RefreshableConnection.class);
 
-    protected final MnuboUserApi mockedUserApi = mock(MnuboUserApi.class);
-    protected final MnuboClientApi mockedClientApi = mock(MnuboClientApi.class);
+    protected final MnuboSDKApi mockedMnuboSDKApi = mock(MnuboSDKApi.class);
 
     @SuppressWarnings("unchecked")
     protected final CompletionCallBack<Boolean> mockedSuccessCallback = mock(CompletionCallBack.class);
@@ -59,5 +55,6 @@ public abstract class AbstractOperationsTest {
     @Before
     public void setUp() throws Exception {
         mockStatic(TaskFactory.class);
+        when(mockedConnectionManager.getCurrentConnection()).thenReturn(mockedRefreshableConnection);
     }
 }

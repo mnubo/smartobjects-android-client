@@ -20,23 +20,19 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.connect;
+package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-import com.mnubo.platform.android.sdk.internal.connect.MnuboServiceProvider;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApiImpl;
+import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
+/**
+ * This exception is raised when you attempt to perform a {@link com.mnubo.platform.android.sdk.api.operations.ClientOperations
+ * client operations} but the SDK wasn't able to get an client access_token mostly due to network
+ * error or Mnubo API problem.
+ */
+public class MnuboConnectionUnavailableException extends MnuboException {
+    private static String EXCEPTION_CLIENT_CONNECTION_UNAVAILABLE = "Unable to authenticate as the client.";
 
-class MnuboUserServiceProvider extends MnuboServiceProvider<MnuboUserApi> {
-
-    public MnuboUserServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                    String authorizeUrl, String accessTokenUrl) {
-        super(platformBaseUrl, consumerKey, consumerSecret,
-                authorizeUrl, accessTokenUrl);
+    public MnuboConnectionUnavailableException() {
+        super(EXCEPTION_CLIENT_CONNECTION_UNAVAILABLE);
     }
-
-    public MnuboUserApi getApi(String accessToken) {
-        return new MnuboUserApiImpl(accessToken, getPlatformBaseUrl());
-    }
-
 }

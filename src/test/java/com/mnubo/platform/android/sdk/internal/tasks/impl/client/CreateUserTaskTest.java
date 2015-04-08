@@ -20,22 +20,25 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.connect;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.client;
 
-import com.mnubo.platform.android.sdk.BuildConstants;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.models.users.User;
 
-import org.springframework.social.connect.support.OAuth2ConnectionFactory;
+import org.junit.Test;
 
-public class MnuboUserConnectionFactory extends OAuth2ConnectionFactory<MnuboUserApi> {
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
-    public MnuboUserConnectionFactory(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                      String authorizeUrl, String accessTokenUrl) {
-        super(BuildConstants.MNUBO_PROVIDER,
-                new MnuboUserServiceProvider(platformBaseUrl, consumerKey, consumerSecret,
-                        authorizeUrl, accessTokenUrl),
-                new MnuboUserAdapter());
+public class CreateUserTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final User user = new User();
+        CreateUserTask createUserTask = new CreateUserTask(connection, user);
+
+        createUserTask.executeMnuboCall();
+
+        verify(clientService).createUser(eq(user));
     }
-
 }
-

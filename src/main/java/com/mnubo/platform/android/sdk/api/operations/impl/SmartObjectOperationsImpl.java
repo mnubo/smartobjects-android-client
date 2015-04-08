@@ -24,22 +24,18 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations;
 import com.mnubo.platform.android.sdk.api.services.cache.impl.MnuboSmartObjectFileCachingServiceImpl;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 
-import org.springframework.social.connect.Connection;
-
 import java.io.File;
 
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesOnPublicSensor;
+import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesOnPublicSensorTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newCreateObjectTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newDeleteObjectTask;
@@ -51,14 +47,12 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
 
     private MnuboSmartObjectFileCachingServiceImpl mnuboSmartObjectFileCachingService;
 
-    public SmartObjectOperationsImpl(ConnectionOperations connectionOperations,
-                                     Connection<MnuboClientApi> clientConnection,
-                                     Connection<MnuboUserApi> userConnection,
+    public SmartObjectOperationsImpl(MnuboConnectionManager connectionManager,
                                      File applicationRootDir,
                                      boolean enableFailedAttemptCaching) {
-        super(connectionOperations, clientConnection, userConnection);
+        super(connectionManager);
         setOfflineCachingEnabled(enableFailedAttemptCaching);
-        mnuboSmartObjectFileCachingService = new MnuboSmartObjectFileCachingServiceImpl(applicationRootDir, getUserConnectionRefresher(), getApiFetcher());
+        mnuboSmartObjectFileCachingService = new MnuboSmartObjectFileCachingServiceImpl(applicationRootDir, connectionManager.getCurrentConnection());
     }
 
     public void setMnuboSmartObjectFileCachingService(MnuboSmartObjectFileCachingServiceImpl mnuboSmartObjectFileCachingService) {
@@ -70,7 +64,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public MnuboResponse<SmartObject> findObject(SdkId id) {
-        final Task<SmartObject> task = newFindObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
+        final Task<SmartObject> task = newFindObjectTask(mnuboConnectionManager.getCurrentConnection(), id);
         return task.executeSync();
     }
 
@@ -79,7 +73,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public void findObjectAsync(final SdkId id, final CompletionCallBack<SmartObject> completionCallBack) {
-        final Task<SmartObject> task = newFindObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
+        final Task<SmartObject> task = newFindObjectTask(mnuboConnectionManager.getCurrentConnection(), id);
         task.executeAsync(completionCallBack);
     }
 
@@ -88,7 +82,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public MnuboResponse<Boolean> update(SdkId id, SmartObject object) {
-        final Task<Boolean> task = newUpdateObjectTask(getApiFetcher(), id, object, getUserConnectionRefresher());
+        final Task<Boolean> task = newUpdateObjectTask(mnuboConnectionManager.getCurrentConnection(), id, object);
         return task.executeSync();
     }
 
@@ -97,7 +91,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public void updateAsync(final SdkId id, final SmartObject object, final CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newUpdateObjectTask(getApiFetcher(), id, object, getUserConnectionRefresher());
+        final Task<Boolean> task = newUpdateObjectTask(mnuboConnectionManager.getCurrentConnection(), id, object);
         task.executeAsync(completionCallBack);
     }
 
@@ -107,7 +101,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public MnuboResponse<Samples> searchSamples(SdkId id, String sensorName) {
-        final Task<Samples> task = newSearchSamplesTask(getApiFetcher(), id, sensorName, getUserConnectionRefresher());
+        final Task<Samples> task = newSearchSamplesTask(mnuboConnectionManager.getCurrentConnection(), id, sensorName);
         return task.executeSync();
     }
 
@@ -116,7 +110,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public void searchSamplesAsync(final SdkId id, final String sensorName, final CompletionCallBack<Samples> completionCallBack) {
-        final Task<Samples> task = newSearchSamplesTask(getApiFetcher(), id, sensorName, getUserConnectionRefresher());
+        final Task<Samples> task = newSearchSamplesTask(mnuboConnectionManager.getCurrentConnection(), id, sensorName);
         task.executeAsync(completionCallBack);
     }
 
@@ -125,7 +119,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public MnuboResponse<Boolean> addSamples(SdkId id, Samples samples) {
-        final Task<Boolean> task = newAddSamplesTask(getApiFetcher(), id, samples, getUserConnectionRefresher());
+        final Task<Boolean> task = newAddSamplesTask(mnuboConnectionManager.getCurrentConnection(), id, samples);
         final MnuboResponse<Boolean> result;
         if (isOfflineCachingEnabled()) {
             result = task.executeSync(mnuboSmartObjectFileCachingService.getAddSamplesFailedAttemptCallback());
@@ -140,7 +134,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public void addSamplesAsync(final SdkId id, final Samples samples, final CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newAddSamplesTask(getApiFetcher(), id, samples, getUserConnectionRefresher());
+        final Task<Boolean> task = newAddSamplesTask(mnuboConnectionManager.getCurrentConnection(), id, samples);
         if (isOfflineCachingEnabled()) {
             task.executeAsync(completionCallBack, mnuboSmartObjectFileCachingService.getAddSamplesFailedAttemptCallback());
         } else {
@@ -153,7 +147,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId id, String sensorName, Sample sample) {
-        final Task<Boolean> task = newAddSamplesOnPublicSensor(getApiFetcher(), id, sensorName, sample, getUserConnectionRefresher());
+        final Task<Boolean> task = newAddSamplesOnPublicSensorTask(mnuboConnectionManager.getCurrentConnection(), id, sensorName, sample);
         return task.executeSync();
     }
 
@@ -162,13 +156,13 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public void addSampleOnPublicSensorAsync(SdkId id, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newAddSamplesOnPublicSensor(getApiFetcher(), id, sensorName, sample, getUserConnectionRefresher());
+        final Task<Boolean> task = newAddSamplesOnPublicSensorTask(mnuboConnectionManager.getCurrentConnection(), id, sensorName, sample);
         task.executeAsync(completionCallBack);
     }
 
     @Override
     public MnuboResponse<Boolean> createObject(SmartObject smartObject, Boolean updateIfExists) {
-        final Task<Boolean> task = newCreateObjectTask(getApiFetcher(), smartObject, updateIfExists, getUserConnectionRefresher());
+        final Task<Boolean> task = newCreateObjectTask(mnuboConnectionManager.getCurrentConnection(), smartObject, updateIfExists);
         return task.executeSync();
     }
 
@@ -177,7 +171,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public void createObjectAsync(SmartObject smartObject, Boolean updateIfExists, CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newCreateObjectTask(getApiFetcher(), smartObject, updateIfExists, getUserConnectionRefresher());
+        final Task<Boolean> task = newCreateObjectTask(mnuboConnectionManager.getCurrentConnection(), smartObject, updateIfExists);
         task.executeAsync(completionCallBack);
     }
 
@@ -186,7 +180,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public MnuboResponse<Boolean> deleteObject(SdkId id) {
-        final Task<Boolean> task = newDeleteObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
+        final Task<Boolean> task = newDeleteObjectTask(mnuboConnectionManager.getCurrentConnection(), id);
         return task.executeSync();
     }
 
@@ -195,7 +189,7 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      */
     @Override
     public void deleteObjectAsync(SdkId id, CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newDeleteObjectTask(getApiFetcher(), id, getUserConnectionRefresher());
+        final Task<Boolean> task = newDeleteObjectTask(mnuboConnectionManager.getCurrentConnection(), id);
         task.executeAsync(completionCallBack);
     }
 

@@ -22,25 +22,24 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.authentication;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskImpl;
-
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 
 public class LogInTask extends TaskImpl<Boolean> {
 
     final String username;
     final String password;
-    final ConnectionOperations connectionOperations;
+    final MnuboConnectionManager connectionManager;
 
-    public LogInTask(String username, String password, ConnectionOperations connectionOperations) {
+    public LogInTask(MnuboConnectionManager connectionManager, String username, String password) {
         super(null);
         this.username = username;
         this.password = password;
-        this.connectionOperations = connectionOperations;
+        this.connectionManager = connectionManager;
     }
 
     @Override
     protected Boolean executeMnuboCall() {
-        return connectionOperations.logIn(username, password);
+        return connectionManager.logIn(username, password);
     }
 }

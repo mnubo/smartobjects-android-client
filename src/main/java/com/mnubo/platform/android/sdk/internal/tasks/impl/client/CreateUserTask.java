@@ -22,22 +22,22 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.client;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.users.User;
 
 public class CreateUserTask extends TaskWithRefreshImpl<Boolean> {
     final User user;
-    final ApiFetcher apiFetcher;
 
-    public CreateUserTask(ApiFetcher apiFetcher, User user, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+
+    public CreateUserTask(RefreshableConnection refreshableConnection,User user) {
+        super(refreshableConnection);
         this.user = user;
-        this.apiFetcher = apiFetcher;
     }
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboClientApi().clientService().createUser(user);
+        refreshableConnection.getMnuboSDKApi().clientService().createUser(user);
         return true;
     }
 }

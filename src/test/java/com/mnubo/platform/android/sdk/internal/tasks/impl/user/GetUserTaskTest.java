@@ -20,21 +20,28 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.api;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.user;
 
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.DeleteObjectTask;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
 
-import com.mnubo.platform.android.sdk.internal.services.CollectionService;
-import com.mnubo.platform.android.sdk.internal.services.GroupService;
-import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
-import com.mnubo.platform.android.sdk.internal.services.UserService;
+import org.junit.Test;
 
-public interface MnuboUserApi {
-    UserService userService();
+import static com.mnubo.platform.android.sdk.models.common.IdType.deviceid;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
-    SmartObjectService objectService();
+public class GetUserTaskTest extends AbstractTaskTest {
 
-    GroupService groupService();
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final String username = "username";
+        GetUserTask deleteObjectTask = new GetUserTask(connection, username);
 
-    CollectionService collectionService();
+        deleteObjectTask.executeMnuboCall();
 
+        verify(userService).getUser(eq(username));
+    }
 }

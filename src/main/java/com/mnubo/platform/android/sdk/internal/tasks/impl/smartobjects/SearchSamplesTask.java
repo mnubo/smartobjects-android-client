@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
@@ -32,8 +33,8 @@ public class SearchSamplesTask extends TaskWithRefreshImpl<Samples> {
     final String sensorName;
 
 
-    public SearchSamplesTask(ApiFetcher apiFetcher, SdkId objectId, String sensorName, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public SearchSamplesTask(RefreshableConnection refreshableConnection,SdkId objectId, String sensorName) {
+        super(refreshableConnection);
         this.objectId = objectId;
         this.sensorName = sensorName;
 
@@ -41,6 +42,6 @@ public class SearchSamplesTask extends TaskWithRefreshImpl<Samples> {
 
     @Override
     protected Samples executeMnuboCall() {
-        return apiFetcher.getMnuboUserApi().objectService().searchSamples(objectId, sensorName);
+        return refreshableConnection.getMnuboSDKApi().objectService().searchSamples(objectId, sensorName);
     }
 }

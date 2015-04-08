@@ -37,11 +37,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ApiFetcher;
-import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -52,7 +49,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @SuppressWarnings("unchecked")
 public class UserOperationsImplTest extends AbstractOperationsTest {
 
-    private final UserOperationsImpl userOperations = new UserOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
+    private final UserOperationsImpl userOperations = new UserOperationsImpl(mockedConnectionManager);
     private final UserService mockedUserService = mock(UserService.class);
 
     @SuppressWarnings("unchecked")
@@ -69,8 +66,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        when(mockedUserApiConnection.getApi()).thenReturn(mockedUserApi);
-        when(mockedUserApi.userService()).thenReturn(mockedUserService);
+        when(mockedMnuboSDKApi.userService()).thenReturn(mockedUserService);
     }
 
     @Test
@@ -80,7 +76,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(false), isNull(String.class), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(false), isNull(String.class))).thenReturn(mockedTask);
 
         final SmartObjects result = userOperations.findUserObjects(username, false, null).getResult();
 
@@ -94,7 +90,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(false), isNull(String.class), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(false), isNull(String.class))).thenReturn(mockedTask);
 
         userOperations.findUserObjectsAsync(username, false, null, null);
 
@@ -108,7 +104,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(false), isNull(String.class), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(false), isNull(String.class))).thenReturn(mockedTask);
 
         userOperations.findUserObjectsAsync(username, false, null, mockedSmartObjectsCallback);
 
@@ -124,7 +120,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(true), isNull(String.class), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(true), isNull(String.class))).thenReturn(mockedTask);
 
         final SmartObjects result = userOperations.findUserObjects(username, true, null).getResult();
 
@@ -138,7 +134,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(true), isNull(String.class), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(true), isNull(String.class))).thenReturn(mockedTask);
 
         userOperations.findUserObjectsAsync(username, true, null, null);
 
@@ -150,7 +146,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(true), isNull(String.class), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(true), isNull(String.class))).thenReturn(mockedTask);
 
         userOperations.findUserObjectsAsync(username, true, null, mockedSmartObjectsCallback);
 
@@ -167,7 +163,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(true), eq(objectModelName), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(true), eq(objectModelName))).thenReturn(mockedTask);
 
         final SmartObjects result = userOperations.findUserObjects(username, true, objectModelName).getResult();
 
@@ -182,7 +178,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String objectModelName = "objectModelName";
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(true), eq(objectModelName), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(true), eq(objectModelName))).thenReturn(mockedTask);
 
         userOperations.findUserObjectsAsync(username, true, objectModelName, null);
 
@@ -196,7 +192,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String objectModelName = "objectModelName";
 
         final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(any(ApiFetcher.class), eq(username), eq(true), eq(objectModelName), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindUserObjectsTask(eq(mockedRefreshableConnection), eq(username), eq(true), eq(objectModelName))).thenReturn(mockedTask);
 
         userOperations.findUserObjectsAsync(username, true, objectModelName, mockedSmartObjectsCallback);
 
@@ -211,7 +207,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
 
         final GetUserTask mockedTask = mock(GetUserTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newGetUserTask(any(ApiFetcher.class), eq(username), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newGetUserTask(eq(mockedRefreshableConnection), eq(username))).thenReturn(mockedTask);
 
         final User result = userOperations.getUser(username).getResult();
 
@@ -225,7 +221,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final GetUserTask mockedTask = mock(GetUserTask.class);
-        when(TaskFactory.newGetUserTask(any(ApiFetcher.class), eq(username), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newGetUserTask(eq(mockedRefreshableConnection), eq(username))).thenReturn(mockedTask);
 
         userOperations.getUserAsync(username, null);
 
@@ -238,7 +234,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final GetUserTask mockedTask = mock(GetUserTask.class);
-        when(TaskFactory.newGetUserTask(any(ApiFetcher.class), eq(username), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newGetUserTask(eq(mockedRefreshableConnection), eq(username))).thenReturn(mockedTask);
 
         userOperations.getUserAsync(username, mockedUserCallback);
 
@@ -253,7 +249,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
 
         final UpdateUserTask mockedTask = mock(UpdateUserTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newUpdateUserTask(any(ApiFetcher.class), eq(username), eq(updatedUser), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdateUserTask(eq(mockedRefreshableConnection), eq(username), eq(updatedUser))).thenReturn(mockedTask);
 
         final Boolean result = userOperations.update(username, updatedUser).getResult();
 
@@ -269,7 +265,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final User updatedUser = new User();
 
         final UpdateUserTask mockedTask = mock(UpdateUserTask.class);
-        when(TaskFactory.newUpdateUserTask(any(ApiFetcher.class), eq(username), eq(updatedUser), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdateUserTask(eq(mockedRefreshableConnection), eq(username), eq(updatedUser))).thenReturn(mockedTask);
 
         userOperations.updateAsync(username, updatedUser, null);
 
@@ -284,7 +280,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final User updatedUser = new User();
 
         final UpdateUserTask mockedTask = mock(UpdateUserTask.class);
-        when(TaskFactory.newUpdateUserTask(any(ApiFetcher.class), eq(username), eq(updatedUser), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdateUserTask(eq(mockedRefreshableConnection), eq(username), eq(updatedUser))).thenReturn(mockedTask);
 
         userOperations.updateAsync(username, updatedUser, mockedSuccessCallback);
 
@@ -299,7 +295,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
 
         final UpdatePasswordTask mockedTask = mock(UpdatePasswordTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newUpdatePasswordTask(any(ApiFetcher.class), eq(username), eq(updatePassword), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdatePasswordTask(eq(mockedRefreshableConnection), eq(username), eq(updatePassword))).thenReturn(mockedTask);
 
         final Boolean result = userOperations.updatePassword(username, updatePassword).getResult();
 
@@ -314,7 +310,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final UpdatePassword updatePassword = new UpdatePassword("old", "new", "new");
 
         final UpdatePasswordTask mockedTask = mock(UpdatePasswordTask.class);
-        when(TaskFactory.newUpdatePasswordTask(any(ApiFetcher.class), eq(username), eq(updatePassword), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdatePasswordTask(eq(mockedRefreshableConnection), eq(username), eq(updatePassword))).thenReturn(mockedTask);
 
         userOperations.updatePasswordAsync(username, updatePassword, null);
 
@@ -328,7 +324,7 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         final UpdatePassword updatePassword = new UpdatePassword("old", "new", "new");
 
         final UpdatePasswordTask mockedTask = mock(UpdatePasswordTask.class);
-        when(TaskFactory.newUpdatePasswordTask(any(ApiFetcher.class), eq(username), eq(updatePassword), any(ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdatePasswordTask(eq(mockedRefreshableConnection), eq(username), eq(updatePassword))).thenReturn(mockedTask);
 
         userOperations.updatePasswordAsync(username, updatePassword, mockedSuccessCallback);
 

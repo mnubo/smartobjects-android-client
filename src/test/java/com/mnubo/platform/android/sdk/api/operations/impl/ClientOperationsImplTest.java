@@ -51,16 +51,13 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @SuppressWarnings("unchecked")
 public class ClientOperationsImplTest extends AbstractOperationsTest {
 
-    private final ClientOperationsImpl clientOperations = new ClientOperationsImpl(mockedConnectionOperations, mockedClientApiConnection, mockedUserApiConnection);
+    private final ClientOperationsImpl clientOperations = new ClientOperationsImpl(mockedConnectionManager);
     private final ClientService mockedClientService = mock(ClientService.class);
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
-
-        when(mockedClientApiConnection.getApi()).thenReturn(mockedClientApi);
-        when(mockedClientApi.clientService()).thenReturn(mockedClientService);
     }
 
     @Test
@@ -68,7 +65,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final User createdUser = new User();
         final CreateUserTask mockedTask = mock(CreateUserTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newCreateUserTask(any(Task.ApiFetcher.class), eq(createdUser), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newCreateUserTask(eq(mockedRefreshableConnection), eq(createdUser))).thenReturn(mockedTask);
 
         final Boolean result = clientOperations.createUser(createdUser).getResult();
 
@@ -81,7 +78,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final User createdUser = new User();
 
         final CreateUserTask mockedTask = mock(CreateUserTask.class);
-        when(TaskFactory.newCreateUserTask(any(Task.ApiFetcher.class), eq(createdUser), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newCreateUserTask(eq(mockedRefreshableConnection), eq(createdUser))).thenReturn(mockedTask);
 
         clientOperations.createUserAsync(createdUser, null);
 
@@ -93,7 +90,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final User createdUser = new User();
 
         final CreateUserTask mockedTask = mock(CreateUserTask.class);
-        when(TaskFactory.newCreateUserTask(any(Task.ApiFetcher.class), eq(createdUser), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newCreateUserTask(eq(mockedRefreshableConnection), eq(createdUser))).thenReturn(mockedTask);
 
         clientOperations.createUserAsync(createdUser, mockedSuccessCallback);
 
@@ -108,7 +105,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
 
         final ConfirmUserCreationTask mockedTask = mock(ConfirmUserCreationTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newConfirmUserCreationTask(any(Task.ApiFetcher.class), eq(username), eq(userConfirmation), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newConfirmUserCreationTask(eq(mockedRefreshableConnection), eq(username), eq(userConfirmation))).thenReturn(mockedTask);
 
         final Boolean result = clientOperations.confirmUserCreation(username, userConfirmation).getResult();
 
@@ -122,7 +119,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final ConfirmUserCreationTask mockedTask = mock(ConfirmUserCreationTask.class);
-        when(TaskFactory.newConfirmUserCreationTask(any(Task.ApiFetcher.class), eq(username), eq(userConfirmation), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newConfirmUserCreationTask(eq(mockedRefreshableConnection), eq(username), eq(userConfirmation))).thenReturn(mockedTask);
 
         clientOperations.confirmUserCreationAsync(username, userConfirmation, null);
 
@@ -136,7 +133,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final ConfirmUserCreationTask mockedTask = mock(ConfirmUserCreationTask.class);
-        when(TaskFactory.newConfirmUserCreationTask(any(Task.ApiFetcher.class), eq(username), eq(userConfirmation), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newConfirmUserCreationTask(eq(mockedRefreshableConnection), eq(username), eq(userConfirmation))).thenReturn(mockedTask);
 
         clientOperations.confirmUserCreationAsync(username, userConfirmation, mockedSuccessCallback);
 
@@ -150,7 +147,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
 
         final ResetPasswordTask mockedTask = mock(ResetPasswordTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newResetPasswordTask(any(Task.ApiFetcher.class), eq(username), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newResetPasswordTask(eq(mockedRefreshableConnection), eq(username))).thenReturn(mockedTask);
 
         final Boolean result = clientOperations.resetPassword(username).getResult();
 
@@ -164,7 +161,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final ResetPasswordTask mockedTask = mock(ResetPasswordTask.class);
-        when(TaskFactory.newResetPasswordTask(any(Task.ApiFetcher.class), eq(username), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newResetPasswordTask(eq(mockedRefreshableConnection), eq(username))).thenReturn(mockedTask);
 
         clientOperations.resetPasswordAsync(username, null);
 
@@ -178,7 +175,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final String username = "username";
 
         final ResetPasswordTask mockedTask = mock(ResetPasswordTask.class);
-        when(TaskFactory.newResetPasswordTask(any(Task.ApiFetcher.class), eq(username), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newResetPasswordTask(eq(mockedRefreshableConnection), eq(username))).thenReturn(mockedTask);
 
         clientOperations.resetPasswordAsync(username, mockedSuccessCallback);
 
@@ -193,7 +190,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
 
         final ConfirmPasswordResetTask mockedTask = mock(ConfirmPasswordResetTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newConfirmPasswordResetTask(any(Task.ApiFetcher.class), eq(username), eq(resetPassword), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newConfirmPasswordResetTask(eq(mockedRefreshableConnection), eq(username), eq(resetPassword))).thenReturn(mockedTask);
 
         final Boolean result = clientOperations.confirmPasswordReset(username, resetPassword).getResult();
 
@@ -207,7 +204,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final ResetPassword resetPassword = new ResetPassword("token", "password", "password");
 
         final ConfirmPasswordResetTask mockedTask = mock(ConfirmPasswordResetTask.class);
-        when(TaskFactory.newConfirmPasswordResetTask(any(Task.ApiFetcher.class), eq(username), eq(resetPassword), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newConfirmPasswordResetTask(eq(mockedRefreshableConnection), eq(username), eq(resetPassword))).thenReturn(mockedTask);
 
         clientOperations.confirmPasswordResetAsync(username, resetPassword, null);
 
@@ -222,7 +219,7 @@ public class ClientOperationsImplTest extends AbstractOperationsTest {
         final ResetPassword resetPassword = new ResetPassword("token", "password", "password");
 
         final ConfirmPasswordResetTask mockedTask = mock(ConfirmPasswordResetTask.class);
-        when(TaskFactory.newConfirmPasswordResetTask(any(Task.ApiFetcher.class), eq(username), eq(resetPassword), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newConfirmPasswordResetTask(eq(mockedRefreshableConnection), eq(username), eq(resetPassword))).thenReturn(mockedTask);
 
         clientOperations.confirmPasswordResetAsync(username, resetPassword, mockedSuccessCallback);
 

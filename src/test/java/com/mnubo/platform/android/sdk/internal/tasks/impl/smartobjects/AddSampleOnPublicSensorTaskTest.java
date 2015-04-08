@@ -20,29 +20,29 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.client.connect;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.models.common.IdType;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
+import com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample;
 
-import org.springframework.social.connect.ApiAdapter;
-import org.springframework.social.connect.ConnectionValues;
-import org.springframework.social.connect.UserProfile;
+import org.junit.Test;
 
-class MnuboClientAdapter implements ApiAdapter<MnuboClientApi> {
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
-    public boolean test(MnuboClientApi mnuboClientApi) {
-        return true;
+public class AddSampleOnPublicSensorTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final String sensorName = "sensorName";
+        final Sample sample = new Sample();
+        final SdkId id = SdkId.build("id", IdType.deviceid);
+        AddSampleOnPublicSensorTask addSampleOnPublicSensorTask = new AddSampleOnPublicSensorTask(connection, id, sensorName, sample);
+
+        addSampleOnPublicSensorTask.executeMnuboCall();
+
+        verify(smartObjectService).addSampleOnPublicSensor(eq(id), eq(sensorName), eq(sample));
     }
-
-    public void setConnectionValues(MnuboClientApi mnuboClientApi, ConnectionValues values) {
-    }
-
-    public UserProfile fetchUserProfile(MnuboClientApi mnuboClientApi) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void updateStatus(MnuboClientApi mnuboClientApi, String message) {
-        throw new UnsupportedOperationException();
-    }
-
 }

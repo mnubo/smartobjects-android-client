@@ -45,11 +45,6 @@ public interface UsersSdkSpi {
     User getUser(String username, List<String> attributes);
 
     //[/rest/users/{username}/objects],methods=[GET]
-    SmartObjects findUserObjects(String username);
-
-    SmartObjects findUserObjects(String username, boolean details);
-
-    SmartObjects findUserObjects(String username, boolean details, String model);
 
     SmartObjects findUserObjects(String username, boolean details, String model, boolean showHistory);
 
