@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.models.smartobjects.samples;
 
+import android.location.Location;
 import android.os.Parcel;
 
 import com.mnubo.platform.android.sdk.mocks.MockParcel;
@@ -29,11 +30,15 @@ import com.mnubo.platform.android.sdk.mocks.MockParcel;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SampleTest {
 
@@ -67,5 +72,43 @@ public class SampleTest {
         Sample sampleFromParcel = Sample.CREATOR.createFromParcel(parcel);
 
         assertEquals(sample, sampleFromParcel);
+    }
+
+    @Test
+    public void testSetLocation() throws Exception {
+        Sample sample = new Sample();
+        final Location location = mock(Location.class);
+        final double latitude = 1.0d;
+        when(location.getLatitude()).thenReturn(latitude);
+        final double longitude = 2.0d;
+        when(location.getLongitude()).thenReturn(longitude);
+
+        sample.setLocation(location);
+
+        assertThat(sample.getCoordinates().size(), is(equalTo(2)));
+
+        assertThat(sample.getLatitude(), is(equalTo(latitude)));
+        assertThat(sample.getLongitude(), is(equalTo(longitude)));
+
+    }
+
+    @Test
+    public void testSetLocationWithAltidude() throws Exception {
+        Sample sample = new Sample();
+        final Location location = mock(Location.class);
+        final double latitude = 1.0d;
+        when(location.getLatitude()).thenReturn(latitude);
+        final double longitude = 2.0d;
+        when(location.getLongitude()).thenReturn(longitude);
+        final double altitude = 3.0d;
+        when(location.getAltitude()).thenReturn(altitude);
+
+        sample.setLocation(location);
+
+        assertThat(sample.getCoordinates().size(), is(equalTo(3)));
+
+        assertThat(sample.getLatitude(), is(equalTo(latitude)));
+        assertThat(sample.getLongitude(), is(equalTo(longitude)));
+        assertThat(sample.getAltitude(), is(equalTo(altitude)));
     }
 }
