@@ -39,12 +39,10 @@ public class Collections implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("collectionList")
-    private List<Collection> collections;
-    private int count;
+    private List<Collection> collections = new ArrayList<>();
+    private int count = 0;
 
     public Collections() {
-        collections = new ArrayList<>();
-        count = 0;
     }
 
     public List<Collection> getCollections() {

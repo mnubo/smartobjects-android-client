@@ -47,12 +47,10 @@ public class Users implements Parcelable, Serializable {
     @JsonIgnore
     private static final long serialVersionUID = 1L;
 
-    private List<User> users;
-    private int count;
+    private List<User> users = new ArrayList<>();
+    private int count = 0;
 
     public Users() {
-        users = new ArrayList<>();
-        count = 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -63,7 +61,7 @@ public class Users implements Parcelable, Serializable {
 
     public List<User> getUsers() {
         if (users == null) {
-            users = new LinkedList<>();
+            users = new ArrayList<>();
         }
 
         if (users.size() != count) {

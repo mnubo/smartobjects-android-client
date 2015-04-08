@@ -45,10 +45,9 @@ public class Samples implements Parcelable, Serializable {
     @JsonIgnore
     private static final long serialVersionUID = 2L;
 
-    private List<Sample> samples;
+    private List<Sample> samples = new ArrayList<>();
 
     public Samples() {
-        samples = new ArrayList<>();
     }
 
     @SuppressWarnings("unchecked")

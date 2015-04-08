@@ -33,7 +33,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +101,9 @@ public class Sample implements Parcelable, Serializable {
 
     public void setLocation(final Location location) {
         if (location != null) {
-            this.coordinates = Arrays.asList(location.getLatitude(), location.getLongitude());
+            this.coordinates = new ArrayList<>();
+            this.coordinates.add(location.getLatitude());
+            this.coordinates.add(location.getLongitude());
             if (location.getAltitude() != 0.0d) {
                 this.coordinates.add(location.getAltitude());
             }

@@ -38,12 +38,10 @@ public class Groups implements Parcelable, Serializable {
     @JsonIgnore
     private static final long serialVersionUID = 1L;
 
-    private List<Group> groups;
-    private int count;
+    private List<Group> groups = new ArrayList<>();
+    private int count = 0;
 
     public Groups() {
-        groups = new ArrayList<>();
-        this.count = 0;
     }
 
     @SuppressWarnings("unchecked")

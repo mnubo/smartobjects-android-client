@@ -48,12 +48,10 @@ public class SmartObjects implements Parcelable, Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("objects")
-    private List<SmartObject> smartObjects;
-    private int count;
+    private List<SmartObject> smartObjects = new ArrayList<>();
+    private int count = 0;
 
     public SmartObjects() {
-        smartObjects = new ArrayList<>();
-        count = 0;
     }
 
     @SuppressWarnings("unchecked")
