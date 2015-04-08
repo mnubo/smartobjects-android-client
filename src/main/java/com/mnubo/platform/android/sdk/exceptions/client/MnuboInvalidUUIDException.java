@@ -24,20 +24,22 @@ package com.mnubo.platform.android.sdk.exceptions.client;
 
 import android.text.TextUtils;
 
+import com.mnubo.platform.android.sdk.exceptions.server.MnuboServerException;
+
 import java.util.regex.Pattern;
 
 /**
  * This exception is raised when you perform a request for a user that doesn't exists in the Mnubo
  * API.
  */
-public class MnuboUnknownUserException extends MnuboClientException {
-    private static String EXCEPTION_UNKNOWN_USER = "The user was not found.";
+public class MnuboInvalidUUIDException extends MnuboClientException {
+    private static String EXCEPTION_INVALID_UUID = "The value you provided is not a valid UUID.";
 
-    public final static String UNKNOWN_USER_PATTERN = "^Unknown User '.*'$";
-    private final static Pattern PATTERN = Pattern.compile(UNKNOWN_USER_PATTERN);
+    public final static String INVALID_UUID_PATTERN = "^Invalid UUID string: .*$";
+    private final static Pattern PATTERN = Pattern.compile(INVALID_UUID_PATTERN);
 
-    public MnuboUnknownUserException() {
-        super(EXCEPTION_UNKNOWN_USER);
+    public MnuboInvalidUUIDException() {
+        super(EXCEPTION_INVALID_UUID);
     }
 
     public static boolean matches(CharSequence s) {

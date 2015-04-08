@@ -116,9 +116,13 @@ dependencies {
     testCompile("org.springframework:spring-test:$SPRING_TEST_VERSION") {
         exclude module: "spring-core"
     }
-    testCompile "org.mockito:mockito-core:$MOCKITO_CORE_VERSION"
+    testCompile("org.mockito:mockito-core:$MOCKITO_CORE_VERSION") {
+        exclude module: "hamcrest-core"
+    }
     testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
-    testCompile "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
+    testCompile("org.powermock:powermock-api-mockito:$POWERMOCK_VERSION") {
+        exclude module: "mockito-all"
+    }
 }
 
 apply from: 'gradle/gradle-mvn-push.gradle'

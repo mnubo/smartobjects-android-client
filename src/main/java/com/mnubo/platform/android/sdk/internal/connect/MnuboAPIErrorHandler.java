@@ -28,20 +28,21 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mnubo.platform.android.sdk.exceptions.MnuboException;
-import com.mnubo.platform.android.sdk.exceptions.client.MnuboAccessDeniedException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboDuplicateAttributeException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidConfirmPasswordException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidObjectException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidPreviousPasswordException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidRegistrationTokenException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidResetPasswordTokenException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboInvalidUUIDException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboObjectNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboResetPasswordDisabledException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboSensorNotFoundException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUnknownUserException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserAlreadyExistsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboUserDisabledException;
@@ -79,18 +80,6 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
         HttpStatus statusCode = response.getStatusCode();
-
-        if (statusCode.series() == HttpStatus.Series.SERVER_ERROR) {
-            handleServerErrors(response);
-        } else if (statusCode.series() == HttpStatus.Series.CLIENT_ERROR) {
-            handleClientErrors(response);
-        }
-
-        throw new MnuboException();
-    }
-
-    private void handleClientErrors(ClientHttpResponse response) throws IOException {
-        HttpStatus statusCode = response.getStatusCode();
         String status = response.getStatusText();
         byte[] body = getResponseBody(response);
         MediaType contentType = response.getHeaders().getContentType();
@@ -101,34 +90,47 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
         if (errorMap != null) {
 
             String errorMessage = extractErrorMessageFromMap(errorMap);
-            if (errorMessage == null) {
-                throw new MnuboClientException(String.format("Unable to parse error message. [%s]", errorMap),
-                        new HttpClientErrorException(statusCode, status, body, charset));
+            if (statusCode.series() == HttpStatus.Series.SERVER_ERROR) {
+
+                if (errorMessage == null) {
+
+                    throw new MnuboServerException(String.format("Unable to parse error message. [%s]", errorMap),
+                            new HttpClientErrorException(statusCode, status, body, charset));
+                }
+
+                handleServerErrors(statusCode, errorMessage);
+
+                throw new MnuboServerException(errorMessage, new HttpServerErrorException(statusCode, status, body, charset));
+
+            } else if (statusCode.series() == HttpStatus.Series.CLIENT_ERROR) {
+
+                if (errorMessage == null) {
+
+                    throw new MnuboClientException(String.format("Unable to parse error message. [%s]", errorMap),
+                            new HttpClientErrorException(statusCode, status, body, charset));
+                }
+
+                handleClientErrors(statusCode, errorMessage);
+
+                throw new MnuboClientException(errorMessage, new HttpClientErrorException(statusCode, status, body, charset));
             }
 
-            if (statusCode == HttpStatus.UNAUTHORIZED) {
-                handleUnauthorize(errorMessage);
-            } else if (statusCode == HttpStatus.BAD_REQUEST) {
-                handleBadRequest(errorMessage);
-            } else if (statusCode == HttpStatus.FORBIDDEN) {
-                throw new MnuboAccessDeniedException(new HttpClientErrorException(statusCode, status, body, charset));
-            }
 
-            throw new MnuboClientException(errorMessage, new HttpClientErrorException(statusCode, status, body, charset));
         }
+    }
 
-        throw new MnuboClientException(new HttpClientErrorException(statusCode, status, body, charset));
+    private void handleClientErrors(HttpStatus statusCode, String errorMessage) throws IOException {
+
+        if (statusCode == HttpStatus.UNAUTHORIZED) {
+            handleUnauthorize(errorMessage);
+        } else if (statusCode == HttpStatus.BAD_REQUEST) {
+            handleBadRequest(errorMessage);
+        }
 
     }
 
-    private void handleServerErrors(ClientHttpResponse response) throws IOException {
-        HttpStatus statusCode = response.getStatusCode();
-        String status = response.getStatusText();
-        byte[] body = getResponseBody(response);
-        MediaType contentType = response.getHeaders().getContentType();
-        Charset charset = contentType != null ? contentType.getCharSet() : null;
+    private void handleServerErrors(HttpStatus statusCode, String errorMessage) throws IOException {
 
-        throw new MnuboServerException(new HttpServerErrorException(statusCode, status, body, charset));
     }
 
     private void handleUnauthorize(final String errorMessage) {
@@ -166,6 +168,12 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             throw new MnuboDuplicateAttributeException();
         } else if (TextUtils.equals(OBJECT_ALREADY_EXISTS, errorMessage)) {
             throw new MnuboObjectAlreadyExistsException();
+        } else if (MnuboInvalidUUIDException.matches(errorMessage)) {
+            throw new MnuboInvalidUUIDException();
+        } else if (MnuboSensorNotFoundException.matches(errorMessage)) {
+            throw new MnuboSensorNotFoundException();
+        } else if (MnuboInvalidObjectException.matches(errorMessage)) {
+            throw new MnuboInvalidObjectException();
         }
     }
 

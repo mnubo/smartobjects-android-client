@@ -20,27 +20,43 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.exceptions.client;
+package com.mnubo.platform.android.sdk.models.common;
 
-import android.text.TextUtils;
+import android.os.Parcel;
 
-import java.util.regex.Pattern;
+import com.mnubo.platform.android.sdk.mocks.MockParcel;
 
-/**
- * This exception is raised when you perform a request for a user that doesn't exists in the Mnubo
- * API.
- */
-public class MnuboUnknownUserException extends MnuboClientException {
-    private static String EXCEPTION_UNKNOWN_USER = "The user was not found.";
+import org.junit.Test;
 
-    public final static String UNKNOWN_USER_PATTERN = "^Unknown User '.*'$";
-    private final static Pattern PATTERN = Pattern.compile(UNKNOWN_USER_PATTERN);
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
-    public MnuboUnknownUserException() {
-        super(EXCEPTION_UNKNOWN_USER);
+public class AttributeTest {
+
+    @Test
+    public void testWriteToParcelEmpty() throws Exception {
+        Attribute attribute = new Attribute();
+
+        Parcel parcel = MockParcel.obtain();
+        attribute.writeToParcel(parcel, 0);
+
+        Attribute attributeFromParcel = Attribute.CREATOR.createFromParcel(parcel);
+
+        assertEquals(attribute, attributeFromParcel);
     }
 
-    public static boolean matches(CharSequence s) {
-        return !TextUtils.isEmpty(s) && PATTERN.matcher(s).matches();
+    @Test
+    public void testWriteToParcelWithData() throws Exception {
+        Attribute attribute = new Attribute("name", "value");
+        attribute.setType("STRING");
+
+        Parcel parcel = MockParcel.obtain();
+        attribute.writeToParcel(parcel, 0);
+
+        Attribute attributeFromParcel = Attribute.CREATOR.createFromParcel(parcel);
+
+        assertEquals(attribute, attributeFromParcel);
     }
 }

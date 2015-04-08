@@ -20,7 +20,27 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.models.common;
+package com.mnubo.platform.android.sdk.exceptions.client;
 
-public enum Type {
+import android.text.TextUtils;
+
+import java.util.regex.Pattern;
+
+/**
+ * This exception is raised when you perform a request for a sensor that doesn't exists for the
+ * current object. API.
+ */
+public class MnuboSensorNotFoundException extends MnuboClientException {
+    private static String EXCEPTION_SENSOR_NOT_FOUND = "The given sensor name was not found.";
+
+    public final static String SENSOR_NOT_FOUND_PATTERN = "sensor name\\(.*\\) not found$";
+    private final static Pattern PATTERN = Pattern.compile(SENSOR_NOT_FOUND_PATTERN);
+
+    public MnuboSensorNotFoundException() {
+        super(EXCEPTION_SENSOR_NOT_FOUND);
+    }
+
+    public static boolean matches(CharSequence s) {
+        return !TextUtils.isEmpty(s) && PATTERN.matcher(s).matches();
+    }
 }

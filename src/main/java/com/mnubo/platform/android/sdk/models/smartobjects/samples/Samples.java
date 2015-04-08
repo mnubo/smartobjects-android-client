@@ -23,6 +23,9 @@
 package com.mnubo.platform.android.sdk.models.smartobjects.samples;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -37,27 +40,21 @@ import java.util.List;
  * @see com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples
  */
 @JsonInclude(Include.NON_NULL)
-public class Samples implements Serializable {
+public class Samples implements Parcelable, Serializable {
 
     @JsonIgnore
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
-    private Sample common;
-    private List<Sample> samples;
-    private String status;
-    private String error;
+    private List<Sample> samples = new ArrayList<>();
 
     public Samples() {
-        samples = new ArrayList<>();
     }
 
-    public Sample getCommon() {
-        return common;
+    @SuppressWarnings("unchecked")
+    public Samples(Parcel in) {
+        samples = in.readArrayList(null);
     }
 
-    public void setCommon(Sample aCommonSample) {
-        common = aCommonSample;
-    }
 
     public List<Sample> getSamples() {
         return samples;
@@ -71,30 +68,53 @@ public class Samples implements Serializable {
         this.samples.add(sample);
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String aStatus) {
-        status = aStatus;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String aError) {
-        error = aError;
-    }
-
-    public void clear() {
-        this.samples.clear();
-    }
-
     @Override
     public String toString() {
         return "Samples{" +
                 "samples=" + samples +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Samples)) return false;
+
+        Samples samples1 = (Samples) o;
+
+        if (samples != null ? !samples.equals(samples1.samples) : samples1.samples != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return samples != null ? samples.hashCode() : 0;
+    }
+
+    /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.samples);
+    }
+
+    public static final Parcelable.Creator<Samples> CREATOR
+            = new Parcelable.Creator<Samples>() {
+        public Samples createFromParcel(Parcel in) {
+            return new Samples(in);
+        }
+
+        public Samples[] newArray(int size) {
+            return new Samples[size];
+        }
+    };
 }

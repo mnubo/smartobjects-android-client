@@ -32,17 +32,22 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
 /**
- * A Mnubo attribute is a name and a type. It is used to store data of any kind. <p/> Attributes can
- * be found in {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and {@link
- * com.mnubo.platform.android.sdk.models.users.User}.
+ * Attributes are used in {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and
+ * {@link com.mnubo.platform.android.sdk.models.users.User}.
+ * <p/>
+ * {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} <code>Attribute</code> are
+ * defined in the ObjectModel of the object. The type will automatically be resolved according to
+ * the type defined for this <code>Attribute</code> in the definition.
+ * <p/>
+ * {@link com.mnubo.platform.android.sdk.models.users.User} <code>Attribute</code> are currently
+ * used to store any information. The default type is STRING. Soon the User's Attribute will be
+ * defined by a Model definition too.
  */
 @JsonInclude(Include.NON_NULL)
 public class Attribute implements Serializable, Parcelable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
-
-    public static final String DEFAULT_CATEGORY = "default";
 
     private String name;
 
@@ -52,6 +57,11 @@ public class Attribute implements Serializable, Parcelable {
 
     public Attribute() {
 
+    }
+
+    public Attribute(String name, String value) {
+        this.name = name;
+        this.value = value;
     }
 
     private Attribute(Parcel in) {
@@ -86,13 +96,35 @@ public class Attribute implements Serializable, Parcelable {
         this.value = value;
     }
 
-
     @Override
     public String toString() {
         return "Attribute{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
                 ", value='" + value + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Attribute)) return false;
+
+        Attribute attribute = (Attribute) o;
+
+        if (name != null ? !name.equals(attribute.name) : attribute.name != null) return false;
+        if (type != null ? !type.equals(attribute.type) : attribute.type != null) return false;
+        if (value != null ? !value.equals(attribute.value) : attribute.value != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
     }
 
     /*

@@ -20,27 +20,42 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.exceptions.client;
+package com.mnubo.platform.android.sdk.models.smartobjects.samples;
 
-import android.text.TextUtils;
+import android.os.Parcel;
 
-import java.util.regex.Pattern;
+import com.mnubo.platform.android.sdk.mocks.MockParcel;
 
-/**
- * This exception is raised when you perform a request for a user that doesn't exists in the Mnubo
- * API.
- */
-public class MnuboUnknownUserException extends MnuboClientException {
-    private static String EXCEPTION_UNKNOWN_USER = "The user was not found.";
+import org.junit.Test;
 
-    public final static String UNKNOWN_USER_PATTERN = "^Unknown User '.*'$";
-    private final static Pattern PATTERN = Pattern.compile(UNKNOWN_USER_PATTERN);
+import static org.junit.Assert.assertEquals;
 
-    public MnuboUnknownUserException() {
-        super(EXCEPTION_UNKNOWN_USER);
+public class SamplesTest {
+
+    @Test
+    public void testWriteToParcel() throws Exception {
+        Samples samples = new Samples();
+
+        Parcel parcel = MockParcel.obtain();
+        samples.writeToParcel(parcel, 0);
+
+        Samples samplesFromParcel = Samples.CREATOR.createFromParcel(parcel);
+
+        assertEquals(samples, samplesFromParcel);
     }
 
-    public static boolean matches(CharSequence s) {
-        return !TextUtils.isEmpty(s) && PATTERN.matcher(s).matches();
+    @Test
+    public void testWriteToParcelWithData() throws Exception {
+        Samples samples = new Samples();
+        Sample sample = new Sample();
+        sample.setSensorName("name");
+        samples.addSample(sample);
+
+        Parcel parcel = MockParcel.obtain();
+        samples.writeToParcel(parcel, 0);
+
+        Samples samplesFromParcel = Samples.CREATOR.createFromParcel(parcel);
+
+        assertEquals(samples, samplesFromParcel);
     }
 }

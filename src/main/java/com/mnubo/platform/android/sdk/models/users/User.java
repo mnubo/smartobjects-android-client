@@ -22,6 +22,9 @@
 
 package com.mnubo.platform.android.sdk.models.users;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -43,7 +46,7 @@ import java.util.UUID;
  */
 @JsonInclude(Include.NON_DEFAULT)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements Serializable {
+public class User implements Parcelable, Serializable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
@@ -72,6 +75,23 @@ public class User implements Serializable {
 
     @JsonIgnore
     private UUID id;
+
+    public User() {
+    }
+
+    @SuppressWarnings("unchecked")
+    public User(Parcel in) {
+        this.username = in.readString();
+        this.password = in.readString();
+        this.confirmedPassword = in.readString();
+        this.firstname= in.readString();
+        this.lastname= in.readString();
+        this.registrationDate= in.readString();
+        this.collections= in.readArrayList(null);
+        this.groups= in.readArrayList(null);
+        this.attributes= in.readArrayList(null);
+        this.isAdmin = in.readInt() == 1;
+    }
 
     public String getUsername() {
         return username;
@@ -167,6 +187,98 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s", this.getUsername());
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmedPassword='" + confirmedPassword + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", collections=" + collections +
+                ", groups=" + groups +
+                ", attributes=" + attributes +
+                ", isAdmin=" + isAdmin +
+                ", id=" + id +
+                '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (isAdmin != user.isAdmin) return false;
+        if (attributes != null ? !attributes.equals(user.attributes) : user.attributes != null)
+            return false;
+        if (collections != null ? !collections.equals(user.collections) : user.collections != null)
+            return false;
+        if (confirmedPassword != null ? !confirmedPassword.equals(user.confirmedPassword) : user.confirmedPassword != null)
+            return false;
+        if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null)
+            return false;
+        if (groups != null ? !groups.equals(user.groups) : user.groups != null) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null)
+            return false;
+        if (password != null ? !password.equals(user.password) : user.password != null)
+            return false;
+        if (registrationDate != null ? !registrationDate.equals(user.registrationDate) : user.registrationDate != null)
+            return false;
+        if (username != null ? !username.equals(user.username) : user.username != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = username != null ? username.hashCode() : 0;
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (confirmedPassword != null ? confirmedPassword.hashCode() : 0);
+        result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
+        result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
+        result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
+        result = 31 * result + (collections != null ? collections.hashCode() : 0);
+        result = 31 * result + (groups != null ? groups.hashCode() : 0);
+        result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+        result = 31 * result + (isAdmin ? 1 : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
+    }
+
+    /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.username);
+        dest.writeString(this.password);
+        dest.writeString(this.confirmedPassword);
+        dest.writeString(this.firstname);
+        dest.writeString(this.lastname);
+        dest.writeString(this.registrationDate);
+        dest.writeList(this.collections);
+        dest.writeList(this.groups);
+        dest.writeList(this.attributes);
+        dest.writeInt(isAdmin ? 1 : 0);
+    }
+
+    public static final Parcelable.Creator<User> CREATOR
+            = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

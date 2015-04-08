@@ -51,7 +51,7 @@ public class Collection extends AbstractOwnable implements Serializable {
     }
 
     public Collection(Parcel in) {
-        this.setOwner(in.readString());
+        this.owner = in.readString();
         this.label = in.readString();
         this.collectionId = UUID.fromString(in.readString());
         this.naturalKey = in.readString();
@@ -81,6 +81,43 @@ public class Collection extends AbstractOwnable implements Serializable {
         naturalKey = aNaturalKey;
     }
 
+    @Override
+    public String toString() {
+        return "Collection{" +
+                "label='" + label + '\'' +
+                ", collectionId=" + collectionId +
+                ", naturalKey='" + naturalKey + '\'' +
+                ", owner='" + owner + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Collection)) return false;
+
+        Collection that = (Collection) o;
+
+        if (collectionId != null ? !collectionId.equals(that.collectionId) : that.collectionId != null)
+            return false;
+        if (label != null ? !label.equals(that.label) : that.label != null) return false;
+        if (naturalKey != null ? !naturalKey.equals(that.naturalKey) : that.naturalKey != null)
+            return false;
+        if (owner != null ? !owner.equals(that.owner) : that.owner != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = label != null ? label.hashCode() : 0;
+        result = 31 * result + (collectionId != null ? collectionId.hashCode() : 0);
+        result = 31 * result + (naturalKey != null ? naturalKey.hashCode() : 0);
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        return result;
+    }
+
     /*
      *  Implements Parcelable
     */
@@ -92,7 +129,7 @@ public class Collection extends AbstractOwnable implements Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.getOwner());
+        dest.writeString(this.owner);
         dest.writeString(this.label);
         dest.writeString(this.collectionId.toString());
         dest.writeString(this.naturalKey);

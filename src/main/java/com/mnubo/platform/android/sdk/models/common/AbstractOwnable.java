@@ -42,22 +42,7 @@ public abstract class AbstractOwnable implements Parcelable, Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("owner")
-    private String owner;
-
-    @JsonIgnore
-    public boolean isOwner(final String username) {
-        return TextUtils.equals(username, getOwner());
-    }
-
-    @JsonIgnore
-    public boolean hasOwner() {
-        return !TextUtils.isEmpty(getOwner());
-    }
-
-    @JsonIgnore
-    public boolean hasNoOwner() {
-        return !hasOwner();
-    }
+    protected String owner;
 
     public String getOwner() {
         return owner;

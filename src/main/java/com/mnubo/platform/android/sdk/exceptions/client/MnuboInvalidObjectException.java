@@ -27,20 +27,34 @@ import android.text.TextUtils;
 import java.util.regex.Pattern;
 
 /**
- * This exception is raised when you perform a request for a user that doesn't exists in the Mnubo
- * API.
+ * This exception is raised when you perform a request to create an {@link
+ * com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} but the information supplied is
+ * invalid.
+ * <p/>
+ * Known reasons for this error :
+ * <p/>
+ * <ul>
+ * <li></li>
+ * </ul>
  */
-public class MnuboUnknownUserException extends MnuboClientException {
-    private static String EXCEPTION_UNKNOWN_USER = "The user was not found.";
+public class MnuboInvalidObjectException extends MnuboClientException {
+    private static String EXCEPTION_INVALID_OBJECT = "The SmartObject data is invalid : None or invalid device id, no objectModelName, etc. See the documentation for full explanation.";
 
-    public final static String UNKNOWN_USER_PATTERN = "^Unknown User '.*'$";
-    private final static Pattern PATTERN = Pattern.compile(UNKNOWN_USER_PATTERN);
+    public final static String MISSING_OBJECT_MODEL_PATTERN = "^.* default message \\[Missing object model\\]\\]$";
+    private final static Pattern OM_PATTERN = Pattern.compile(MISSING_OBJECT_MODEL_PATTERN);
 
-    public MnuboUnknownUserException() {
-        super(EXCEPTION_UNKNOWN_USER);
+    public final static String MISSING_DEVICE_ID_PATTERN = "^Invalid id$";
+    private final static Pattern DI_PATTERN = Pattern.compile(MISSING_DEVICE_ID_PATTERN);
+
+    public final static String UNKNOWN_ATTRIBUTE_PATTERN = "^Attribute .* undefined in object model$";
+    private final static Pattern UA_PATTERN = Pattern.compile(UNKNOWN_ATTRIBUTE_PATTERN);
+
+    public MnuboInvalidObjectException() {
+        super(EXCEPTION_INVALID_OBJECT);
     }
 
     public static boolean matches(CharSequence s) {
-        return !TextUtils.isEmpty(s) && PATTERN.matcher(s).matches();
+        return !TextUtils.isEmpty(s) &&
+                (OM_PATTERN.matcher(s).matches() || DI_PATTERN.matcher(s).matches() || UA_PATTERN.matcher(s).matches());
     }
 }

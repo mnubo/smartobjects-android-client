@@ -23,37 +23,45 @@
 package com.mnubo.platform.android.sdk.models.users;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * A list of {@link com.mnubo.platform.android.sdk.models.users.User} <p/> List implementation used
- * is {@link java.util.LinkedList}
+ * is {@link java.util.ArrayList}
  *
  * @see com.mnubo.platform.android.sdk.models.users.User
  */
 @JsonInclude(Include.NON_NULL)
-public class Users implements Serializable {
+public class Users implements Parcelable, Serializable {
 
     @JsonIgnore
     private static final long serialVersionUID = 1L;
 
-    private List<User> users;
-    private int count;
+    private List<User> users = new ArrayList<>();
+    private int count = 0;
 
     public Users() {
-        users = new LinkedList<>();
-        count = 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Users(Parcel in) {
+        this.count = in.readInt();
+        this.users = in.readArrayList(null);
     }
 
     public List<User> getUsers() {
         if (users == null) {
-            users = new LinkedList<>();
+            users = new ArrayList<>();
         }
 
         if (users.size() != count) {
@@ -83,11 +91,55 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        String out = "";
-        for (int i = 0; i < users.size(); i++) {
-
-            out = out + "Name: " + users.get(i) + "\n";
-        }
-        return out;
+        return "Users{" +
+                "users=" + users +
+                ", count=" + count +
+                '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Users)) return false;
+
+        Users users1 = (Users) o;
+
+        if (count != users1.count) return false;
+        if (users != null ? !users.equals(users1.users) : users1.users != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = users != null ? users.hashCode() : 0;
+        result = 31 * result + count;
+        return result;
+    }
+
+    /*
+     * Implements Parcelable
+     */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.count);
+        dest.writeList(this.users);
+    }
+
+    public static final Parcelable.Creator<Users> CREATOR
+            = new Parcelable.Creator<Users>() {
+        public Users createFromParcel(Parcel in) {
+            return new Users(in);
+        }
+
+        public Users[] newArray(int size) {
+            return new Users[size];
+        }
+    };
 }
