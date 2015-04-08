@@ -37,7 +37,7 @@ import java.util.List;
 
 /**
  * A list of {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} <p/> List
- * implementation used is {@link java.util.LinkedList}
+ * implementation used is {@link java.util.ArrayList}
  *
  * @see com.mnubo.platform.android.sdk.models.smartobjects.SmartObject
  */
