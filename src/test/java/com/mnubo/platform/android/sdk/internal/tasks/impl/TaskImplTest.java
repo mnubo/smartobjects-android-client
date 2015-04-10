@@ -24,6 +24,7 @@ package com.mnubo.platform.android.sdk.internal.tasks.impl;
 
 import android.util.Log;
 
+import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
@@ -35,7 +36,7 @@ import org.mockito.Matchers;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import static com.mnubo.platform.android.sdk.internal.tasks.Task.ERROR_EXECUTING;
+import static com.mnubo.platform.android.sdk.Strings.SDK_ERROR_EXECUTING_TASK;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -71,7 +72,7 @@ public class TaskImplTest {
     @Test
     public void testExecuteWithMnuboException() throws Exception {
         final MnuboException thrownException = new MnuboException("mnubo exception");
-        when(Log.e(eq(DummyTask.class.getName()), eq(ERROR_EXECUTING), eq(thrownException))).thenReturn(0);
+        when(Log.e(eq(DummyTask.class.getName()), eq(SDK_ERROR_EXECUTING_TASK), eq(thrownException))).thenReturn(0);
 
         final Task<Boolean> task = new DummyTask(true, thrownException);
 
@@ -85,7 +86,7 @@ public class TaskImplTest {
     @Test
     public void testExecuteWithGenericException() throws Exception {
         final RuntimeException thrownException = new RuntimeException("Other kind of exception");
-        when(Log.e(eq(DummyTask.class.getName()), eq(ERROR_EXECUTING), Matchers.any(MnuboException.class))).thenReturn(0);
+        when(Log.e(eq(DummyTask.class.getName()), eq(SDK_ERROR_EXECUTING_TASK), Matchers.any(MnuboException.class))).thenReturn(0);
 
         final Task<Boolean> task = new DummyTask(true, thrownException);
 

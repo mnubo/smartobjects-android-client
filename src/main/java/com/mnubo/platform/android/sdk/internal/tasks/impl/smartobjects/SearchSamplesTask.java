@@ -29,11 +29,11 @@ import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 
 public class SearchSamplesTask extends TaskWithRefreshImpl<Samples> {
 
-    final SdkId objectId;
-    final String sensorName;
+    private final SdkId objectId;
+    private final String sensorName;
 
 
-    public SearchSamplesTask(RefreshableConnection refreshableConnection,SdkId objectId, String sensorName) {
+    public SearchSamplesTask(RefreshableConnection refreshableConnection, SdkId objectId, String sensorName) {
         super(refreshableConnection);
         this.objectId = objectId;
         this.sensorName = sensorName;

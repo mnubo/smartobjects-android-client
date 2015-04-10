@@ -28,11 +28,11 @@ import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
 public class CreateObjectTask extends TaskWithRefreshImpl<Boolean> {
 
-    final SmartObject smartObject;
-    final Boolean updateIfExists;
+    private final SmartObject smartObject;
+    private final Boolean updateIfExists;
 
 
-    public CreateObjectTask(RefreshableConnection refreshableConnection,SmartObject smartObject, Boolean updateIfExists) {
+    public CreateObjectTask(RefreshableConnection refreshableConnection, SmartObject smartObject, Boolean updateIfExists) {
         super(refreshableConnection);
         this.smartObject = smartObject;
         this.updateIfExists = updateIfExists;

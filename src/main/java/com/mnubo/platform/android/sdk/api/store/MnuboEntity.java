@@ -36,10 +36,10 @@ public class MnuboEntity implements Serializable {
         ADD_SAMPLES, ADD_SAMPLE_PUBLIC
     }
 
-    protected String id;
-    protected Map<String, Object> idData;
-    protected EntityType type;
-    protected Object value;
+    private String id;
+    private Map<String, Object> idData;
+    private EntityType type;
+    private Object value;
 
     /**
      * Create a MnuboEntity instance

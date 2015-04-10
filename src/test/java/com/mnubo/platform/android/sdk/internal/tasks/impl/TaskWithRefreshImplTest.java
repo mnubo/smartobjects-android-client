@@ -23,6 +23,7 @@ package com.mnubo.platform.android.sdk.internal.tasks.impl;
 
 import android.util.Log;
 
+import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
@@ -39,7 +40,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.social.ExpiredAuthorizationException;
 
-import static com.mnubo.platform.android.sdk.internal.tasks.Task.ERROR_EXECUTING;
+import static com.mnubo.platform.android.sdk.Strings.SDK_ERROR_EXECUTING_TASK;
 import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.TASK_REFRESHING;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -58,7 +59,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 })
 public class TaskWithRefreshImplTest {
 
-    private RefreshableConnection mockedRefreshableConnection = mock(RefreshableConnection.class);
+    private final RefreshableConnection mockedRefreshableConnection = mock(RefreshableConnection.class);
 
     @Before
     public void setUp() throws Exception {
@@ -89,7 +90,7 @@ public class TaskWithRefreshImplTest {
 
     @Test
     public void testExecuteExpiringWithRefreshNotWorking() throws Exception {
-        when(Log.e(eq(DummyMockedTask.class.getName()), eq(ERROR_EXECUTING), Matchers.any(MnuboException.class))).thenReturn(0);
+        when(Log.e(eq(DummyMockedTask.class.getName()), eq(SDK_ERROR_EXECUTING_TASK), Matchers.any(MnuboException.class))).thenReturn(0);
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {

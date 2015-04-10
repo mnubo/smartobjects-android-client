@@ -28,10 +28,10 @@ import com.mnubo.platform.android.sdk.models.users.User;
 
 public class GetUserTask extends TaskWithRefreshImpl<User> {
 
-    final String username;
+    private final String username;
 
 
-    public GetUserTask(RefreshableConnection refreshableConnection,String username) {
+    public GetUserTask(RefreshableConnection refreshableConnection, String username) {
         super(refreshableConnection);
         this.username = username;
 

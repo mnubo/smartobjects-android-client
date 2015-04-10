@@ -22,18 +22,31 @@
 
 package com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl;
 
+import android.util.Log;
+
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboNotLoggedInException;
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
-import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
+import com.mnubo.platform.android.sdk.internal.connect.MnuboConnectionFactory;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.oauth2.AccessGrant;
 
-public class UserConnection implements RefreshableConnection {
+import static com.mnubo.platform.android.sdk.Strings.FETCH_REFRESH_USER_TOKEN;
+import static com.mnubo.platform.android.sdk.Strings.FETCH_REFRESH_USER_TOKEN_SUCCESS;
+import static com.mnubo.platform.android.sdk.Strings.FETCH_USER_TOKEN;
+import static com.mnubo.platform.android.sdk.Strings.FETCH_USER_TOKEN_SUCCESS;
+import static com.mnubo.platform.android.sdk.Strings.PERSIST_USER_TOKEN;
+import static com.mnubo.platform.android.sdk.Strings.REMOVE_PERSISTED_USER_CONNECTION;
+import static com.mnubo.platform.android.sdk.Strings.UPDATE_PERSISTED_USER_TOKEN;
+import static com.mnubo.platform.android.sdk.Strings.USER_CONNECTION_UNAVAILABLE;
 
-    private ConnectionRepository connectionRepository;
+public class UserConnection extends AbstractMnuboConnection {
 
-    public UserConnection(ConnectionRepository connectionRepository) {
+    private final ConnectionRepository connectionRepository;
+
+    public UserConnection(ConnectionRepository connectionRepository, MnuboConnectionFactory connectionFactory) {
+        super(connectionFactory);
         this.connectionRepository = connectionRepository;
     }
 
@@ -41,7 +54,11 @@ public class UserConnection implements RefreshableConnection {
     public void refresh() {
         Connection<MnuboSDKApi> connection = getConnection();
 
+        Log.d(TAG, FETCH_REFRESH_USER_TOKEN);
         connection.refresh();
+        Log.d(TAG, FETCH_REFRESH_USER_TOKEN_SUCCESS);
+
+        Log.d(TAG, UPDATE_PERSISTED_USER_TOKEN);
         connectionRepository.updateConnection(connection);
     }
 
@@ -57,8 +74,35 @@ public class UserConnection implements RefreshableConnection {
     private Connection<MnuboSDKApi> getConnection() {
         Connection<MnuboSDKApi> connection = this.connectionRepository.findPrimaryConnection(MnuboSDKApi.class);
         if (connection == null) {
+            Log.e(TAG, USER_CONNECTION_UNAVAILABLE);
             throw new MnuboNotLoggedInException();
         }
         return connection;
+    }
+
+    public boolean isUserConnected() {
+        return this.connectionRepository.findPrimaryConnection(MnuboSDKApi.class) != null;
+    }
+
+    public void logOut() {
+        Log.d(TAG, REMOVE_PERSISTED_USER_CONNECTION);
+        this.connectionRepository.removeConnections(connectionFactory.getProviderId());
+    }
+
+    public void logIn(String username, String password) {
+        this.logOut();
+        this.createUserConnection(username, password);
+    }
+
+    private void createUserConnection(String username, String password) {
+
+        Log.d(TAG, FETCH_USER_TOKEN);
+        AccessGrant accessGrant = connectionFactory.getOAuthOperations().exchangeCredentialsForAccess(username, password, null);
+        Log.d(TAG, FETCH_USER_TOKEN_SUCCESS);
+
+        Connection<MnuboSDKApi> connection = connectionFactory.createConnection(accessGrant);
+
+        Log.d(TAG, PERSIST_USER_TOKEN);
+        this.connectionRepository.addConnection(connection);
     }
 }

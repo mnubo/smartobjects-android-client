@@ -22,44 +22,58 @@
 
 package com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl;
 
+import android.util.Log;
+
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboConnectionUnavailableException;
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
 import com.mnubo.platform.android.sdk.internal.connect.MnuboConnectionFactory;
-import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.oauth2.AccessGrant;
 
+import static com.mnubo.platform.android.sdk.Strings.BUILDING_CLIENT_CONNECTION;
+import static com.mnubo.platform.android.sdk.Strings.CLIENT_CONNECTION_API;
+import static com.mnubo.platform.android.sdk.Strings.CLIENT_CONNECTION_UNAVAILABLE;
+import static com.mnubo.platform.android.sdk.Strings.FETCH_CLIENT_TOKEN;
+import static com.mnubo.platform.android.sdk.Strings.FETCH_CLIENT_TOKEN_SUCCESS;
 
-public class ClientConnection implements RefreshableConnection {
+/**
+ * Client connection is not persisted. Since it has a short life cycle, it is build when needed.
+ */
+public class ClientConnection extends AbstractMnuboConnection {
 
-    private MnuboConnectionFactory connectionFactory;
     private Connection<MnuboSDKApi> connection;
 
     public ClientConnection(MnuboConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
+        super(connectionFactory);
     }
 
     private Connection<MnuboSDKApi> createConnection() {
+
+        Log.d(TAG, FETCH_CLIENT_TOKEN);
         AccessGrant accessGrant = connectionFactory.getOAuthOperations().authenticateClient();
+        Log.d(TAG, FETCH_CLIENT_TOKEN_SUCCESS);
 
         return connectionFactory.createConnection(accessGrant);
     }
 
     @Override
     public void refresh() {
-        AccessGrant accessGrant = connectionFactory.getOAuthOperations().authenticateClient();
-        connection = connectionFactory.createConnection(accessGrant);
+        connection = createConnection();
     }
 
     @Override
     public MnuboSDKApi getMnuboSDKApi() {
         if (connection == null) {
+            Log.d(TAG, BUILDING_CLIENT_CONNECTION);
             connection = createConnection();
         }
         if (connection != null) {
+            Log.d(TAG, CLIENT_CONNECTION_API);
             return connection.getApi();
         }
+
+        Log.e(TAG, CLIENT_CONNECTION_UNAVAILABLE);
         throw new MnuboConnectionUnavailableException();
     }
 }

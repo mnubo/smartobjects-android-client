@@ -23,12 +23,13 @@
 package com.mnubo.platform.android.sdk.exceptions;
 
 /**
- * MnuboException is the base exception. There should be no other type of exception getting out of a
+ * MnuboException is the base exception. There should be no other type of exception getting out of
+ * a
  * MnuboApi call.
  */
 public class MnuboException extends RuntimeException {
 
-    private static String EXCEPTION_SDK = "Error consuming Mnubo REST API";
+    private static final String EXCEPTION_SDK = "Error consuming Mnubo REST API";
 
 
     /**

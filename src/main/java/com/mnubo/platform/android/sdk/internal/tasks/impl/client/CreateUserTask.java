@@ -27,10 +27,10 @@ import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.users.User;
 
 public class CreateUserTask extends TaskWithRefreshImpl<Boolean> {
-    final User user;
+    private final User user;
 
 
-    public CreateUserTask(RefreshableConnection refreshableConnection,User user) {
+    public CreateUserTask(RefreshableConnection refreshableConnection, User user) {
         super(refreshableConnection);
         this.user = user;
     }

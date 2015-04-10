@@ -28,10 +28,10 @@ import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 
 public class FindUserObjectsTask extends TaskWithRefreshImpl<SmartObjects> {
 
-    final String username;
-    final Boolean details;
-    final Boolean history;
-    final String objectModelName;
+    private final String username;
+    private final Boolean details;
+    private final Boolean history;
+    private final String objectModelName;
 
     public FindUserObjectsTask(RefreshableConnection refreshableConnection, String username) {
         this(refreshableConnection, username, false);

@@ -22,13 +22,16 @@
 
 package com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl;
 
-import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
+import com.mnubo.platform.android.sdk.internal.connect.MnuboConnectionFactory;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
-
-import org.springframework.social.connect.Connection;
 
 abstract class AbstractMnuboConnection implements RefreshableConnection {
 
-    protected Connection<MnuboSDKApi> connection;
+    protected final String TAG = this.getClass().getName();
 
+    protected final MnuboConnectionFactory connectionFactory;
+
+    protected AbstractMnuboConnection(MnuboConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 }

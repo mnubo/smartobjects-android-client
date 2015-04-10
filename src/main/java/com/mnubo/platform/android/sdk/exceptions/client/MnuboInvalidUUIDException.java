@@ -24,8 +24,6 @@ package com.mnubo.platform.android.sdk.exceptions.client;
 
 import android.text.TextUtils;
 
-import com.mnubo.platform.android.sdk.exceptions.server.MnuboServerException;
-
 import java.util.regex.Pattern;
 
 /**
@@ -33,13 +31,12 @@ import java.util.regex.Pattern;
  * API.
  */
 public class MnuboInvalidUUIDException extends MnuboClientException {
-    private static String EXCEPTION_INVALID_UUID = "The value you provided is not a valid UUID.";
 
     public final static String INVALID_UUID_PATTERN = "^Invalid UUID string: .*$";
     private final static Pattern PATTERN = Pattern.compile(INVALID_UUID_PATTERN);
 
     public MnuboInvalidUUIDException() {
-        super(EXCEPTION_INVALID_UUID);
+        super("The value you provided is not a valid UUID.");
     }
 
     public static boolean matches(CharSequence s) {

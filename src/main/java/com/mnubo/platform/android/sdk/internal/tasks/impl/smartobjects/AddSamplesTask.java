@@ -32,11 +32,11 @@ import java.util.Map;
 
 public class AddSamplesTask extends TaskWithRefreshImpl<Boolean> {
 
-    final SdkId id;
-    final Samples samples;
+    private final SdkId id;
+    private final Samples samples;
 
 
-    public AddSamplesTask(RefreshableConnection refreshableConnection,SdkId id, Samples samples) {
+    public AddSamplesTask(RefreshableConnection refreshableConnection, SdkId id, Samples samples) {
         super(refreshableConnection);
         this.id = id;
         this.samples = samples;

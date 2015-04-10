@@ -32,12 +32,12 @@ import java.util.Map;
 
 public class AddSampleOnPublicSensorTask extends TaskWithRefreshImpl<Boolean> {
 
-    final SdkId id;
-    final String sensorName;
-    final Sample sample;
+    private final SdkId id;
+    private final String sensorName;
+    private final Sample sample;
 
 
-    public AddSampleOnPublicSensorTask(RefreshableConnection refreshableConnection,SdkId id, String sensorName, Sample sample) {
+    public AddSampleOnPublicSensorTask(RefreshableConnection refreshableConnection, SdkId id, String sensorName, Sample sample) {
         super(refreshableConnection);
         this.id = id;
         this.sample = sample;

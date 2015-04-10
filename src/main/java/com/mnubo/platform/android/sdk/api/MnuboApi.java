@@ -56,7 +56,6 @@ public class MnuboApi {
         this.smartObjectOperations = new SmartObjectOperationsImpl(connectionManager, applicationRootDir, enableFailedAttemptCaching);
         this.clientOperations = new ClientOperationsImpl(connectionManager);
         this.authenticationOperations = new AuthenticationOperationsImpl(connectionManager);
-
     }
 
     public UserOperations getUserOperations() {

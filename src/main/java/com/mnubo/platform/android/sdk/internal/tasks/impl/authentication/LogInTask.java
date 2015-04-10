@@ -27,9 +27,9 @@ import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskImpl;
 
 public class LogInTask extends TaskImpl<Boolean> {
 
-    final String username;
-    final String password;
-    final MnuboConnectionManager connectionManager;
+    private final String username;
+    private final String password;
+    private final MnuboConnectionManager connectionManager;
 
     public LogInTask(MnuboConnectionManager connectionManager, String username, String password) {
         super(null);

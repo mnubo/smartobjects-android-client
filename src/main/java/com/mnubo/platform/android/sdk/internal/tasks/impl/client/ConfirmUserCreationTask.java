@@ -27,11 +27,11 @@ import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 
 public class ConfirmUserCreationTask extends TaskWithRefreshImpl<Boolean> {
-    final String username;
-    final UserConfirmation confirmation;
+    private final String username;
+    private final UserConfirmation confirmation;
 
 
-    public ConfirmUserCreationTask(RefreshableConnection refreshableConnection,String username, UserConfirmation confirmation) {
+    public ConfirmUserCreationTask(RefreshableConnection refreshableConnection, String username, UserConfirmation confirmation) {
         super(refreshableConnection);
         this.username = username;
         this.confirmation = confirmation;

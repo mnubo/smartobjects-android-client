@@ -32,10 +32,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.io.Serializable;
 
 /**
- * Attributes are used in {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} and
+ * Attributes are used in {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
+ * and
  * {@link com.mnubo.platform.android.sdk.models.users.User}.
  * <p/>
- * {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} <code>Attribute</code> are
+ * {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject} <code>Attribute</code>
+ * are
  * defined in the ObjectModel of the object. The type will automatically be resolved according to
  * the type defined for this <code>Attribute</code> in the definition.
  * <p/>

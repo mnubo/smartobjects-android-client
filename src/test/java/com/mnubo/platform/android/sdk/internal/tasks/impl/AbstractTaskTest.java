@@ -35,13 +35,13 @@ import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 public abstract class AbstractTaskTest {
-    protected RefreshableConnection connection = mock(RefreshableConnection.class);
-    protected MnuboConnectionManager connectionManager = mock(MnuboConnectionManager.class);
-    protected MnuboSDKApi mnuboSDKApi = mock(MnuboSDKApi.class);
+    protected final RefreshableConnection connection = mock(RefreshableConnection.class);
+    protected final MnuboConnectionManager connectionManager = mock(MnuboConnectionManager.class);
+    protected final MnuboSDKApi mnuboSDKApi = mock(MnuboSDKApi.class);
 
-    protected ClientService clientService = mock(ClientService.class);
-    protected SmartObjectService smartObjectService = mock(SmartObjectService.class);
-    protected UserService userService = mock(UserService.class);
+    protected final ClientService clientService = mock(ClientService.class);
+    protected final SmartObjectService smartObjectService = mock(SmartObjectService.class);
+    protected final UserService userService = mock(UserService.class);
 
     @Before
     public void setUp() throws Exception {

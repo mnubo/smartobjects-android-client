@@ -27,11 +27,10 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * user but the token is invalid.
  */
 public class MnuboInvalidResetPasswordTokenException extends MnuboClientException {
-    private static String EXCEPTION_INVALID_PASSWORD_RESET_TOKEN = "The token provided to confirm the user registration is invalid.";
 
     public final static String PASSWORD_RESET_INVALID_TOKEN = "Reset Password: Invalid Token received for the User.";
 
     public MnuboInvalidResetPasswordTokenException() {
-        super(EXCEPTION_INVALID_PASSWORD_RESET_TOKEN);
+        super("The token provided to confirm the user registration is invalid.");
     }
 }

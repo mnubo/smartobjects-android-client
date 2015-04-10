@@ -164,7 +164,8 @@ public interface SmartObjectOperations extends MnuboFileCachingService {
      * <p/>
      * Called url = POST : /objects
      *
-     * @param smartObject    the <code>SmartObject</code> to be added Its owner field must be set to
+     * @param smartObject    the <code>SmartObject</code> to be added Its owner field must be set
+     *                       to
      *                       the username of the user who owns perform the action.
      * @param updateIfExists the object will be updated it exists, if false and the object exist an
      *                       error will be sent in the callback {link com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallbacl#onCompletion}
@@ -173,14 +174,16 @@ public interface SmartObjectOperations extends MnuboFileCachingService {
     MnuboResponse<Boolean> createObject(SmartObject smartObject, Boolean updateIfExists);
 
     /**
-     * This function allows you to add an object in the mnubo platform. The result will be available
+     * This function allows you to add an object in the mnubo platform. The result will be
+     * available
      * through the given callback.
      * <p/>
      * Called url = POST : /objects
      *
      * @param smartObject        the <code>SmartObject</code> to be added Its owner field must be
      *                           set to the username of the user who owns perform the action.
-     * @param updateIfExists     the object will be updated it exists, if false and the object exist
+     * @param updateIfExists     the object will be updated it exists, if false and the object
+     *                           exist
      *                           an error will be sent in the callback {link com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallbacl#onCompletion}
      *                           method
      * @param completionCallBack the callback that will be executed on completion of the request

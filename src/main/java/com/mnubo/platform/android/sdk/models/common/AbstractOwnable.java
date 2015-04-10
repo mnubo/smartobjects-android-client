@@ -23,7 +23,6 @@
 package com.mnubo.platform.android.sdk.models.common;
 
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -22,11 +22,8 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
-import com.mnubo.platform.android.sdk.internal.services.ClientService;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
-import com.mnubo.platform.android.sdk.internal.tasks.Task;
 import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmPasswordResetTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmUserCreationTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.CreateUserTask;
@@ -35,12 +32,10 @@ import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 import com.mnubo.platform.android.sdk.models.users.User;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -52,13 +47,6 @@ import static org.powermock.api.mockito.PowerMockito.when;
 public class ClientOperationsImplTest extends AbstractOperationsTest {
 
     private final ClientOperationsImpl clientOperations = new ClientOperationsImpl(mockedConnectionManager);
-    private final ClientService mockedClientService = mock(ClientService.class);
-
-    @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-    }
 
     @Test
     public void testSyncCreateUser() throws Exception {

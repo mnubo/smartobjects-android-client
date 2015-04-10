@@ -29,11 +29,11 @@ import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
 public class UpdateObjectTask extends TaskWithRefreshImpl<Boolean> {
 
-    final SdkId objectId;
-    final SmartObject smartObject;
+    private final SdkId objectId;
+    private final SmartObject smartObject;
 
 
-    public UpdateObjectTask(RefreshableConnection refreshableConnection,SdkId objectId, SmartObject smartObject) {
+    public UpdateObjectTask(RefreshableConnection refreshableConnection, SdkId objectId, SmartObject smartObject) {
         super(refreshableConnection);
         this.objectId = objectId;
         this.smartObject = smartObject;

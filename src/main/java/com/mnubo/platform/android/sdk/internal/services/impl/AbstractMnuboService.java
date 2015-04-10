@@ -28,7 +28,7 @@ import com.mnubo.platform.android.sdk.internal.connect.query.PlatformQuery;
 
 import org.springframework.web.client.RestTemplate;
 
-public class AbstractMnuboService {
+class AbstractMnuboService {
 
     private final String platformBaseUrl;
 
@@ -36,21 +36,21 @@ public class AbstractMnuboService {
 
     private final RestTemplate restTemplate;
 
-    public AbstractMnuboService(String platformBaseUrl, PlatformPath platformPath, RestTemplate restTemplate) {
+    AbstractMnuboService(String platformBaseUrl, PlatformPath platformPath, RestTemplate restTemplate) {
         this.platformBaseUrl = platformBaseUrl;
         this.platformPath = platformPath;
         this.restTemplate = restTemplate;
     }
 
-    protected String getPlatformBaseUrl() {
+    String getPlatformBaseUrl() {
         return platformBaseUrl;
     }
 
-    protected PlatformQuery getQuery() {
+    PlatformQuery getQuery() {
         return new PlatformQuery(this.getPlatformBaseUrl(), this.platformPath);
     }
 
-    protected RestTemplate getRestTemplate() {
+    RestTemplate getRestTemplate() {
         return restTemplate;
     }
 }

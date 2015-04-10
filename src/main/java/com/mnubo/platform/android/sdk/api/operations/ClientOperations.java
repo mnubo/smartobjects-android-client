@@ -47,7 +47,7 @@ public interface ClientOperations {
     /**
      * This function allows you to register an user on the mnubo API. The result will be available
      * through the given callback.
-     *
+     * <p/>
      * Called url = POST : /users/{username}
      *
      * @param user               the <code>User</code> that contains all the information
@@ -68,7 +68,8 @@ public interface ClientOperations {
     MnuboResponse<Boolean> confirmUserCreation(String username, UserConfirmation confirmation);
 
     /**
-     * After user creation, use the token here to confirm the creation of that user. The result will
+     * After user creation, use the token here to confirm the creation of that user. The result
+     * will
      * be available through the given callback.
      * <p/>
      * Called url = POST : /users/{username}/confirmation

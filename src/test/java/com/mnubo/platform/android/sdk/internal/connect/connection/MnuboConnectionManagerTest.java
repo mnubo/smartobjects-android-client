@@ -22,13 +22,21 @@
 
 package com.mnubo.platform.android.sdk.internal.connect.connection;
 
+import android.util.Log;
+
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
 import com.mnubo.platform.android.sdk.internal.connect.MnuboConnectionFactory;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl.ClientConnection;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl.UserConnection;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
@@ -49,16 +57,27 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({
+        Log.class
+})
 @SuppressWarnings("unchecked")
 public class MnuboConnectionManagerTest {
 
     private ConnectionRepository mockedConnectionRepository = mock(ConnectionRepository.class);
     private MnuboConnectionFactory mockedConnectionFactory = mock(MnuboConnectionFactory.class);
 
+    @Before
+    public void setUp() throws Exception {
+        mockStatic(Log.class);
+    }
 
     @Test
     public void testGetCurrentConnectionNotLoggedIn() throws Exception {
@@ -111,6 +130,8 @@ public class MnuboConnectionManagerTest {
         when(mockedConnectionFactory.getProviderId()).thenReturn(providerId);
         when(mockedConnectionFactory.getOAuthOperations()).thenReturn(operations);
         when(mockedConnectionFactory.createConnection(eq(token))).thenReturn(api);
+        Connection<MnuboSDKApi> mockedConnection = mock(Connection.class);
+        when(mockedConnectionRepository.findPrimaryConnection(MnuboSDKApi.class)).thenReturn(mockedConnection);
 
         MnuboConnectionManager connectionManager = new MnuboConnectionManager(mockedConnectionFactory, mockedConnectionRepository);
         connectionManager.logIn(username, password);
@@ -184,9 +205,48 @@ public class MnuboConnectionManagerTest {
         String username = connectionManager.getUsername();
         assertNotNull(username);
         assertThat(username, is(equalTo(loggedUser)));
+    }
+
+    @Test
+    public void testGetUsernameLoggedInThenLogOut() throws Exception {
+        final String loggedUser = "username";
+        final String provider = "provider";
+
+        ConnectionKey key = new ConnectionKey(provider, loggedUser);
+        final Connection<MnuboSDKApi> api = mock(Connection.class);
+        when(api.getKey()).thenReturn(key);
+
+        //return api for isConnected
+        //return api for getConnection()
+        //return null isConnected after logout
+        doAnswer(new Answer() {
+            int count = 0;
+
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                if (count < 2) {
+                    count++;
+                    return api;
+                } else {
+                    return null;
+                }
+            }
+        }).when(mockedConnectionRepository).findPrimaryConnection(MnuboSDKApi.class);
+        when(mockedConnectionFactory.getProviderId()).thenReturn(provider);
+
+        MnuboConnectionManager connectionManager = new MnuboConnectionManager(mockedConnectionFactory, mockedConnectionRepository);
+
+
+        String username = connectionManager.getUsername();
+        assertNotNull(username);
+        assertThat(username, is(equalTo(loggedUser)));
+
         connectionManager.logOut();
 
-        String usernameAfterLogOut = connectionManager.getUsername();
-        assertThat(usernameAfterLogOut, is(nullValue()));
+        String usernameLogOut = connectionManager.getUsername();
+        assertNull(usernameLogOut);
+
+        verify(mockedConnectionRepository, times(3)).findPrimaryConnection(MnuboSDKApi.class);
+        verify(mockedConnectionRepository).removeConnections(eq(provider));
     }
 }

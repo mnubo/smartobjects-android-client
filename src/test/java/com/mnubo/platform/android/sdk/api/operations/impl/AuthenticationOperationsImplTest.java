@@ -26,7 +26,6 @@ import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.authentication.LogInTask;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
@@ -49,12 +48,6 @@ public class AuthenticationOperationsImplTest extends AbstractOperationsTest {
     @SuppressWarnings("unchecked")
     private final CompletionCallBack<Boolean> mockedCallback = mock(CompletionCallBack.class);
 
-    @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-
-    }
 
     @Test
     public void logInSync() throws Exception {

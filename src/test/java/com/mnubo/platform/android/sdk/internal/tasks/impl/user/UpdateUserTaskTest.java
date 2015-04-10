@@ -23,7 +23,6 @@
 package com.mnubo.platform.android.sdk.internal.tasks.impl.user;
 
 import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
-import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.users.User;
 
 import org.junit.Test;

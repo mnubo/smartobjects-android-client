@@ -27,11 +27,10 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * platform configuration doesn't allow it.
  */
 public class MnuboResetPasswordDisabledException extends MnuboClientException {
-    private static String EXCEPTION_RESET_PASSWORD_DISABLED = "Reset password is not enabled for the consumer key used.";
 
     public final static String RESET_PASSWORD_DISABLED = "Reset Password Disabled";
 
     public MnuboResetPasswordDisabledException() {
-        super(EXCEPTION_RESET_PASSWORD_DISABLED);
+        super("Reset password is not enabled for the consumer key used.");
     }
 }

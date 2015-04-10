@@ -28,10 +28,10 @@ import com.mnubo.platform.android.sdk.models.common.SdkId;
 
 public class DeleteObjectTask extends TaskWithRefreshImpl<Boolean> {
 
-    final SdkId objectId;
+    private final SdkId objectId;
 
 
-    public DeleteObjectTask(RefreshableConnection refreshableConnection,SdkId objectId) {
+    public DeleteObjectTask(RefreshableConnection refreshableConnection, SdkId objectId) {
         super(refreshableConnection);
         this.objectId = objectId;
 

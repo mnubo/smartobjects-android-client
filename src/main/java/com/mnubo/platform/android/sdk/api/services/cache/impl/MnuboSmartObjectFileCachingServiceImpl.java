@@ -22,6 +22,8 @@
 
 package com.mnubo.platform.android.sdk.api.services.cache.impl;
 
+import android.util.Log;
+
 import com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService;
 import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
 import com.mnubo.platform.android.sdk.api.store.impl.MnuboFileStore;
@@ -34,23 +36,20 @@ import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 import java.io.File;
 import java.util.List;
 
+import static com.mnubo.platform.android.sdk.Strings.SDK_DATA_STORE_RETRYING;
+import static com.mnubo.platform.android.sdk.Strings.SDK_DATA_STORE_UNABLE_TO_RETRIEVE;
 import static com.mnubo.platform.android.sdk.api.store.MnuboEntity.EntityType.ADD_SAMPLES;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesTask;
 
-/**
- * This service is used to wrap your request. If an error occurs during the request, the data is
- * persisted to the disk.
- */
 public class MnuboSmartObjectFileCachingServiceImpl implements MnuboFileCachingService {
+
+    private final static String TAG = MnuboSmartObjectFileCachingServiceImpl.class.getName();
 
     private final static String RETRY_QUEUE_NAME = "failed";
 
     private MnuboFileStore mnuboStore;
-    private RefreshableConnection refreshableConnection;
+    private final RefreshableConnection refreshableConnection;
 
-    /**
-     * Create a new instance of a {link com.mnubo.platform.android.sdk.api.services.fallback.MnuboFallbackService}
-     */
     public MnuboSmartObjectFileCachingServiceImpl(File rootDir,
                                                   RefreshableConnection refreshableConnection) {
         this.mnuboStore = new MnuboFileStore(rootDir);
@@ -76,20 +75,27 @@ public class MnuboSmartObjectFileCachingServiceImpl implements MnuboFileCachingS
     @Override
     public void retryFailedAttempts() {
         List<MnuboEntity> entities = mnuboStore.getEntities(RETRY_QUEUE_NAME);
-        for (MnuboEntity entity : entities) {
-            switch (entity.getType()) {
-                case ADD_SAMPLES:
-                    SdkId id = (SdkId) entity.getIdData().get("id");
-                    Samples samples = (Samples) entity.getValue();
-                    final Task<Boolean> addSamplesTask = newAddSamplesTask(refreshableConnection, id, samples);
-                    addSamplesTask.executeSync(getAddSamplesFailedAttemptCallback());
-                    break;
-                case ADD_SAMPLE_PUBLIC:
-                    //TODO
-                    break;
+
+        if (entities != null) {
+            Log.d(TAG, String.format(SDK_DATA_STORE_RETRYING, entities.size()));
+
+            for (MnuboEntity entity : entities) {
+                switch (entity.getType()) {
+                    case ADD_SAMPLES:
+                        SdkId id = (SdkId) entity.getIdData().get("id");
+                        Samples samples = (Samples) entity.getValue();
+                        final Task<Boolean> addSamplesTask = newAddSamplesTask(refreshableConnection, id, samples);
+                        addSamplesTask.executeSync(getAddSamplesFailedAttemptCallback());
+                        break;
+                    case ADD_SAMPLE_PUBLIC:
+                        //TODO
+                        break;
+                }
+                mnuboStore.remove(entity);
             }
-            mnuboStore.remove(entity);
         }
+
+        Log.d(TAG, SDK_DATA_STORE_UNABLE_TO_RETRIEVE);
     }
 
     public FailedAttemptCallback getAddSamplesFailedAttemptCallback() {

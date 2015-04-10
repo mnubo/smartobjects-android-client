@@ -22,15 +22,19 @@
 
 package com.mnubo.platform.android.sdk.internal.connect.connection;
 
-import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
+import android.util.Log;
+
 import com.mnubo.platform.android.sdk.internal.connect.MnuboConnectionFactory;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl.ClientConnection;
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.impl.UserConnection;
 
-import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.oauth2.AccessGrant;
+
+import static com.mnubo.platform.android.sdk.Strings.CLIENT_CONNECTION_AVAILABLE;
+import static com.mnubo.platform.android.sdk.Strings.USER_CONNECTION_AVAILABLE;
+import static com.mnubo.platform.android.sdk.Strings.USER_LOG_IN;
+import static com.mnubo.platform.android.sdk.Strings.USER_LOG_OUT;
 
 public class MnuboConnectionManager {
 
@@ -39,74 +43,51 @@ public class MnuboConnectionManager {
     @Deprecated
     private String username = null;
 
-
-    private final ConnectionRepository connectionRepository;
-    private final MnuboConnectionFactory connectionFactory;
-
-    private ClientConnection clientConnection;
-    private UserConnection userConnection;
+    private final ClientConnection clientConnection;
+    private final UserConnection userConnection;
 
     public MnuboConnectionManager(MnuboConnectionFactory connectionFactory,
                                   ConnectionRepository connectionRepository) {
-        this.connectionRepository = connectionRepository;
-        this.connectionFactory = connectionFactory;
 
         this.clientConnection = new ClientConnection(connectionFactory);
-        activateUserConnectionIfAvailable();
+        this.userConnection = new UserConnection(connectionRepository, connectionFactory);
     }
 
     public RefreshableConnection getCurrentConnection() {
-        if (userConnection != null) {
+        if (isUserConnected()) {
+            Log.d(TAG, USER_CONNECTION_AVAILABLE);
             return userConnection;
-        }
-        return clientConnection;
-    }
-
-    private void activateUserConnectionIfAvailable() {
-        if (this.connectionRepository.findPrimaryConnection(MnuboSDKApi.class) != null) {
-            userConnection = new UserConnection(connectionRepository);
+        } else {
+            Log.d(TAG, CLIENT_CONNECTION_AVAILABLE);
+            return clientConnection;
         }
     }
 
     public void logOut() {
-        this.userConnection = null;
-        this.username = null;
-        this.connectionRepository.removeConnections(connectionFactory.getProviderId());
+        Log.d(TAG, USER_LOG_OUT);
 
+        this.username = null;
+        this.userConnection.logOut();
     }
 
     public Boolean logIn(String username, String password) {
-        this.logOut();
-
-        this.createUserConnection(username, password);
-
+        Log.d(TAG, String.format(USER_LOG_IN, username));
+        this.username = username;
+        this.userConnection.logIn(username, password);
         return true;
     }
 
     public Boolean isUserConnected() {
-        return userConnection != null;
+        return userConnection.isUserConnected();
     }
 
 
     public String getUsername() {
         if (isUserConnected()) {
             return userConnection.getUsername();
+        } else {
+            return this.username;
         }
-        return this.username;
-    }
-
-
-    private void createUserConnection(String username, String password) {
-
-        AccessGrant accessGrant = connectionFactory.getOAuthOperations().exchangeCredentialsForAccess(username, password, null);
-
-        this.username = username;
-
-        Connection<MnuboSDKApi> connection = connectionFactory.createConnection(accessGrant);
-
-        this.connectionRepository.addConnection(connection);
-
-        this.userConnection = new UserConnection(this.connectionRepository);
     }
 
 }

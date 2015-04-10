@@ -27,10 +27,9 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * password are not the same.
  */
 public class MnuboInvalidConfirmPasswordException extends MnuboClientException {
-    private static String EXCEPTION_INVALID_CONFIRM_PASSWORD = "The new password and it's confirmation must be the same when changing password.";
     public final static String INVALID_CONFIRM_PASSWORD = "Both passwords must be identical.";
 
     public MnuboInvalidConfirmPasswordException() {
-        super(EXCEPTION_INVALID_CONFIRM_PASSWORD);
+        super("The new password and it's confirmation must be the same when changing password.");
     }
 }

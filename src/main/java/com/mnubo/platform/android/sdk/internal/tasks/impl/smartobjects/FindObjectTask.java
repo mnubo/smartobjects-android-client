@@ -29,10 +29,10 @@ import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
 public class FindObjectTask extends TaskWithRefreshImpl<SmartObject> {
 
-    final SdkId objectId;
+    private final SdkId objectId;
 
 
-    public FindObjectTask(RefreshableConnection refreshableConnection,SdkId objectId) {
+    public FindObjectTask(RefreshableConnection refreshableConnection, SdkId objectId) {
         super(refreshableConnection);
         this.objectId = objectId;
 

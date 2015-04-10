@@ -45,7 +45,7 @@ public class Groups implements Parcelable, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public Groups(Parcel in) {
+    private Groups(Parcel in) {
         this.count = in.readInt();
         this.groups = in.readArrayList(null);
     }

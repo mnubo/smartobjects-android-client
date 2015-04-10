@@ -91,7 +91,7 @@ public interface UserOperations {
     /**
      * This method allow you to update user's information. The result will be available through the
      * give callback.
-     *
+     * <p/>
      * Called url = PUT : /users/{username}
      *
      * @param username           username of the user to be updated

@@ -24,6 +24,7 @@ package com.mnubo.platform.android.sdk;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.mnubo.platform.android.sdk.api.MnuboApi;
 import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboAlreadyInitializedException;
@@ -46,6 +47,9 @@ import java.net.URL;
 import static com.mnubo.platform.android.sdk.BuildConstants.OAUTH_PATH;
 import static com.mnubo.platform.android.sdk.BuildConstants.PORT;
 import static com.mnubo.platform.android.sdk.BuildConstants.PROTOCOL;
+import static com.mnubo.platform.android.sdk.Strings.SDK_ENABLE_DATA_STORE;
+import static com.mnubo.platform.android.sdk.Strings.SDK_INITIALIZED;
+import static com.mnubo.platform.android.sdk.Strings.SDK_URL_DEBUG;
 
 /**
  * This class is the entry point to use the SDK. The init method must be called prior to anything
@@ -53,9 +57,9 @@ import static com.mnubo.platform.android.sdk.BuildConstants.PROTOCOL;
  */
 public class Mnubo {
 
-    private MnuboConnectionManager mnuboConnectionManager;
-    private final MnuboConnectionFactory connectionFactory;
-    private final ConnectionRepository connectionRepository;
+    private static final String TAG = Mnubo.class.getName();
+
+    private final MnuboConnectionManager mnuboConnectionManager;
 
     private boolean failedDataStore = false;
     private File failedDataStoreDirectory;
@@ -78,11 +82,11 @@ public class Mnubo {
         SQLiteOpenHelper repositoryHelper = new SQLiteConnectionRepositoryHelper(applicationContext);
         ConnectionFactoryRegistry connectionFactoryRegistry = new ConnectionFactoryRegistry();
 
-        this.connectionFactory = new MnuboConnectionFactory(validatedPlatformUrl, consumerKey, consumerSecret, authorizeUrl, accessTokenUrl);
+        MnuboConnectionFactory connectionFactory = new MnuboConnectionFactory(validatedPlatformUrl, consumerKey, consumerSecret, authorizeUrl, accessTokenUrl);
 
-        connectionFactoryRegistry.addConnectionFactory(this.connectionFactory);
+        connectionFactoryRegistry.addConnectionFactory(connectionFactory);
 
-        this.connectionRepository = new SQLiteConnectionRepository(repositoryHelper,
+        ConnectionRepository connectionRepository = new SQLiteConnectionRepository(repositoryHelper,
                 connectionFactoryRegistry, AndroidEncryptors.text(consumerSecret, "5c0744940b5c369b"));
 
         this.mnuboConnectionManager = new MnuboConnectionManager(connectionFactory, connectionRepository);
@@ -107,6 +111,8 @@ public class Mnubo {
         }
 
         instance = new Mnubo(context, consumerKey, consumerSecret, hostname);
+
+        Log.d(TAG, SDK_INITIALIZED);
     }
 
     /**
@@ -141,7 +147,10 @@ public class Mnubo {
         if (instance == null) {
             throw new MnuboNotInitializedException();
         }
+
         instance.failedDataStore = true;
+
+        Log.d(TAG, String.format(SDK_ENABLE_DATA_STORE, instance.failedDataStoreDirectory.getAbsolutePath()));
     }
 
     /**
@@ -154,12 +163,13 @@ public class Mnubo {
             throw new MnuboNotInitializedException();
         }
         Validate.notNull(directory, "The directory cannot be null.");
-        enableFailedDataStore();
         instance.failedDataStoreDirectory = directory;
+        enableFailedDataStore();
     }
 
     private String buildPlatformUrl(final String hostname) {
         try {
+            Log.d(TAG, String.format(SDK_URL_DEBUG, PROTOCOL, hostname, PORT));
             return new URL(PROTOCOL, hostname, PORT, "").toString();
         } catch (MalformedURLException muex) {
             throw new MnuboInvalidHostname(muex);

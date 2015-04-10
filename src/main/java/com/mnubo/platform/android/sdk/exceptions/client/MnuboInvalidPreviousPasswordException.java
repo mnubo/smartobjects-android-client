@@ -27,11 +27,10 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * password is incorrect.
  */
 public class MnuboInvalidPreviousPasswordException extends MnuboClientException {
-    private static String EXCEPTION_INVALID_PREVIOUS_PASSWORD = "The provided previous password is incorrect. The password was not updated.";
 
     public final static String INVALID_PREVIOUS_PASSWORD = "Invalid previous password.";
 
     public MnuboInvalidPreviousPasswordException() {
-        super(EXCEPTION_INVALID_PREVIOUS_PASSWORD);
+        super("The provided previous password is incorrect. The password was not updated.");
     }
 }

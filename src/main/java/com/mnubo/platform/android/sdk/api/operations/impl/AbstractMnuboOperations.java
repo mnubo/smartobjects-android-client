@@ -24,9 +24,9 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 
-public abstract class AbstractMnuboOperations {
+abstract class AbstractMnuboOperations {
 
-    protected MnuboConnectionManager mnuboConnectionManager;
+    final MnuboConnectionManager mnuboConnectionManager;
     private boolean offlineCachingEnabled = false;
 
     AbstractMnuboOperations(MnuboConnectionManager mnuboConnectionManager) {

@@ -27,10 +27,10 @@ import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 
 public class ConfirmPasswordResetTask extends TaskWithRefreshImpl<Boolean> {
-    final String username;
-    final ResetPassword resetPassword;
+    private final String username;
+    private final ResetPassword resetPassword;
 
-    public ConfirmPasswordResetTask(RefreshableConnection refreshableConnection,String username, ResetPassword resetPassword) {
+    public ConfirmPasswordResetTask(RefreshableConnection refreshableConnection, String username, ResetPassword resetPassword) {
         super(refreshableConnection);
         this.username = username;
         this.resetPassword = resetPassword;

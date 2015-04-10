@@ -31,13 +31,12 @@ import java.util.regex.Pattern;
  * current object. API.
  */
 public class MnuboSensorNotFoundException extends MnuboClientException {
-    private static String EXCEPTION_SENSOR_NOT_FOUND = "The given sensor name was not found.";
 
     public final static String SENSOR_NOT_FOUND_PATTERN = "sensor name\\(.*\\) not found$";
     private final static Pattern PATTERN = Pattern.compile(SENSOR_NOT_FOUND_PATTERN);
 
     public MnuboSensorNotFoundException() {
-        super(EXCEPTION_SENSOR_NOT_FOUND);
+        super("The given sensor name was not found.");
     }
 
     public static boolean matches(CharSequence s) {

@@ -28,11 +28,11 @@ import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 
 public class UpdatePasswordTask extends TaskWithRefreshImpl<Boolean> {
 
-    final String username;
-    final UpdatePassword newPassword;
+    private final String username;
+    private final UpdatePassword newPassword;
 
 
-    public UpdatePasswordTask(RefreshableConnection refreshableConnection,String username, UpdatePassword newPassword) {
+    public UpdatePasswordTask(RefreshableConnection refreshableConnection, String username, UpdatePassword newPassword) {
         super(refreshableConnection);
         this.username = username;
         this.newPassword = newPassword;

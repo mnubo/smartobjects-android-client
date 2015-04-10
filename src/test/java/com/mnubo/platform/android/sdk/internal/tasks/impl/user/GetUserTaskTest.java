@@ -23,13 +23,9 @@
 package com.mnubo.platform.android.sdk.internal.tasks.impl.user;
 
 import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.DeleteObjectTask;
-import com.mnubo.platform.android.sdk.models.common.SdkId;
 
 import org.junit.Test;
 
-import static com.mnubo.platform.android.sdk.models.common.IdType.deviceid;
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 

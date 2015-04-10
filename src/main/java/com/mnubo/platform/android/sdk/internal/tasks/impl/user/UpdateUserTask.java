@@ -28,11 +28,11 @@ import com.mnubo.platform.android.sdk.models.users.User;
 
 public class UpdateUserTask extends TaskWithRefreshImpl<Boolean> {
 
-    final String username;
-    final User updatedUser;
+    private final String username;
+    private final User updatedUser;
 
 
-    public UpdateUserTask(RefreshableConnection refreshableConnection,String username, User updatedUser) {
+    public UpdateUserTask(RefreshableConnection refreshableConnection, String username, User updatedUser) {
         super(refreshableConnection);
         this.username = username;
         this.updatedUser = updatedUser;

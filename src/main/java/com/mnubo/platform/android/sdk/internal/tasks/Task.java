@@ -26,11 +26,13 @@ import android.util.Log;
 
 import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 
+import static com.mnubo.platform.android.sdk.Strings.SDK_ERROR_EXECUTING_TASK;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
 
 public abstract class Task<Result> {
-    public final static String ERROR_EXECUTING = "Error executing task.";
+
+    protected final String TAG = this.getClass().getName();
 
     protected final RefreshableConnection refreshableConnection;
 
@@ -54,7 +56,7 @@ public abstract class Task<Result> {
 
     protected void handleError(Exception ex, FailedAttemptCallback failedCallback) {
         if (ex != null) {
-            Log.e(this.getClass().getName(), ERROR_EXECUTING, ex);
+            Log.e(TAG, SDK_ERROR_EXECUTING_TASK, ex);
 
             if (failedCallback != null) {
                 failedCallback.onFailure(this);
