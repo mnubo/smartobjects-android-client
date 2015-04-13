@@ -22,23 +22,17 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.AuthenticationOperations;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
-import org.springframework.social.connect.Connection;
-
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newLogInTask;
 
 public class AuthenticationOperationsImpl extends AbstractMnuboOperations implements AuthenticationOperations {
 
-    public AuthenticationOperationsImpl(ConnectionOperations connectionOperations,
-                                        Connection<MnuboClientApi> clientConnection,
-                                        Connection<MnuboUserApi> userConnection) {
-        super(connectionOperations, clientConnection, userConnection);
+    public AuthenticationOperationsImpl(MnuboConnectionManager mnuboConnectionManager) {
+        super(mnuboConnectionManager);
     }
 
     /**
@@ -46,7 +40,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
      */
     @Override
     public MnuboResponse<Boolean> logIn(String username, String password) {
-        final Task<Boolean> task = newLogInTask(username, password, connectionOperations);
+        final Task<Boolean> task = newLogInTask(mnuboConnectionManager, username, password);
         return task.executeSync();
     }
 
@@ -55,7 +49,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
      */
     @Override
     public void logInAsync(final String username, final String password, final CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newLogInTask(username, password, connectionOperations);
+        final Task<Boolean> task = newLogInTask(mnuboConnectionManager, username, password);
         task.executeAsync(completionCallBack);
     }
 
@@ -64,7 +58,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
      */
     @Override
     public void logOut() {
-        connectionOperations.logOut();
+        mnuboConnectionManager.logOut();
     }
 
     /**
@@ -72,7 +66,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
      */
     @Override
     public Boolean isUserConnected() {
-        return connectionOperations.isUserConnected();
+        return mnuboConnectionManager.isUserConnected();
     }
 
     /**
@@ -80,7 +74,7 @@ public class AuthenticationOperationsImpl extends AbstractMnuboOperations implem
      */
     @Override
     public String getUsername() {
-        return connectionOperations.getUsername();
+        return mnuboConnectionManager.getUsername();
     }
 
 }

@@ -26,11 +26,10 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * This exception is raised when you try to fetch an object that doesn't exists in the mnubo API.
  */
 public class MnuboObjectAlreadyExistsException extends MnuboClientException {
-    private static String EXCEPTION_OBJECT_ALREADY_EXISTS = "The object you are attempting to create already exists. The device id is already used.";
 
     public final static String OBJECT_ALREADY_EXISTS = "Object already exist";
 
     public MnuboObjectAlreadyExistsException() {
-        super(EXCEPTION_OBJECT_ALREADY_EXISTS);
+        super("The object you are attempting to create already exists. The device id is already used.");
     }
 }

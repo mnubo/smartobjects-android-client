@@ -84,12 +84,12 @@ public class User implements Parcelable, Serializable {
         this.username = in.readString();
         this.password = in.readString();
         this.confirmedPassword = in.readString();
-        this.firstname= in.readString();
-        this.lastname= in.readString();
-        this.registrationDate= in.readString();
-        this.collections= in.readArrayList(null);
-        this.groups= in.readArrayList(null);
-        this.attributes= in.readArrayList(null);
+        this.firstname = in.readString();
+        this.lastname = in.readString();
+        this.registrationDate = in.readString();
+        this.collections = in.readArrayList(null);
+        this.groups = in.readArrayList(null);
+        this.attributes = in.readArrayList(null);
         this.isAdmin = in.readInt() == 1;
     }
 

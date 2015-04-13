@@ -20,21 +20,12 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.api;
+package com.mnubo.platform.android.sdk.internal.connect.connection.refreshable;
 
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
 
-import com.mnubo.platform.android.sdk.internal.services.CollectionService;
-import com.mnubo.platform.android.sdk.internal.services.GroupService;
-import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
-import com.mnubo.platform.android.sdk.internal.services.UserService;
+public interface RefreshableConnection {
+    void refresh();
 
-public interface MnuboUserApi {
-    UserService userService();
-
-    SmartObjectService objectService();
-
-    GroupService groupService();
-
-    CollectionService collectionService();
-
+    MnuboSDKApi getMnuboSDKApi();
 }

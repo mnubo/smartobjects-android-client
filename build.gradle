@@ -45,7 +45,7 @@ android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 15
         targetSdkVersion 22
         versionCode = VERSION_CODE
         versionName = getVersionName()
@@ -107,7 +107,6 @@ dependencies {
 
     compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON_VERSION"
     compile "com.github.daddykotex:geojson-jackson-android:$ANDROID_GEOJSON_VERSION@aar"
-    compile "joda-time:joda-time:$JODATIME_VERSION"
 
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile("org.springframework:spring-test:$SPRING_TEST_VERSION") {

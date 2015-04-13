@@ -22,17 +22,18 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.user;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 
 public class UpdatePasswordTask extends TaskWithRefreshImpl<Boolean> {
 
-    final String username;
-    final UpdatePassword newPassword;
+    private final String username;
+    private final UpdatePassword newPassword;
 
 
-    public UpdatePasswordTask(ApiFetcher apiFetcher, String username, UpdatePassword newPassword, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public UpdatePasswordTask(RefreshableConnection refreshableConnection, String username, UpdatePassword newPassword) {
+        super(refreshableConnection);
         this.username = username;
         this.newPassword = newPassword;
 
@@ -40,7 +41,7 @@ public class UpdatePasswordTask extends TaskWithRefreshImpl<Boolean> {
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboUserApi().userService().updatePassword(username, newPassword);
+        refreshableConnection.getMnuboSDKApi().userService().updatePassword(username, newPassword);
         return true;
     }
 }

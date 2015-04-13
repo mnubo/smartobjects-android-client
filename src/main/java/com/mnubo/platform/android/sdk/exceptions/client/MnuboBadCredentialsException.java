@@ -23,17 +23,18 @@
 package com.mnubo.platform.android.sdk.exceptions.client;
 
 /**
- * This exception is raised when the credentials provided to fetch a token are incorrect. Either the
+ * This exception is raised when the credentials provided to fetch a token are incorrect. Either
+ * the
  * username/password combination of the user currently login or the consumer_key/consumer_secret
- * provided in the {@link com.mnubo.platform.android.sdk.Mnubo#init(android.content.Context, String,
+ * provided in the {@link com.mnubo.platform.android.sdk.Mnubo#init(android.content.Context,
+ * String,
  * String, String)} function.
  */
 public class MnuboBadCredentialsException extends MnuboClientException {
-    private static String EXCEPTION_BAD_CREDENTIALS = "Invalid credentials were supplied.";
 
     public final static String BAD_CREDENTIALS = "Bad credentials";
 
     public MnuboBadCredentialsException() {
-        super(EXCEPTION_BAD_CREDENTIALS);
+        super("Invalid credentials were supplied.");
     }
 }

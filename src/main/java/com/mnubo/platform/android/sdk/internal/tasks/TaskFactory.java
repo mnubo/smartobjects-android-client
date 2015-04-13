@@ -22,6 +22,8 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.authentication.LogInTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmPasswordResetTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmUserCreationTask;
@@ -48,73 +50,69 @@ import com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 import com.mnubo.platform.android.sdk.models.users.User;
 
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
-import static com.mnubo.platform.android.sdk.internal.tasks.Task.ApiFetcher;
-import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
-
 public class TaskFactory {
 
-    public static Task<Boolean> newLogInTask(String username, String password, ConnectionOperations connectionOperations) {
-        return new LogInTask(username, password, connectionOperations);
+    public static Task<Boolean> newLogInTask(MnuboConnectionManager connectionManager, String username, String password) {
+        return new LogInTask(connectionManager, username, password);
     }
 
-    public static Task<SmartObjects> newFindUserObjectsTask(ApiFetcher apiFetcher, String username, boolean details, String objectModelName, ConnectionRefresher connectionRefresher) {
-        return new FindUserObjectsTask(apiFetcher, username, details, objectModelName, connectionRefresher);
+    public static Task<SmartObjects> newFindUserObjectsTask(RefreshableConnection refreshableConnection, String username, boolean details, String objectModelName) {
+        return new FindUserObjectsTask(refreshableConnection, username, details, objectModelName);
     }
 
-    public static Task<User> newGetUserTask(ApiFetcher apiFetcher, String username, ConnectionRefresher connectionRefresher) {
-        return new GetUserTask(apiFetcher, username, connectionRefresher);
+    public static Task<User> newGetUserTask(RefreshableConnection refreshableConnection, String username) {
+        return new GetUserTask(refreshableConnection, username);
     }
 
-    public static Task<Boolean> newUpdateUserTask(ApiFetcher apiFetcher, String username, User updatedUser, ConnectionRefresher connectionRefresher) {
-        return new UpdateUserTask(apiFetcher, username, updatedUser, connectionRefresher);
+    public static Task<Boolean> newUpdateUserTask(RefreshableConnection refreshableConnection, String username, User updatedUser) {
+        return new UpdateUserTask(refreshableConnection, username, updatedUser);
     }
 
-    public static Task<Boolean> newUpdatePasswordTask(ApiFetcher apiFetcher, String username, UpdatePassword password, ConnectionRefresher connectionRefresher) {
-        return new UpdatePasswordTask(apiFetcher, username, password, connectionRefresher);
+    public static Task<Boolean> newUpdatePasswordTask(RefreshableConnection refreshableConnection, String username, UpdatePassword password) {
+        return new UpdatePasswordTask(refreshableConnection, username, password);
     }
 
-    public static Task<SmartObject> newFindObjectTask(ApiFetcher apiFetcher, SdkId objectId, ConnectionRefresher connectionRefresher) {
-        return new FindObjectTask(apiFetcher, objectId, connectionRefresher);
+    public static Task<SmartObject> newFindObjectTask(RefreshableConnection refreshableConnection, SdkId objectId) {
+        return new FindObjectTask(refreshableConnection, objectId);
     }
 
-    public static Task<Boolean> newUpdateObjectTask(ApiFetcher apiFetcher, SdkId objectId, SmartObject updatedObject, ConnectionRefresher connectionRefresher) {
-        return new UpdateObjectTask(apiFetcher, objectId, updatedObject, connectionRefresher);
+    public static Task<Boolean> newUpdateObjectTask(RefreshableConnection refreshableConnection, SdkId objectId, SmartObject updatedObject) {
+        return new UpdateObjectTask(refreshableConnection, objectId, updatedObject);
     }
 
-    public static Task<Samples> newSearchSamplesTask(ApiFetcher apiFetcher, SdkId objectId, String sensorName, ConnectionRefresher connectionRefresher) {
-        return new SearchSamplesTask(apiFetcher, objectId, sensorName, connectionRefresher);
+    public static Task<Samples> newSearchSamplesTask(RefreshableConnection refreshableConnection, SdkId objectId, String sensorName) {
+        return new SearchSamplesTask(refreshableConnection, objectId, sensorName);
     }
 
-    public static Task<Boolean> newAddSamplesTask(ApiFetcher apiFetcher, SdkId objectId, Samples samples, ConnectionRefresher connectionRefresher) {
-        return new AddSamplesTask(apiFetcher, objectId, samples, connectionRefresher);
+    public static Task<Boolean> newAddSamplesTask(RefreshableConnection refreshableConnection, SdkId objectId, Samples samples) {
+        return new AddSamplesTask(refreshableConnection, objectId, samples);
     }
 
-    public static Task<Boolean> newAddSamplesOnPublicSensor(ApiFetcher apiFetcher, SdkId objectId, String sensorName, Sample sample, ConnectionRefresher connectionRefresher) {
-        return new AddSampleOnPublicSensorTask(apiFetcher, objectId, sensorName, sample, connectionRefresher);
+    public static Task<Boolean> newAddSamplesOnPublicSensorTask(RefreshableConnection refreshableConnection, SdkId objectId, String sensorName, Sample sample) {
+        return new AddSampleOnPublicSensorTask(refreshableConnection, objectId, sensorName, sample);
     }
 
-    public static Task<Boolean> newCreateObjectTask(ApiFetcher apiFetcher, SmartObject object, Boolean updateIfExists, ConnectionRefresher connectionRefresher) {
-        return new CreateObjectTask(apiFetcher, object, updateIfExists, connectionRefresher);
+    public static Task<Boolean> newCreateObjectTask(RefreshableConnection refreshableConnection, SmartObject object, Boolean updateIfExists) {
+        return new CreateObjectTask(refreshableConnection, object, updateIfExists);
     }
 
-    public static Task<Boolean> newDeleteObjectTask(ApiFetcher apiFetcher, SdkId id, ConnectionRefresher connectionRefresher) {
-        return new DeleteObjectTask(apiFetcher, id, connectionRefresher);
+    public static Task<Boolean> newDeleteObjectTask(RefreshableConnection refreshableConnection, SdkId id) {
+        return new DeleteObjectTask(refreshableConnection, id);
     }
 
-    public static Task<Boolean> newCreateUserTask(ApiFetcher apiFetcher, User object, ConnectionRefresher connectionRefresher) {
-        return new CreateUserTask(apiFetcher, object, connectionRefresher);
+    public static Task<Boolean> newCreateUserTask(RefreshableConnection refreshableConnection, User object) {
+        return new CreateUserTask(refreshableConnection, object);
     }
 
-    public static Task<Boolean> newConfirmUserCreationTask(ApiFetcher apiFetcher, String username, UserConfirmation confirmation, ConnectionRefresher connectionRefresher) {
-        return new ConfirmUserCreationTask(apiFetcher, username, confirmation, connectionRefresher);
+    public static Task<Boolean> newConfirmUserCreationTask(RefreshableConnection refreshableConnection, String username, UserConfirmation confirmation) {
+        return new ConfirmUserCreationTask(refreshableConnection, username, confirmation);
     }
 
-    public static Task<Boolean> newResetPasswordTask(ApiFetcher apiFetcher, String username, ConnectionRefresher connectionRefresher) {
-        return new ResetPasswordTask(apiFetcher, username, connectionRefresher);
+    public static Task<Boolean> newResetPasswordTask(RefreshableConnection refreshableConnection, String username) {
+        return new ResetPasswordTask(refreshableConnection, username);
     }
 
-    public static Task<Boolean> newConfirmPasswordResetTask(ApiFetcher apiFetcher, String username, ResetPassword password, ConnectionRefresher connectionRefresher) {
-        return new ConfirmPasswordResetTask(apiFetcher, username, password, connectionRefresher);
+    public static Task<Boolean> newConfirmPasswordResetTask(RefreshableConnection refreshableConnection, String username, ResetPassword password) {
+        return new ConfirmPasswordResetTask(refreshableConnection, username, password);
     }
 }

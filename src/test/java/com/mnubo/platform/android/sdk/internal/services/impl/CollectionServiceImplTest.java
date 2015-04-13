@@ -22,7 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.services.impl;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 import com.mnubo.platform.android.sdk.internal.services.CollectionService;
 import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -48,17 +48,20 @@ public class CollectionServiceImplTest extends AbstractServicesTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        this.mnuboUserApi = new MnuboSDKApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL);
+        setUpMockServer();
+
         collectionService = mnuboUserApi.collectionService();
     }
 
     @Test
     public void testDelete() throws Exception {
-        mockUserServiceServer.expect(requestTo(expectedUrl("/collections/collectionId?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/collections/collectionId?id_type=objectid")))
                 .andExpect(method(DELETE))
                 .andRespond(withNoContent());
 
         collectionService.delete(SdkId.valueOf("collectionId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -66,14 +69,14 @@ public class CollectionServiceImplTest extends AbstractServicesTest {
         Collection collectionToCreate = new Collection();
         collectionToCreate.setOwner("owner");
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/collections")))
+        mockServiceServer.expect(requestTo(expectedUrl("/collections")))
                 .andExpect(method(POST))
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(content().string(toJson(collectionToCreate)))
                 .andRespond(withNoContent());
 
         collectionService.create(collectionToCreate);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -81,13 +84,13 @@ public class CollectionServiceImplTest extends AbstractServicesTest {
         Collection expectedCollection = new Collection();
         expectedCollection.setOwner("owner");
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/collections/collectionId?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/collections/collectionId?id_type=objectid")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedCollection), APPLICATION_JSON_UTF8));
 
         Collection collection = collectionService.findOne(SdkId.valueOf("collectionId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
 
@@ -95,47 +98,47 @@ public class CollectionServiceImplTest extends AbstractServicesTest {
     public void testListAllObjects() throws Exception {
         SmartObjects expectedSmartObjects = new SmartObjects();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects?id_type=objectid")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSmartObjects), APPLICATION_JSON_UTF8));
 
         SmartObjects SmartObjects = collectionService.listAllObjects(SdkId.valueOf("collectionId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testListAllObjectsWithLimit() throws Exception {
         SmartObjects expectedSmartObjects = new SmartObjects();
 
-        mockUserServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects?id_type=objectid&limit=10")))
+        mockServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects?id_type=objectid&limit=10")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSmartObjects), APPLICATION_JSON_UTF8));
 
         SmartObjects SmartObjects = collectionService.listAllObjects(SdkId.valueOf("collectionId"), 10);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testAddObject() throws Exception {
-        mockUserServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects/objectId?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects/objectId?id_type=objectid")))
                 .andExpect(method(PUT))
                 .andExpect(userAuthMatch())
                 .andRespond(withNoContent());
 
         collectionService.addObject(SdkId.valueOf("collectionId"), SdkId.valueOf("objectId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testRemoveObject() throws Exception {
-        mockUserServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects/objectId?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/collections/collectionId/objects/objectId?id_type=objectid")))
                 .andExpect(method(DELETE))
                 .andExpect(userAuthMatch())
                 .andRespond(withNoContent());
 
         collectionService.removeObject(SdkId.valueOf("collectionId"), SdkId.valueOf("objectId"));
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 }

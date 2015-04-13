@@ -22,24 +22,25 @@
 
 package com.mnubo.platform.android.sdk.internal.connect;
 
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
+
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
 
 
-public abstract class MnuboServiceProvider<API> extends AbstractOAuth2ServiceProvider<API> {
+class MnuboServiceProvider extends AbstractOAuth2ServiceProvider<MnuboSDKApi> {
 
     private final String platformBaseUrl;
 
-    protected MnuboServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                   String authorizeUrl, String accessTokenUrl) {
-        super(new MnuboOAuth2Template(consumerKey,
-                        consumerSecret,
-                        platformBaseUrl + authorizeUrl,
-                        platformBaseUrl + accessTokenUrl)
-        );
+    public MnuboServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
+                                String authorizeUrl, String accessTokenUrl) {
+        super(new MnuboOAuth2Template(consumerKey, consumerSecret,
+                authorizeUrl, accessTokenUrl));
         this.platformBaseUrl = platformBaseUrl;
     }
 
-    protected String getPlatformBaseUrl() {
-        return platformBaseUrl;
+    public MnuboSDKApi getApi(String accessToken) {
+        return new MnuboSDKApiImpl(accessToken, platformBaseUrl);
     }
+
 }

@@ -28,11 +28,10 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * It happens if a Reset Password process is on going. The user has not completed the process yet.
  */
 public class MnuboCredentialsExpiredException extends MnuboClientException {
-    private static String EXCEPTION_CREDENTIALS_EXPIRED = "The username / password combination is expired. This is mostly due to a non-finished reset password process.";
 
     public final static String USER_CREDENTIALS_EXPIRED = "User credentials have expired";
 
     public MnuboCredentialsExpiredException() {
-        super(EXCEPTION_CREDENTIALS_EXPIRED);
+        super("The username / password combination is expired. This is mostly due to a non-finished reset password process.");
     }
 }

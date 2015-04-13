@@ -47,9 +47,9 @@ public class MockParcel {
         return new MockParcel().getMockedParcel();
     }
 
-    Parcel mockedParcel;
-    List<Object> objects;
-    int position;
+    private Parcel mockedParcel;
+    private List<Object> objects;
+    private int position;
 
     public Parcel getMockedParcel() {
         return mockedParcel;

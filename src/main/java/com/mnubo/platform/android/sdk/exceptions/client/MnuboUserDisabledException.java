@@ -27,12 +27,11 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * registered but didn't confirm the registration while it is required.
  */
 public class MnuboUserDisabledException extends MnuboClientException {
-    private static String EXCEPTION_USER_DISABLED = "The user is disabled. Either manually deactivated or never activated after registration.";
 
     public final static String USER_DISABLED = "User is disabled";
 
     public MnuboUserDisabledException() {
-        super(EXCEPTION_USER_DISABLED);
+        super("The user is disabled. Either manually deactivated or never activated after registration.");
     }
 
 }

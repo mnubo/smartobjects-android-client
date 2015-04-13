@@ -20,23 +20,26 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.client.connect;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
-import com.mnubo.platform.android.sdk.BuildConstants;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
 
-import org.springframework.social.connect.support.OAuth2ConnectionFactory;
+import org.junit.Test;
 
-public class MnuboClientConnectionFactory extends OAuth2ConnectionFactory<MnuboClientApi> {
+import static com.mnubo.platform.android.sdk.models.common.IdType.deviceid;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
+public class DeleteObjectTaskTest extends AbstractTaskTest {
 
-    public MnuboClientConnectionFactory(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                        String authorizeUrl, String accessTokenUrl) {
-        super(BuildConstants.MNUBO_PROVIDER,
-                new MnuboClientServiceProvider(platformBaseUrl, consumerKey, consumerSecret,
-                        authorizeUrl, accessTokenUrl),
-                new MnuboClientAdapter());
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final SdkId id = SdkId.build("id", deviceid);
+        DeleteObjectTask deleteObjectTask = new DeleteObjectTask(connection, id);
+
+        deleteObjectTask.executeMnuboCall();
+
+        verify(smartObjectService).delete(eq(id));
     }
-
 }
-

@@ -28,11 +28,10 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * the wrong token.
  */
 public class MnuboInvalidRegistrationTokenException extends MnuboClientException {
-    private static String EXCEPTION_INVALID_REGISTRATION_TOKEN = "The token provided to confirm the user registration is invalid.";
 
     public final static String REGISTRATION_INVALID_TOKEN = "Two Steps User Registration: Invalid Token received for the User.";
 
     public MnuboInvalidRegistrationTokenException() {
-        super(EXCEPTION_INVALID_REGISTRATION_TOKEN);
+        super("The token provided to confirm the user registration is invalid.");
     }
 }

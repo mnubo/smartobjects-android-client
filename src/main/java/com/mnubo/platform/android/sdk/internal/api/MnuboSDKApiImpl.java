@@ -20,14 +20,16 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.api;
+package com.mnubo.platform.android.sdk.internal.api;
 
 
 import com.mnubo.platform.android.sdk.internal.connect.MnuboAPIErrorHandler;
+import com.mnubo.platform.android.sdk.internal.services.ClientService;
 import com.mnubo.platform.android.sdk.internal.services.CollectionService;
 import com.mnubo.platform.android.sdk.internal.services.GroupService;
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.internal.services.UserService;
+import com.mnubo.platform.android.sdk.internal.services.impl.ClientServiceImpl;
 import com.mnubo.platform.android.sdk.internal.services.impl.CollectionServiceImpl;
 import com.mnubo.platform.android.sdk.internal.services.impl.GroupServiceImpl;
 import com.mnubo.platform.android.sdk.internal.services.impl.SmartObjectServiceImpl;
@@ -37,20 +39,22 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.web.client.RestTemplate;
 
-public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboUserApi {
+public class MnuboSDKApiImpl extends AbstractOAuth2ApiBinding implements MnuboSDKApi {
 
+    private final ClientService clientService;
     private final UserService userService;
     private final SmartObjectService smartObjectService;
     private final GroupService groupService;
     private final CollectionService collectionService;
 
-    public MnuboUserApiImpl(final String accessToken, final String platformBaseUrl) {
+    public MnuboSDKApiImpl(final String accessToken, final String platformBaseUrl) {
         super(accessToken);
-
+        this.clientService = new ClientServiceImpl(platformBaseUrl, getRestTemplate());
         this.userService = new UserServiceImpl(platformBaseUrl, getRestTemplate());
         this.smartObjectService = new SmartObjectServiceImpl(platformBaseUrl, getRestTemplate());
         this.groupService = new GroupServiceImpl(platformBaseUrl, getRestTemplate());
         this.collectionService = new CollectionServiceImpl(platformBaseUrl, getRestTemplate());
+
     }
 
     @Override
@@ -59,6 +63,13 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
         //Force the use of SNI to fetch the proper certificate
         restTemplate.setRequestFactory(new SimpleClientHttpRequestFactory());
     }
+
+
+    @Override
+    public ClientService clientService() {
+        return this.clientService;
+    }
+
 
     @Override
     public UserService userService() {
@@ -79,6 +90,5 @@ public class MnuboUserApiImpl extends AbstractOAuth2ApiBinding implements MnuboU
     public CollectionService collectionService() {
         return this.collectionService;
     }
-
 
 }

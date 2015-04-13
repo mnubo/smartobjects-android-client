@@ -22,18 +22,19 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
 public class UpdateObjectTask extends TaskWithRefreshImpl<Boolean> {
 
-    final SdkId objectId;
-    final SmartObject smartObject;
+    private final SdkId objectId;
+    private final SmartObject smartObject;
 
 
-    public UpdateObjectTask(ApiFetcher apiFetcher, SdkId objectId, SmartObject smartObject, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public UpdateObjectTask(RefreshableConnection refreshableConnection, SdkId objectId, SmartObject smartObject) {
+        super(refreshableConnection);
         this.objectId = objectId;
         this.smartObject = smartObject;
 
@@ -41,7 +42,7 @@ public class UpdateObjectTask extends TaskWithRefreshImpl<Boolean> {
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboUserApi().objectService().update(objectId, smartObject);
+        refreshableConnection.getMnuboSDKApi().objectService().update(objectId, smartObject);
         return true;
     }
 }

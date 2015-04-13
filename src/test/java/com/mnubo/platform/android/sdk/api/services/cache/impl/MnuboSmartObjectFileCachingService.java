@@ -26,8 +26,9 @@ import android.util.Log;
 
 import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
 import com.mnubo.platform.android.sdk.api.store.impl.MnuboFileStore;
-import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
+import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
 import com.mnubo.platform.android.sdk.models.common.IdType;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
@@ -45,43 +46,40 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
 import static com.mnubo.platform.android.sdk.api.store.MnuboEntity.EntityType;
-import static com.mnubo.platform.android.sdk.internal.tasks.Task.ApiFetcher;
-import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        Log.class
+        Log.class,
+        TaskFactory.class
 })
 @SuppressWarnings("unchecked")
 public class MnuboSmartObjectFileCachingService {
 
     private MnuboFileStore mockedStore = mock(MnuboFileStore.class);
     private File mockedFile = mock(File.class);
-    private ApiFetcher mockedApiFetcher = mock(ApiFetcher.class);
-    private MnuboUserApi mockedUserApi = mock(MnuboUserApi.class);
-    private SmartObjectService smartObjectService = mock(SmartObjectService.class);
-    private ConnectionRefresher mockedConnectionRefresher = mock(ConnectionRefresher.class);
+    private RefreshableConnection mockedRefreshableConnection = mock(RefreshableConnection.class);
 
     private MnuboSmartObjectFileCachingServiceImpl mnuboSmartObjectFileCachingService;
+    private AddSamplesTask addSamplesTask = mock(AddSamplesTask.class);
 
     @Before
     public void setUp() throws Exception {
         mockStatic(Log.class);
+        mockStatic(TaskFactory.class);
 
-        when(mockedUserApi.objectService()).thenReturn(smartObjectService);
-        when(mockedApiFetcher.getMnuboUserApi()).thenReturn(mockedUserApi);
-
-
-        mnuboSmartObjectFileCachingService = new MnuboSmartObjectFileCachingServiceImpl(mockedFile, mockedConnectionRefresher, mockedApiFetcher);
+        mnuboSmartObjectFileCachingService = new MnuboSmartObjectFileCachingServiceImpl(mockedFile, mockedRefreshableConnection);
         mnuboSmartObjectFileCachingService.setMnuboStore(mockedStore);
 
     }
@@ -103,12 +101,15 @@ public class MnuboSmartObjectFileCachingService {
 
         final List<MnuboEntity> entities = Arrays.asList(mnuboEntity1, mnuboEntity2);
 
+
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(id1), eq(submittedSamples))).thenReturn(addSamplesTask);
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(id2), eq(submittedSamples))).thenReturn(addSamplesTask);
+
         when(mockedStore.getEntities("failed")).thenReturn(entities);
 
         mnuboSmartObjectFileCachingService.retryFailedAttempts();
 
-        verify(smartObjectService).addSamples(eq(id1), eq(submittedSamples));
-        verify(smartObjectService).addSamples(eq(id2), eq(submittedSamples));
+        verify(addSamplesTask, times(2)).executeSync(any(FailedAttemptCallback.class));
 
         verify(mockedStore).remove(mnuboEntity1);
         verify(mockedStore).remove(mnuboEntity2);

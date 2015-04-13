@@ -31,14 +31,9 @@ import com.mnubo.platform.android.sdk.api.operations.impl.ClientOperationsImpl;
 import com.mnubo.platform.android.sdk.api.operations.impl.SmartObjectOperationsImpl;
 import com.mnubo.platform.android.sdk.api.operations.impl.UserOperationsImpl;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
-
-import org.springframework.social.connect.Connection;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 
 import java.io.File;
-
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 
 /**
  * Mnubo API that is used by the application developers to perform requests on the Mnubo system.
@@ -53,17 +48,14 @@ public class MnuboApi {
 
     private final AuthenticationOperations authenticationOperations;
 
-    public MnuboApi(ConnectionOperations connectionOperations,
-                    Connection<MnuboClientApi> clientConnection,
-                    Connection<MnuboUserApi> userConnection,
+    public MnuboApi(MnuboConnectionManager connectionManager,
                     File applicationRootDir,
                     boolean enableFailedAttemptCaching) {
 
-        this.userOperations = new UserOperationsImpl(connectionOperations, clientConnection, userConnection);
-        this.smartObjectOperations = new SmartObjectOperationsImpl(connectionOperations, clientConnection, userConnection, applicationRootDir, enableFailedAttemptCaching);
-        this.clientOperations = new ClientOperationsImpl(connectionOperations, clientConnection, userConnection);
-        this.authenticationOperations = new AuthenticationOperationsImpl(connectionOperations, clientConnection, userConnection);
-
+        this.userOperations = new UserOperationsImpl(connectionManager);
+        this.smartObjectOperations = new SmartObjectOperationsImpl(connectionManager, applicationRootDir, enableFailedAttemptCaching);
+        this.clientOperations = new ClientOperationsImpl(connectionManager);
+        this.authenticationOperations = new AuthenticationOperationsImpl(connectionManager);
     }
 
     public UserOperations getUserOperations() {

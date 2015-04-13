@@ -20,22 +20,23 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.connect;
+package com.mnubo.platform.android.sdk.internal.api;
 
-import com.mnubo.platform.android.sdk.BuildConstants;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 
-import org.springframework.social.connect.support.OAuth2ConnectionFactory;
+import com.mnubo.platform.android.sdk.internal.services.ClientService;
+import com.mnubo.platform.android.sdk.internal.services.CollectionService;
+import com.mnubo.platform.android.sdk.internal.services.GroupService;
+import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
+import com.mnubo.platform.android.sdk.internal.services.UserService;
 
-public class MnuboUserConnectionFactory extends OAuth2ConnectionFactory<MnuboUserApi> {
+public interface MnuboSDKApi {
+    UserService userService();
 
-    public MnuboUserConnectionFactory(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                      String authorizeUrl, String accessTokenUrl) {
-        super(BuildConstants.MNUBO_PROVIDER,
-                new MnuboUserServiceProvider(platformBaseUrl, consumerKey, consumerSecret,
-                        authorizeUrl, accessTokenUrl),
-                new MnuboUserAdapter());
-    }
+    SmartObjectService objectService();
 
+    GroupService groupService();
+
+    CollectionService collectionService();
+
+    ClientService clientService();
 }
-

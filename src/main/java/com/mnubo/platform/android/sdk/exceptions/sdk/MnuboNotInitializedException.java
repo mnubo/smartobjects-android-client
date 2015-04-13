@@ -25,15 +25,15 @@ package com.mnubo.platform.android.sdk.exceptions.sdk;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
 /**
- * This exception is raised when you call {@link com.mnubo.platform.android.sdk.Mnubo#getApi()} when
+ * This exception is raised when you call {@link com.mnubo.platform.android.sdk.Mnubo#getApi()}
+ * when
  * {@link com.mnubo.platform.android.sdk.Mnubo#init(android.content.Context, String, String,
  * String)} was not called yet.
  */
 public class MnuboNotInitializedException extends MnuboException {
 
-    private static String EXCEPTION_NOT_INITIALIZED = "Mnubo.init() must be called prior to this call.";
 
     public MnuboNotInitializedException() {
-        super(EXCEPTION_NOT_INITIALIZED);
+        super("Mnubo.init() must be called prior to this call.");
     }
 }

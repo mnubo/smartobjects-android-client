@@ -20,23 +20,25 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.user.connect;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.client;
 
-import com.mnubo.platform.android.sdk.internal.connect.MnuboServiceProvider;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApiImpl;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.models.users.User;
 
+import org.junit.Test;
 
-class MnuboUserServiceProvider extends MnuboServiceProvider<MnuboUserApi> {
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
-    public MnuboUserServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
-                                    String authorizeUrl, String accessTokenUrl) {
-        super(platformBaseUrl, consumerKey, consumerSecret,
-                authorizeUrl, accessTokenUrl);
+public class CreateUserTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final User user = new User();
+        CreateUserTask createUserTask = new CreateUserTask(connection, user);
+
+        createUserTask.executeMnuboCall();
+
+        verify(clientService).createUser(eq(user));
     }
-
-    public MnuboUserApi getApi(String accessToken) {
-        return new MnuboUserApiImpl(accessToken, getPlatformBaseUrl());
-    }
-
 }

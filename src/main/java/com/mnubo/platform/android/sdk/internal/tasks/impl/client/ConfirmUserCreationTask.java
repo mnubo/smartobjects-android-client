@@ -22,24 +22,24 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.client;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
 
 public class ConfirmUserCreationTask extends TaskWithRefreshImpl<Boolean> {
-    final String username;
-    final UserConfirmation confirmation;
-    final ApiFetcher apiFetcher;
+    private final String username;
+    private final UserConfirmation confirmation;
 
-    public ConfirmUserCreationTask(ApiFetcher apiFetcher, String username, UserConfirmation confirmation, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+
+    public ConfirmUserCreationTask(RefreshableConnection refreshableConnection, String username, UserConfirmation confirmation) {
+        super(refreshableConnection);
         this.username = username;
         this.confirmation = confirmation;
-        this.apiFetcher = apiFetcher;
     }
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboClientApi().clientService().confirmUserCreation(username, confirmation);
+        refreshableConnection.getMnuboSDKApi().clientService().confirmUserCreation(username, confirmation);
         return true;
     }
 }

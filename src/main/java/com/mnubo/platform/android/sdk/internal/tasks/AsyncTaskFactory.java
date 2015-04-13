@@ -29,7 +29,7 @@ import com.mnubo.platform.android.sdk.exceptions.sdk.MnuboCancelledOperationExce
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService.FailedAttemptCallback;
 
-public class AsyncTaskFactory {
+class AsyncTaskFactory {
 
     public static <Result> AsyncTask<Void, Void, MnuboResponse<Result>> create(final Task<Result> task,
                                                                                final CompletionCallBack<Result> callback,

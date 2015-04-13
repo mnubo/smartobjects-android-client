@@ -23,7 +23,10 @@ package com.mnubo.platform.android.sdk.internal.tasks.impl;
 
 import android.util.Log;
 
+import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboExpiredAccessException;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
 
@@ -31,12 +34,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.social.ExpiredAuthorizationException;
 
-import static com.mnubo.platform.android.sdk.internal.tasks.Task.ERROR_EXECUTING;
-import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.ConnectionRefresher;
+import static com.mnubo.platform.android.sdk.Strings.SDK_ERROR_EXECUTING_TASK;
 import static com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl.TASK_REFRESHING;
 import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -44,15 +48,18 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        Task.class,
         Log.class
 })
 public class TaskWithRefreshImplTest {
+
+    private final RefreshableConnection mockedRefreshableConnection = mock(RefreshableConnection.class);
 
     @Before
     public void setUp() throws Exception {
@@ -60,26 +67,10 @@ public class TaskWithRefreshImplTest {
 
     }
 
-    private class MockedCustomRefresher {
-        private Boolean expiredConnection = true;
-        private final ConnectionRefresher connectionRefresher;
-
-        private MockedCustomRefresher(final Boolean willRefreshWorks) {
-            this.connectionRefresher = new ConnectionRefresher() {
-                @Override
-                public void refresh() {
-                    if (willRefreshWorks) {
-                        expiredConnection = false;
-                    }
-                }
-            };
-        }
-    }
-
     @Test
     public void testExecute() throws Exception {
 
-        final Task<Boolean> task = new DummyTask(null);
+        final Task<Boolean> task = new DummyMockedTask(mockedRefreshableConnection, false);
 
         MnuboResponse<Boolean> response = task.executeSync();
         assertThat(response.getResult(), equalTo(true));
@@ -90,9 +81,7 @@ public class TaskWithRefreshImplTest {
     public void testExecuteExpiringWithRefreshWorking() throws Exception {
         when(Log.d(eq(DummyMockedTask.class.getName()), eq(TASK_REFRESHING), Matchers.any(ExpiredAuthorizationException.class))).thenReturn(0);
 
-        final MockedCustomRefresher mockedCustomRefresher = new MockedCustomRefresher(true);
-
-        final Task<Boolean> task = new DummyMockedTask(mockedCustomRefresher, mockedCustomRefresher.connectionRefresher);
+        final Task<Boolean> task = new DummyMockedTask(mockedRefreshableConnection, true);
 
         MnuboResponse<Boolean> response = task.executeSync();
         assertThat(response.getResult(), equalTo(true));
@@ -101,11 +90,15 @@ public class TaskWithRefreshImplTest {
 
     @Test
     public void testExecuteExpiringWithRefreshNotWorking() throws Exception {
-        when(Log.e(eq(DummyMockedTask.class.getName()), eq(ERROR_EXECUTING), Matchers.any(MnuboException.class))).thenReturn(0);
+        when(Log.e(eq(DummyMockedTask.class.getName()), eq(SDK_ERROR_EXECUTING_TASK), Matchers.any(MnuboException.class))).thenReturn(0);
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                throw new MnuboExpiredAccessException();
+            }
+        }).when(mockedRefreshableConnection).refresh();
 
-        final MockedCustomRefresher mockedCustomRefresher = new MockedCustomRefresher(false);
-
-        final Task<Boolean> task = new DummyMockedTask(mockedCustomRefresher, mockedCustomRefresher.connectionRefresher);
+        final Task<Boolean> task = new DummyMockedTask(mockedRefreshableConnection, true);
 
         MnuboResponse<Boolean> response = task.executeSync();
         assertThat(response.getResult(), is(nullValue()));
@@ -113,30 +106,21 @@ public class TaskWithRefreshImplTest {
     }
 
     private class DummyMockedTask extends TaskWithRefreshImpl<Boolean> {
-        final MockedCustomRefresher mockedCustomRefresher;
+        final RefreshableConnection mockedRefreshableConnection;
+        boolean expiredConnection = false;
 
-        private DummyMockedTask(MockedCustomRefresher mockedCustomRefresher, ConnectionRefresher connectionRefresher) {
-            super(null, connectionRefresher);
-            this.mockedCustomRefresher = mockedCustomRefresher;
+        private DummyMockedTask(RefreshableConnection mockedRefreshableConnection, boolean expiredConnection) {
+            super(mockedRefreshableConnection);
+            this.expiredConnection = expiredConnection;
+            this.mockedRefreshableConnection = mockedRefreshableConnection;
         }
 
         @Override
         protected Boolean executeMnuboCall() {
-            if (mockedCustomRefresher.expiredConnection) {
+            if (this.expiredConnection) {
+                this.expiredConnection = false;
                 throw new ExpiredAuthorizationException("expired");
             }
-            return true;
-        }
-    }
-
-    private class DummyTask extends TaskWithRefreshImpl<Boolean> {
-
-        private DummyTask(ConnectionRefresher connectionRefresher) {
-            super(null, connectionRefresher);
-        }
-
-        @Override
-        protected Boolean executeMnuboCall() {
             return true;
         }
     }

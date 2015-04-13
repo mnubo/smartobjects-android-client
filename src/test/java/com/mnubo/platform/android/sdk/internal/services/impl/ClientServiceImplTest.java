@@ -22,7 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.services.impl;
 
-import com.mnubo.platform.android.sdk.internal.AbstractServicesTest;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 import com.mnubo.platform.android.sdk.internal.services.ClientService;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 import com.mnubo.platform.android.sdk.models.security.UserConfirmation;
@@ -41,11 +41,13 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 public class ClientServiceImplTest extends AbstractServicesTest {
     private ClientService clientService;
 
-    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        clientService = mnuboClientApi.clientService();
+        this.mnuboUserApi = new MnuboSDKApiImpl(CLIENT_ACCESS_TOKEN, PLATFORM_BASE_URL);
+        setUpMockServer();
+
+        clientService = mnuboUserApi.clientService();
     }
 
     @Test
@@ -59,7 +61,7 @@ public class ClientServiceImplTest extends AbstractServicesTest {
         userToCreate.setPassword("password");
         userToCreate.setConfirmedPassword("password");
 
-        mockClientServiceServer.expect(requestTo(expectedUrl("/users")))
+        mockServiceServer.expect(requestTo(expectedUrl("/users")))
                 .andExpect(method(POST))
                 .andExpect(clientAuthMatch())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -67,7 +69,7 @@ public class ClientServiceImplTest extends AbstractServicesTest {
                 .andRespond(withSuccess(toJson(userToCreate), APPLICATION_JSON_UTF8));
 
         clientService.createUser(userToCreate);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
@@ -75,7 +77,7 @@ public class ClientServiceImplTest extends AbstractServicesTest {
 
         UserConfirmation userConfirmation = new UserConfirmation("token", "password");
 
-        mockClientServiceServer.expect(requestTo(expectedUrl("/users/test/confirmation")))
+        mockServiceServer.expect(requestTo(expectedUrl("/users/test/confirmation")))
                 .andExpect(method(POST))
                 .andExpect(clientAuthMatch())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -83,19 +85,19 @@ public class ClientServiceImplTest extends AbstractServicesTest {
                 .andRespond(withSuccess());
 
         clientService.confirmUserCreation("test", userConfirmation);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 
     @Test
     public void testResetPassword() throws Exception {
 
-        mockClientServiceServer.expect(requestTo(expectedUrl("/users/test/password")))
+        mockServiceServer.expect(requestTo(expectedUrl("/users/test/password")))
                 .andExpect(method(DELETE))
                 .andExpect(clientAuthMatch())
                 .andRespond(withSuccess());
 
         clientService.resetPassword("test");
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
 
     }
 
@@ -103,7 +105,7 @@ public class ClientServiceImplTest extends AbstractServicesTest {
     public void testConfirmPasswordReset() throws Exception {
 
         final ResetPassword password = new ResetPassword("token", "password", "password");
-        mockClientServiceServer.expect(requestTo(expectedUrl("/users/test/password")))
+        mockServiceServer.expect(requestTo(expectedUrl("/users/test/password")))
                 .andExpect(method(POST))
                 .andExpect(clientAuthMatch())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
@@ -111,6 +113,6 @@ public class ClientServiceImplTest extends AbstractServicesTest {
                 .andRespond(withSuccess());
 
         clientService.confirmPasswordReset("test", password);
-        mockUserServiceServer.verify();
+        mockServiceServer.verify();
     }
 }

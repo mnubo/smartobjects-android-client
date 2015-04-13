@@ -22,22 +22,23 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.user;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.users.User;
 
 public class GetUserTask extends TaskWithRefreshImpl<User> {
 
-    final String username;
+    private final String username;
 
 
-    public GetUserTask(ApiFetcher apiFetcher, String username, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public GetUserTask(RefreshableConnection refreshableConnection, String username) {
+        super(refreshableConnection);
         this.username = username;
 
     }
 
     @Override
     protected User executeMnuboCall() {
-        return apiFetcher.getMnuboUserApi().userService().getUser(username);
+        return refreshableConnection.getMnuboSDKApi().userService().getUser(username);
     }
 }

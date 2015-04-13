@@ -22,24 +22,23 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.client;
 
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
 
 public class ConfirmPasswordResetTask extends TaskWithRefreshImpl<Boolean> {
-    final String username;
-    final ResetPassword resetPassword;
-    final ApiFetcher apiFetcher;
+    private final String username;
+    private final ResetPassword resetPassword;
 
-    public ConfirmPasswordResetTask(ApiFetcher apiFetcher, String username, ResetPassword resetPassword, ConnectionRefresher refresher) {
-        super(apiFetcher, refresher);
+    public ConfirmPasswordResetTask(RefreshableConnection refreshableConnection, String username, ResetPassword resetPassword) {
+        super(refreshableConnection);
         this.username = username;
         this.resetPassword = resetPassword;
-        this.apiFetcher = apiFetcher;
     }
 
     @Override
     protected Boolean executeMnuboCall() {
-        apiFetcher.getMnuboClientApi().clientService().confirmPasswordReset(username, resetPassword);
+        refreshableConnection.getMnuboSDKApi().clientService().confirmPasswordReset(username, resetPassword);
         return true;
     }
 }

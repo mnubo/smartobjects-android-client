@@ -29,7 +29,7 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * this, but who knows...
  */
 public class MnuboAccessDeniedException extends MnuboClientException {
-    private static String EXCEPTION_ACCESS_DENIED = "The access was denied by the Mnubo API.";
+    private static final String EXCEPTION_ACCESS_DENIED = "The access was denied by the Mnubo API.";
 
     public MnuboAccessDeniedException() {
         super(EXCEPTION_ACCESS_DENIED);

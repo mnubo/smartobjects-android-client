@@ -28,10 +28,9 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * the exception.
  */
 public class MnuboExpiredAccessException extends MnuboClientException {
-    private static String EXCEPTION_REFRESH_TOKEN_EXPIRED = "Connection cannot be refreshed, the token has expired. Consider signing back in.";
     public final static String EXPIRED_REFRESH_TOKEN = "Invalid refresh token (expired):";
 
     public MnuboExpiredAccessException() {
-        super(EXCEPTION_REFRESH_TOKEN_EXPIRED);
+        super("Connection cannot be refreshed, the token has expired. Consider signing back in.");
     }
 }

@@ -23,17 +23,13 @@
 package com.mnubo.platform.android.sdk.api.operations.impl;
 
 import com.mnubo.platform.android.sdk.api.operations.UserOperations;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApi;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 import com.mnubo.platform.android.sdk.models.users.User;
 
-import org.springframework.social.connect.Connection;
-
-import static com.mnubo.platform.android.sdk.Mnubo.ConnectionOperations;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newFindUserObjectsTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newGetUserTask;
@@ -42,10 +38,8 @@ import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newUpdat
 
 public class UserOperationsImpl extends AbstractMnuboOperations implements UserOperations {
 
-    public UserOperationsImpl(ConnectionOperations connectionOperations,
-                              Connection<MnuboClientApi> clientConnection,
-                              Connection<MnuboUserApi> userConnection) {
-        super(connectionOperations, clientConnection, userConnection);
+    public UserOperationsImpl(MnuboConnectionManager mnuboConnectionManager) {
+        super(mnuboConnectionManager);
     }
 
     /**
@@ -53,7 +47,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public MnuboResponse<SmartObjects> findUserObjects(String username, Boolean details, String objectModelName) {
-        final Task<SmartObjects> task = newFindUserObjectsTask(getApiFetcher(), username, details, objectModelName, getUserConnectionRefresher());
+        final Task<SmartObjects> task = newFindUserObjectsTask(mnuboConnectionManager.getCurrentConnection(), username, details, objectModelName);
         return task.executeSync();
     }
 
@@ -62,7 +56,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public void findUserObjectsAsync(final String username, final Boolean details, final String objectModelName, final CompletionCallBack<SmartObjects> completionCallBack) {
-        final Task<SmartObjects> task = newFindUserObjectsTask(getApiFetcher(), username, details, objectModelName, getUserConnectionRefresher());
+        final Task<SmartObjects> task = newFindUserObjectsTask(mnuboConnectionManager.getCurrentConnection(), username, details, objectModelName);
         task.executeAsync(completionCallBack);
     }
 
@@ -71,7 +65,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public MnuboResponse<User> getUser(String username) {
-        final Task<User> task = newGetUserTask(getApiFetcher(), username, getUserConnectionRefresher());
+        final Task<User> task = newGetUserTask(mnuboConnectionManager.getCurrentConnection(), username);
         return task.executeSync();
     }
 
@@ -80,7 +74,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public void getUserAsync(final String username, final CompletionCallBack<User> completionCallBack) {
-        final Task<User> task = newGetUserTask(getApiFetcher(), username, getUserConnectionRefresher());
+        final Task<User> task = newGetUserTask(mnuboConnectionManager.getCurrentConnection(), username);
         task.executeAsync(completionCallBack);
     }
 
@@ -89,7 +83,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public MnuboResponse<Boolean> update(String username, User updatedUser) {
-        final Task<Boolean> task = newUpdateUserTask(getApiFetcher(), username, updatedUser, getUserConnectionRefresher());
+        final Task<Boolean> task = newUpdateUserTask(mnuboConnectionManager.getCurrentConnection(), username, updatedUser);
         return task.executeSync();
     }
 
@@ -98,7 +92,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public void updateAsync(final String username, final User updatedUser, final CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newUpdateUserTask(getApiFetcher(), username, updatedUser, getUserConnectionRefresher());
+        final Task<Boolean> task = newUpdateUserTask(mnuboConnectionManager.getCurrentConnection(), username, updatedUser);
         task.executeAsync(completionCallBack);
     }
 
@@ -107,7 +101,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public MnuboResponse<Boolean> updatePassword(String username, UpdatePassword newPassword) {
-        final Task<Boolean> task = newUpdatePasswordTask(getApiFetcher(), username, newPassword, getUserConnectionRefresher());
+        final Task<Boolean> task = newUpdatePasswordTask(mnuboConnectionManager.getCurrentConnection(), username, newPassword);
         return task.executeSync();
     }
 
@@ -116,7 +110,7 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
      */
     @Override
     public void updatePasswordAsync(final String username, final UpdatePassword newPassword, final CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newUpdatePasswordTask(getApiFetcher(), username, newPassword, getUserConnectionRefresher());
+        final Task<Boolean> task = newUpdatePasswordTask(mnuboConnectionManager.getCurrentConnection(), username, newPassword);
         task.executeAsync(completionCallBack);
     }
 

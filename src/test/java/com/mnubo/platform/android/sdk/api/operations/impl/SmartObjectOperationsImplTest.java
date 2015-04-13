@@ -27,7 +27,6 @@ import com.mnubo.platform.android.sdk.api.services.cache.impl.MnuboSmartObjectFi
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSampleOnPublicSensorTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.CreateObjectTask;
@@ -44,10 +43,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.internal.tasks.Task.ApiFetcher;
 import static com.mnubo.platform.android.sdk.models.common.IdType.deviceid;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -77,11 +74,9 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        when(mockedUserApiConnection.getApi()).thenReturn(mockedUserApi);
-        when(mockedUserApi.objectService()).thenReturn(mockedSmartObjectService);
+        when(mockedMnuboSDKApi.objectService()).thenReturn(mockedSmartObjectService);
 
-        smartObjectOperations = new SmartObjectOperationsImpl(mockedConnectionOperations, mockedClientApiConnection,
-                mockedUserApiConnection, null, false);
+        smartObjectOperations = new SmartObjectOperationsImpl(mockedConnectionManager, null, false);
         smartObjectOperations.setMnuboSmartObjectFileCachingService(mockedCacheService);
     }
 
@@ -92,7 +87,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SmartObject expectedResult = new SmartObject();
         final FindObjectTask mockedTask = mock(FindObjectTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newFindObjectTask(any(ApiFetcher.class), eq(objectId), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindObjectTask(eq(mockedRefreshableConnection), eq(objectId))).thenReturn(mockedTask);
 
         final SmartObject result = smartObjectOperations.findObject(objectId).getResult();
 
@@ -105,7 +100,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SdkId objectId = SdkId.build("object-id", deviceid);
 
         final FindObjectTask mockedTask = mock(FindObjectTask.class);
-        when(TaskFactory.newFindObjectTask(any(ApiFetcher.class), eq(objectId), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindObjectTask(eq(mockedRefreshableConnection), eq(objectId))).thenReturn(mockedTask);
 
         smartObjectOperations.findObjectAsync(objectId, null);
 
@@ -117,7 +112,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SdkId objectId = SdkId.build("object-id", deviceid);
 
         final FindObjectTask mockedTask = mock(FindObjectTask.class);
-        when(TaskFactory.newFindObjectTask(any(ApiFetcher.class), eq(objectId), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newFindObjectTask(eq(mockedRefreshableConnection), eq(objectId))).thenReturn(mockedTask);
 
         smartObjectOperations.findObjectAsync(objectId, mockedSmartObjectCallback);
 
@@ -131,7 +126,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         final UpdateObjectTask mockedTask = mock(UpdateObjectTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newUpdateObjectTask(any(ApiFetcher.class), eq(objectId), eq(updatedObject), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdateObjectTask(eq(mockedRefreshableConnection), eq(objectId), eq(updatedObject))).thenReturn(mockedTask);
 
         final Boolean result = smartObjectOperations.update(objectId, updatedObject).getResult();
 
@@ -146,7 +141,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SmartObject updatedObject = new SmartObject();
 
         final UpdateObjectTask mockedTask = mock(UpdateObjectTask.class);
-        when(TaskFactory.newUpdateObjectTask(any(ApiFetcher.class), eq(objectId), eq(updatedObject), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdateObjectTask(eq(mockedRefreshableConnection), eq(objectId), eq(updatedObject))).thenReturn(mockedTask);
 
         smartObjectOperations.updateAsync(objectId, updatedObject, null);
 
@@ -160,7 +155,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SmartObject updatedObject = new SmartObject();
 
         final UpdateObjectTask mockedTask = mock(UpdateObjectTask.class);
-        when(TaskFactory.newUpdateObjectTask(any(ApiFetcher.class), eq(objectId), eq(updatedObject), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newUpdateObjectTask(eq(mockedRefreshableConnection), eq(objectId), eq(updatedObject))).thenReturn(mockedTask);
 
         smartObjectOperations.updateAsync(objectId, updatedObject, mockedSuccessCallback);
 
@@ -176,7 +171,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final Samples expectedResult = new Samples();
         final SearchSamplesTask mockedTask = mock(SearchSamplesTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newSearchSamplesTask(any(ApiFetcher.class), eq(objectId), eq(sensorName), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newSearchSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(sensorName))).thenReturn(mockedTask);
 
 
         Samples result = smartObjectOperations.searchSamples(objectId, sensorName).getResult();
@@ -192,7 +187,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final String sensorName = "sensorName";
 
         final SearchSamplesTask mockedTask = mock(SearchSamplesTask.class);
-        when(TaskFactory.newSearchSamplesTask(any(ApiFetcher.class), eq(objectId), eq(sensorName), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newSearchSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(sensorName))).thenReturn(mockedTask);
 
         smartObjectOperations.searchSamplesAsync(objectId, sensorName, null);
 
@@ -206,7 +201,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final String sensorName = "sensorName";
 
         final SearchSamplesTask mockedTask = mock(SearchSamplesTask.class);
-        when(TaskFactory.newSearchSamplesTask(any(ApiFetcher.class), eq(objectId), eq(sensorName), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newSearchSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(sensorName))).thenReturn(mockedTask);
 
         smartObjectOperations.searchSamplesAsync(objectId, sensorName, mockedSamplesCallback);
 
@@ -222,7 +217,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         final AddSamplesTask mockedTask = mock(AddSamplesTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newAddSamplesTask(any(ApiFetcher.class), eq(objectId), eq(samples), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(samples))).thenReturn(mockedTask);
 
 
         Boolean result = smartObjectOperations.addSamples(objectId, samples).getResult();
@@ -238,7 +233,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final Samples samples = new Samples();
 
         final AddSamplesTask mockedTask = mock(AddSamplesTask.class);
-        when(TaskFactory.newAddSamplesTask(any(ApiFetcher.class), eq(objectId), eq(samples), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(samples))).thenReturn(mockedTask);
 
         smartObjectOperations.addSamplesAsync(objectId, samples, null);
 
@@ -253,7 +248,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final Samples samples = new Samples();
 
         final AddSamplesTask mockedTask = mock(AddSamplesTask.class);
-        when(TaskFactory.newAddSamplesTask(any(ApiFetcher.class), eq(objectId), eq(samples), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(samples))).thenReturn(mockedTask);
 
         smartObjectOperations.addSamplesAsync(objectId, samples, mockedSuccessCallback);
 
@@ -270,7 +265,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         final AddSampleOnPublicSensorTask mockedTask = mock(AddSampleOnPublicSensorTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newAddSamplesOnPublicSensor(any(ApiFetcher.class), eq(objectId), eq(sensorName), eq(sample), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newAddSamplesOnPublicSensorTask(eq(mockedRefreshableConnection), eq(objectId), eq(sensorName), eq(sample))).thenReturn(mockedTask);
 
         Boolean result = smartObjectOperations.addSampleOnPublicSensor(objectId, sensorName, sample).getResult();
 
@@ -285,7 +280,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final Sample sample = new Sample();
 
         final AddSampleOnPublicSensorTask mockedTask = mock(AddSampleOnPublicSensorTask.class);
-        when(TaskFactory.newAddSamplesOnPublicSensor(any(ApiFetcher.class), eq(objectId), eq(sensorName), eq(sample), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newAddSamplesOnPublicSensorTask(eq(mockedRefreshableConnection), eq(objectId), eq(sensorName), eq(sample))).thenReturn(mockedTask);
 
         smartObjectOperations.addSampleOnPublicSensorAsync(objectId, sensorName, sample, null);
 
@@ -299,7 +294,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final Sample sample = new Sample();
 
         final AddSampleOnPublicSensorTask mockedTask = mock(AddSampleOnPublicSensorTask.class);
-        when(TaskFactory.newAddSamplesOnPublicSensor(any(ApiFetcher.class), eq(objectId), eq(sensorName), eq(sample), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newAddSamplesOnPublicSensorTask(eq(mockedRefreshableConnection), eq(objectId), eq(sensorName), eq(sample))).thenReturn(mockedTask);
 
         smartObjectOperations.addSampleOnPublicSensorAsync(objectId, sensorName, sample, mockedSuccessCallback);
 
@@ -314,7 +309,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         final CreateObjectTask mockedTask = mock(CreateObjectTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newCreateObjectTask(any(ApiFetcher.class), eq(object), eq(true), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newCreateObjectTask(eq(mockedRefreshableConnection), eq(object), eq(true))).thenReturn(mockedTask);
 
 
         Boolean result = smartObjectOperations.createObject(object, true).getResult();
@@ -329,7 +324,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SmartObject object = new SmartObject();
 
         final CreateObjectTask mockedTask = mock(CreateObjectTask.class);
-        when(TaskFactory.newCreateObjectTask(any(ApiFetcher.class), eq(object), eq(true), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newCreateObjectTask(eq(mockedRefreshableConnection), eq(object), eq(true))).thenReturn(mockedTask);
 
         smartObjectOperations.createObjectAsync(object, true, null);
 
@@ -343,7 +338,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SmartObject object = new SmartObject();
 
         final CreateObjectTask mockedTask = mock(CreateObjectTask.class);
-        when(TaskFactory.newCreateObjectTask(any(ApiFetcher.class), eq(object), eq(true), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newCreateObjectTask(eq(mockedRefreshableConnection), eq(object), eq(true))).thenReturn(mockedTask);
 
         smartObjectOperations.createObjectAsync(object, true, mockedSuccessCallback);
 
@@ -358,7 +353,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         final DeleteObjectTask mockedTask = mock(DeleteObjectTask.class);
         when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newDeleteObjectTask(any(ApiFetcher.class), eq(id), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newDeleteObjectTask(eq(mockedRefreshableConnection), eq(id))).thenReturn(mockedTask);
 
 
         Boolean result = smartObjectOperations.deleteObject(id).getResult();
@@ -373,7 +368,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SdkId id = SdkId.build("id", deviceid);
 
         final DeleteObjectTask mockedTask = mock(DeleteObjectTask.class);
-        when(TaskFactory.newDeleteObjectTask(any(ApiFetcher.class), eq(id), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newDeleteObjectTask(eq(mockedRefreshableConnection), eq(id))).thenReturn(mockedTask);
 
 
         smartObjectOperations.deleteObjectAsync(id, null);
@@ -387,7 +382,7 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         final SdkId id = SdkId.build("id", deviceid);
 
         final DeleteObjectTask mockedTask = mock(DeleteObjectTask.class);
-        when(TaskFactory.newDeleteObjectTask(any(ApiFetcher.class), eq(id), any(TaskWithRefreshImpl.ConnectionRefresher.class))).thenReturn(mockedTask);
+        when(TaskFactory.newDeleteObjectTask(eq(mockedRefreshableConnection), eq(id))).thenReturn(mockedTask);
 
 
         smartObjectOperations.deleteObjectAsync(id, mockedSuccessCallback);

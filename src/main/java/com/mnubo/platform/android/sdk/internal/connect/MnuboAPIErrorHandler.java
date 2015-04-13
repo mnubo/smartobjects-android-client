@@ -119,7 +119,7 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
         }
     }
 
-    private void handleClientErrors(HttpStatus statusCode, String errorMessage) throws IOException {
+    private void handleClientErrors(HttpStatus statusCode, String errorMessage) {
 
         if (statusCode == HttpStatus.UNAUTHORIZED) {
             handleUnauthorize(errorMessage);
@@ -129,7 +129,7 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
 
     }
 
-    private void handleServerErrors(HttpStatus statusCode, String errorMessage) throws IOException {
+    private void handleServerErrors(HttpStatus statusCode, String errorMessage) {
 
     }
 

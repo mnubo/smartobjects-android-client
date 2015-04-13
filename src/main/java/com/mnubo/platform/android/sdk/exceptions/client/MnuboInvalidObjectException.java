@@ -38,19 +38,18 @@ import java.util.regex.Pattern;
  * </ul>
  */
 public class MnuboInvalidObjectException extends MnuboClientException {
-    private static String EXCEPTION_INVALID_OBJECT = "The SmartObject data is invalid : None or invalid device id, no objectModelName, etc. See the documentation for full explanation.";
 
-    public final static String MISSING_OBJECT_MODEL_PATTERN = "^.* default message \\[Missing object model\\]\\]$";
+    private final static String MISSING_OBJECT_MODEL_PATTERN = "^.* default message \\[Missing object model\\]\\]$";
     private final static Pattern OM_PATTERN = Pattern.compile(MISSING_OBJECT_MODEL_PATTERN);
 
-    public final static String MISSING_DEVICE_ID_PATTERN = "^Invalid id$";
+    private final static String MISSING_DEVICE_ID_PATTERN = "^Invalid id$";
     private final static Pattern DI_PATTERN = Pattern.compile(MISSING_DEVICE_ID_PATTERN);
 
-    public final static String UNKNOWN_ATTRIBUTE_PATTERN = "^Attribute .* undefined in object model$";
+    private final static String UNKNOWN_ATTRIBUTE_PATTERN = "^Attribute .* undefined in object model$";
     private final static Pattern UA_PATTERN = Pattern.compile(UNKNOWN_ATTRIBUTE_PATTERN);
 
     public MnuboInvalidObjectException() {
-        super(EXCEPTION_INVALID_OBJECT);
+        super("The SmartObject data is invalid : None or invalid device id, no objectModelName, etc. See the documentation for full explanation.");
     }
 
     public static boolean matches(CharSequence s) {

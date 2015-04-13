@@ -21,15 +21,21 @@
  */
 package com.mnubo.platform.android.sdk.internal.tasks.impl;
 
+import android.util.Log;
+
+import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.api.services.cache.MnuboFileCachingService;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
 
+import static com.mnubo.platform.android.sdk.Strings.SDK_EXECUTING_TASK;
+
 public abstract class TaskImpl<Result> extends Task<Result> {
 
-    public TaskImpl(ApiFetcher apiFetcher) {
-        super(apiFetcher);
+    public TaskImpl(RefreshableConnection refreshableConnection) {
+        super(refreshableConnection);
     }
 
     @Override
@@ -39,6 +45,8 @@ public abstract class TaskImpl<Result> extends Task<Result> {
         Result result = null;
         MnuboException error = null;
         try {
+            Log.d(TAG, SDK_EXECUTING_TASK);
+
             result = executeMnuboCall();
 
         } catch (MnuboException ex) {

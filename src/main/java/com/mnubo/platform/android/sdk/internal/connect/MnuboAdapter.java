@@ -20,39 +20,34 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.client.api;
+package com.mnubo.platform.android.sdk.internal.connect;
 
+import com.mnubo.platform.android.sdk.Mnubo;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
 
-import com.mnubo.platform.android.sdk.internal.connect.MnuboAPIErrorHandler;
-import com.mnubo.platform.android.sdk.internal.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.services.impl.ClientServiceImpl;
+import org.springframework.social.connect.ApiAdapter;
+import org.springframework.social.connect.ConnectionValues;
+import org.springframework.social.connect.UserProfile;
 
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
-import org.springframework.web.client.RestTemplate;
+class MnuboAdapter implements ApiAdapter<MnuboSDKApi> {
 
-public class MnuboClientApiImpl extends AbstractOAuth2ApiBinding implements MnuboClientApi {
-
-    private final ClientService clientService;
-
-    public MnuboClientApiImpl(final String accessToken, final String platformBaseUrl) {
-        super(accessToken);
-
-        this.clientService = new ClientServiceImpl(platformBaseUrl, getRestTemplate());
-
+    public boolean test(MnuboSDKApi mnuboClientApi) {
+        return true;
     }
 
-    @Override
-    protected void configureRestTemplate(RestTemplate restTemplate) {
-        restTemplate.setErrorHandler(new MnuboAPIErrorHandler());
-        //Force the use of SNI to fetch the proper certificate
-        restTemplate.setRequestFactory(new SimpleClientHttpRequestFactory());
+    public void setConnectionValues(MnuboSDKApi mnuboClientApi, ConnectionValues values) {
+        String username = Mnubo.getUsername();
+        if (username != null) {
+            values.setProviderUserId(username);
+        }
     }
 
+    public UserProfile fetchUserProfile(MnuboSDKApi mnuboClientApi) {
+        throw new UnsupportedOperationException();
+    }
 
-    @Override
-    public ClientService clientService() {
-        return this.clientService;
+    public void updateStatus(MnuboSDKApi mnuboClientApi, String message) {
+        throw new UnsupportedOperationException();
     }
 
 }

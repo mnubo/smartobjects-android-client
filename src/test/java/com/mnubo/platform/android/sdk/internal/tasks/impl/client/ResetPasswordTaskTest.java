@@ -20,29 +20,24 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.client.connect;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.client;
 
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApi;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
 
-import org.springframework.social.connect.ApiAdapter;
-import org.springframework.social.connect.ConnectionValues;
-import org.springframework.social.connect.UserProfile;
+import org.junit.Test;
 
-class MnuboClientAdapter implements ApiAdapter<MnuboClientApi> {
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
-    public boolean test(MnuboClientApi mnuboClientApi) {
-        return true;
+public class ResetPasswordTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final String username = "username";
+        ResetPasswordTask resetPasswordTask = new ResetPasswordTask(connection, username);
+
+        resetPasswordTask.executeMnuboCall();
+
+        verify(clientService).resetPassword(eq(username));
     }
-
-    public void setConnectionValues(MnuboClientApi mnuboClientApi, ConnectionValues values) {
-    }
-
-    public UserProfile fetchUserProfile(MnuboClientApi mnuboClientApi) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void updateStatus(MnuboClientApi mnuboClientApi, String message) {
-        throw new UnsupportedOperationException();
-    }
-
 }

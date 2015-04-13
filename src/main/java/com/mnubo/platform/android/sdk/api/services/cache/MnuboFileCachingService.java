@@ -25,12 +25,14 @@ package com.mnubo.platform.android.sdk.api.services.cache;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
 
 /**
- * Interface that wraps query execution
+ * Interface that wraps query execution. The failure of the query will persist the data to the disk.
+ * You can retry the query later.
  */
 public interface MnuboFileCachingService {
 
     /**
-     * This will try to send any data that was previously persisted to the device. This will use the
+     * This will try to send any data that was previously persisted to the device. This will use
+     * the
      * current thread for networking. Make sure you call this from a thread that is not the Main/UI
      * thread.
      */

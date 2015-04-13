@@ -19,14 +19,13 @@
  *     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *     THE SOFTWARE.
  */
-package com.mnubo.platform.android.sdk.internal;
+package com.mnubo.platform.android.sdk.internal.services.impl;
 
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mnubo.platform.android.sdk.BuildConstants;
-import com.mnubo.platform.android.sdk.internal.client.api.MnuboClientApiImpl;
-import com.mnubo.platform.android.sdk.internal.user.api.MnuboUserApiImpl;
+import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -70,14 +69,12 @@ public abstract class AbstractServicesTest {
     private final DefaultHttpClient mockedHttpClient = mock(DefaultHttpClient.class);
     private final HttpParams mockedHttpParams = mock(HttpParams.class);
 
-    private final String USER_ACCESS_TOKEN = "user_token";
-    private final String CLIENT_ACCESS_TOKEN = "client_token";
-    private final String PLATFORM_BASE_URL = "http://test.com";
+    public static final String USER_ACCESS_TOKEN = "user_token";
+    public static final String CLIENT_ACCESS_TOKEN = "client_token";
+    public static final String PLATFORM_BASE_URL = "http://test.com";
 
-    protected MockRestServiceServer mockUserServiceServer;
-    protected MockRestServiceServer mockClientServiceServer;
-    protected MnuboUserApiImpl mnuboUserApi;
-    protected MnuboClientApiImpl mnuboClientApi;
+    protected MockRestServiceServer mockServiceServer;
+    protected MnuboSDKApiImpl mnuboUserApi;
 
     @Before
     public void setUp() throws Exception {
@@ -92,13 +89,10 @@ public abstract class AbstractServicesTest {
         when(PlainSocketFactory.getSocketFactory()).thenReturn(mockedPlainSocketFactory);
         when(SSLSocketFactory.getSocketFactory()).thenReturn(mockedSSLSocketFactory);
         when(mockedHttpClient.getParams()).thenReturn(mockedHttpParams);
+    }
 
-        mnuboUserApi = new MnuboUserApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL);
-        mnuboClientApi = new MnuboClientApiImpl(CLIENT_ACCESS_TOKEN, PLATFORM_BASE_URL);
-
-        mockUserServiceServer = MockRestServiceServer.createServer(mnuboUserApi.getRestTemplate());
-        mockClientServiceServer = MockRestServiceServer.createServer(mnuboClientApi.getRestTemplate());
-
+    protected void setUpMockServer() {
+        mockServiceServer = MockRestServiceServer.createServer(mnuboUserApi.getRestTemplate());
     }
 
     protected String toJson(Object response) throws Exception {

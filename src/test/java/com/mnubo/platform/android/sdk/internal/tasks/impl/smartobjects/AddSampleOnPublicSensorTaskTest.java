@@ -20,19 +20,29 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.exceptions.sdk;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
-import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.models.common.IdType;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
+import com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample;
 
-/**
- * This exception is raised when you attempt to perform a {@link com.mnubo.platform.android.sdk.api.operations.ClientOperations
- * client operations} but the SDK wasn't able to get an client access_token mostly due to network
- * error or Mnubo API problem.
- */
-public class MnuboClientConnectionUnavailableException extends MnuboException {
-    private static String EXCEPTION_CLIENT_CONNECTION_UNAVAILABLE = "Unable to authenticate as the client.";
+import org.junit.Test;
 
-    public MnuboClientConnectionUnavailableException() {
-        super(EXCEPTION_CLIENT_CONNECTION_UNAVAILABLE);
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
+public class AddSampleOnPublicSensorTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final String sensorName = "sensorName";
+        final Sample sample = new Sample();
+        final SdkId id = SdkId.build("id", IdType.deviceid);
+        AddSampleOnPublicSensorTask addSampleOnPublicSensorTask = new AddSampleOnPublicSensorTask(connection, id, sensorName, sample);
+
+        addSampleOnPublicSensorTask.executeMnuboCall();
+
+        verify(smartObjectService).addSampleOnPublicSensor(eq(id), eq(sensorName), eq(sample));
     }
 }

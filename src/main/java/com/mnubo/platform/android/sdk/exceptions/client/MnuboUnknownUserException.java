@@ -31,13 +31,12 @@ import java.util.regex.Pattern;
  * API.
  */
 public class MnuboUnknownUserException extends MnuboClientException {
-    private static String EXCEPTION_UNKNOWN_USER = "The user was not found.";
 
     public final static String UNKNOWN_USER_PATTERN = "^Unknown User '.*'$";
     private final static Pattern PATTERN = Pattern.compile(UNKNOWN_USER_PATTERN);
 
     public MnuboUnknownUserException() {
-        super(EXCEPTION_UNKNOWN_USER);
+        super("The user was not found.");
     }
 
     public static boolean matches(CharSequence s) {

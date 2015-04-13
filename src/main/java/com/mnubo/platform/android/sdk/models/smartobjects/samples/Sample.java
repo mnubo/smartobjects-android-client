@@ -64,7 +64,7 @@ public class Sample implements Parcelable, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public Sample(Parcel in) {
+    private Sample(Parcel in) {
         this.value = in.readHashMap(null);
         this.sensorName = in.readString();
         this.timestamp = in.readString();

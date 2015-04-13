@@ -26,11 +26,10 @@ package com.mnubo.platform.android.sdk.exceptions.client;
  * This exception is raised when you try to fetch an object that doesn't exists in the mnubo API.
  */
 public class MnuboObjectNotFoundException extends MnuboClientException {
-    private static String EXCEPTION_OBJECT_NOT_FOUND = "The requested object was not found.";
 
     public final static String OBJECT_NOT_FOUND = "Object not found";
 
     public MnuboObjectNotFoundException() {
-        super(EXCEPTION_OBJECT_NOT_FOUND);
+        super("The requested object was not found.");
     }
 }

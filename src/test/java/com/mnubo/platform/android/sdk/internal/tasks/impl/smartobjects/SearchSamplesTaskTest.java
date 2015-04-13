@@ -20,11 +20,27 @@
  *     THE SOFTWARE.
  */
 
-package com.mnubo.platform.android.sdk.internal.client.api;
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
 
-import com.mnubo.platform.android.sdk.internal.services.ClientService;
+import org.junit.Test;
 
-public interface MnuboClientApi {
-    ClientService clientService();
+import static com.mnubo.platform.android.sdk.models.common.IdType.deviceid;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
+public class SearchSamplesTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final SdkId id = SdkId.build("id", deviceid);
+        final String sensorName = "sensorName";
+        SearchSamplesTask searchSamplesTask = new SearchSamplesTask(connection, id, sensorName);
+
+        searchSamplesTask.executeMnuboCall();
+
+        verify(smartObjectService).searchSamples(eq(id), eq(sensorName));
+    }
 }
