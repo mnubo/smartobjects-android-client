@@ -24,6 +24,7 @@ package com.mnubo.platform.android.sdk.internal.connect;
 import android.text.TextUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboAccessDeniedException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException;
@@ -258,6 +259,13 @@ public class MnuboAPIErrorHandlerTest {
     @Test(expected = MnuboInvalidObjectException.class)
     public void testInvalidObjectUnknownAttributeException() throws Exception {
         ClientHttpResponse response = prepareResponse("Attribute unknown_attribute undefined in object model", HttpStatus.BAD_REQUEST);
+
+        responseErrorHandler.handleError(response);
+    }
+
+    @Test(expected = MnuboAccessDeniedException.class)
+    public void testAccessDeniedException() throws Exception {
+        ClientHttpResponse response = prepareResponse("403 Forbidden", HttpStatus.FORBIDDEN);
 
         responseErrorHandler.handleError(response);
     }

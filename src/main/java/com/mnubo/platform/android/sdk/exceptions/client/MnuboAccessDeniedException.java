@@ -25,8 +25,7 @@ package com.mnubo.platform.android.sdk.exceptions.client;
 /**
  * Raised when the call invoked on the Mnubo API result in a 403 Forbidden Access http error. <p/>
  * This means that you performed an action that you are not allowed to do. Fetching user data using
- * the client token (which has a LIMITED scope) for example. <p/> Fortunately, the SDK do not allow
- * this, but who knows...
+ * the client token (which has a LIMITED scope) for example.
  */
 public class MnuboAccessDeniedException extends MnuboClientException {
     private static final String EXCEPTION_ACCESS_DENIED = "The access was denied by the Mnubo API.";

@@ -28,6 +28,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mnubo.platform.android.sdk.exceptions.client.MnuboAccessDeniedException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboBadCredentialsException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboClientException;
 import com.mnubo.platform.android.sdk.exceptions.client.MnuboCredentialsExpiredException;
@@ -125,6 +126,8 @@ public class MnuboAPIErrorHandler extends DefaultResponseErrorHandler {
             handleUnauthorize(errorMessage);
         } else if (statusCode == HttpStatus.BAD_REQUEST) {
             handleBadRequest(errorMessage);
+        } else if (statusCode == HttpStatus.FORBIDDEN) {
+            throw new MnuboAccessDeniedException();
         }
 
     }
