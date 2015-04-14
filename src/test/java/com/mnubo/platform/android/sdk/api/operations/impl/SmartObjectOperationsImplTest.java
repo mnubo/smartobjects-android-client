@@ -255,6 +255,57 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
 
 
+    }@Test
+    public void testSyncAddSample() throws Exception {
+        final SdkId objectId = SdkId.build("object-id", deviceid);
+        final Samples expectedSamples = new Samples();
+        final Sample singleSample = new Sample();
+        expectedSamples.addSample(singleSample);
+
+        final AddSamplesTask mockedTask = mock(AddSamplesTask.class);
+        when(mockedTask.executeSync()).thenReturn(new MnuboResponse<>(true, null));
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(expectedSamples))).thenReturn(mockedTask);
+
+
+        Boolean result = smartObjectOperations.addSample(objectId, singleSample).getResult();
+
+        assertEquals(true, result);
+        verify(mockedTask, only()).executeSync();
+    }
+
+    @Test
+    public void testAsyncAddSample() throws Exception {
+
+        final SdkId objectId = SdkId.build("object-id", deviceid);
+        final Samples expectedSamples = new Samples();
+        final Sample singleSample = new Sample();
+        expectedSamples.addSample(singleSample);
+
+        final AddSamplesTask mockedTask = mock(AddSamplesTask.class);
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(expectedSamples))).thenReturn(mockedTask);
+
+        smartObjectOperations.addSampleAsync(objectId, singleSample, null);
+
+        verify(mockedTask, only()).executeAsync(isNull(CompletionCallBack.class));
+
+    }
+
+    @Test
+    public void testAsyncAddSampleWithCallback() throws Exception {
+
+        final SdkId objectId = SdkId.build("object-id", deviceid);
+        final Sample singleSample = new Sample();
+        final Samples expectedSamples = new Samples();
+        expectedSamples.addSample(singleSample);
+
+        final AddSamplesTask mockedTask = mock(AddSamplesTask.class);
+        when(TaskFactory.newAddSamplesTask(eq(mockedRefreshableConnection), eq(objectId), eq(expectedSamples))).thenReturn(mockedTask);
+
+        smartObjectOperations.addSampleAsync(objectId, singleSample, mockedSuccessCallback);
+
+        verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
+
+
     }
 
     @Test

@@ -131,6 +131,30 @@ public interface SmartObjectOperations extends MnuboFileCachingService {
     void addSamplesAsync(SdkId id, Samples samples, CompletionCallBack<Boolean> completionCallBack);
 
     /**
+     * This function will add one sample data to the specified object's sensor synchronously. This
+     * function supports offline data store if the request fails.
+     * <p/>
+     * Called url = POST : /objects/{id}/sensors/{sensorname}/samples
+     *
+     * @param id     SdkId built with a device_id or an object_id
+     * @param sample the<code>Sample</code> to be sent
+     */
+    MnuboResponse<Boolean> addSample(SdkId id, Sample sample);
+
+    /**
+     * This function will add one sample data to the specified object's sensor asynchronously. This
+     * function supports offline data store if the request fails. The result will be available
+     * through the given callback.
+     * <p/>
+     * Called url = POST : /objects/{id}/sensors/{sensorname}/samples
+     *
+     * @param id                 SdkId built with a device_id or an object_id
+     * @param sample             the <code>Sample</code> to be sent
+     * @param completionCallBack the callback that will be executed on completion of the request
+     */
+    void addSampleAsync(SdkId id, Sample sample, CompletionCallBack<Boolean> completionCallBack);
+
+    /**
      * This function allows you to add one sample data to a publicly available object's sensor
      * synchronously. This function supports offline data store if the request fails.
      * <p/>

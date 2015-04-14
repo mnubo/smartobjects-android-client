@@ -146,6 +146,26 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
+    public MnuboResponse<Boolean> addSample(SdkId id, Sample sample) {
+        final Samples samples = new Samples();
+        samples.addSample(sample);
+        return addSamples(id, samples);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addSampleAsync(final SdkId id, final Sample sample, final CompletionCallBack<Boolean> completionCallBack) {
+        final Samples samples = new Samples();
+        samples.addSample(sample);
+        addSamplesAsync(id, samples, completionCallBack);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId id, String sensorName, Sample sample) {
         final Task<Boolean> task = newAddSamplesOnPublicSensorTask(mnuboConnectionManager.getCurrentConnection(), id, sensorName, sample);
         return task.executeSync();
