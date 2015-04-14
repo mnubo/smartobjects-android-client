@@ -30,8 +30,8 @@ import com.mnubo.platform.android.sdk.models.users.User;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 /**
- * The ClientOperations is an interface to perform queries on the mnubo API as the application.
- * These operations require the consumer key and secret, but now a user logged it to be successful.
+ * ClientOperations is an interface to perform queries on the mnubo API. It defines calls that can
+ * be performed using the CONSUMER_KEY AND THE CONSUMER_SECRET.
  */
 public interface ClientOperations {
 

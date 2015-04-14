@@ -1,7 +1,13 @@
-# Mnubo Android SDK #
-This SDK provides you with a wrapper to use the Mnubo's service easily from your Android application.
-Basically this SDK sets up a connection with the Mnubo API and ensure oAuth2 headers are present in
+# mnubo Android SDK #
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android)
+
+This SDK provides you with a wrapper to use the mnubo's service easily from your Android application.
+Basically this SDK sets up a connection with the mnubo API and ensure oAuth2 headers are present in
 your calls to it.
+
+## Artifacts ##
+Sources, Javadoc and the library itself are located
+[here](http://search.maven.org/#search|gav|1|g%3A%22com.mnubo%22%20AND%20a%3A%22sdk-android%22).
 
 ## Geting started ##
 
@@ -9,16 +15,11 @@ The library can be picked up from Github or MavenCentral. Add the aar to your pr
 or add this Gradle dependency to your build file :
 
 ```
-    // Using gradle and maven dependency resolution
-    compile('com.mnubo:sdk-android:1.1.5@aar') {
-        transitive = true
-    }
+// Using gradle and maven dependency resolution
+compile('com.mnubo:sdk-android:1.1.5@aar') {
+    transitive = true
+}
 ```
-
-_Sources/Javadoc are not automatically linked by Android Studio and Gradle for the moment even
-if they are downloaded properly to your local Maven repository. You can attach them manually. They
-should be in $HOME/.m2/repository/com/mnubo/sdk-android.
-See the Google group discussion [here](https://groups.google.com/forum/#!searchin/adt-dev/javadoc/adt-dev/yVPo71O_ZKM/q4LzRL1eockJ)_
 
 You also need to exclude the following files from the packaging to avoid duplicate exception during
 build :
@@ -43,27 +44,34 @@ The SDK must be initialized. To do so, call the init() function in your applicat
 example :
 
 ```
-    @Override
-    public void onCreate() {
-        //you can store the consumer_key // consumer_secret where you want
-        //I used the string resources here
-        Mnubo.init(this,//_this_ is an Android Context here
-                    getString(R.string.mnubo_consumer_key),
-                    getString(R.string.mnubo_consumer_secret),
-                    "mycompany.api.mnubo.com");
-    }
+@Override
+public void onCreate() {
+    //you can store the consumer_key // consumer_secret where you want
+    //I used the string resources here
+    Mnubo.init(this,
+                "CONSUMER_KEY",
+                "CONSUMER_SECRET",
+                "mycompany.api.mnubo.com");
+}
 ```
 
-## Using the SDK ##
+## Key and secret ##
+The _CONSUMER\_KEY_ and _CONSUMER\_SECRET_ are provided to you by mnubo. The pair (key/secret) has a
+predefined scope. This scope gives you permission to certain APIs.
 
+Using only your client credentials (_CONSUMER\_KEY_ and _CONSUMER\_SECRET_), you can only use the
+[ClientOperations](src/main/java/com/mnubo/platform/android/sdk/api/operations/ClientOperations.java)
+ and [AuthenticationOperations](src/main/java/com/mnubo/platform/android/sdk/api/operations/AuthenticationOperations.java)
+ interfaces, anything else will raise `MnuboAccessDeniedException`.
+
+Once a user has logged in, you can use the other
+[APIs](src/main/java/com/mnubo/platform/android/sdk/api/operations/).
+
+## Using the SDK ##
 Once initialized, you can do a very limited set of commands until the user of your application has
 signed in.
 
-Using only your client credentials (_CONSUMER\_KEY_ and _CONSUMER\_SECRET_), you can only use the
-ClientOperations and AuthenticationOperations interfaces, anything else will raise Unauthorized
-Exception.
-
-To use the Mnubo's SDK, you must have a `MnuboApi` object. The `MnuboApi` is used to perform all
+To use the mnubo's SDK, you must have a `MnuboApi` object. The `MnuboApi` is used to perform all
 the operations. If a User connection (based on a user token, grant\_type=password)
 is available, it will be used, otherwise, a client connection (based on a client token,
 grant\_type=client\_credentials) will be.
@@ -71,12 +79,12 @@ grant\_type=client\_credentials) will be.
 To get the `MnuboApi` object, use this (after initialization) :
 
 ```
-    MnuboApi mnuboApi = Mnubo.getApi();
+MnuboApi mnuboApi = Mnubo.getApi();
 ```
 
 ## Sign in as a user ##
 
-You can sign in on behalf of the user once and start using the SDK to it's fullest by calling the
+You can sign in on behalf of the user and start using the SDK to it's fullest by calling the
 API like this:
 ```
 mnuboApi.getAuthenticationOperations().logInAsync(username, password, new CompletionCallBack<Boolean>() {
@@ -94,7 +102,7 @@ mnuboApi.getAuthenticationOperations().logInAsync(username, password, new Comple
 ```
 
 ## Available API operations ##
-All operations except the ClientOperations and the AuthenticationOperations will perform a token
+All operations except the `AuthenticationOperations#logIn` will perform a token
 refresh if the current access\_token has expired. Operations have both synchronous and asynchronous
 signature.
 
@@ -106,46 +114,39 @@ The mnubo Android SDK supports offline caching for requests that fails. If the r
 is persisted to the disk in the application cache folder. You can also provide another directory when
 you enable the feature.
 
-To enable id, simply call `enableFailedDataStore` like this :
+To enable it, simply call `enableFailedDataStore` like this :
 
 ```
 Mnubo.enableFailedDataStore();
-//or
+//or, if you want to write to a specific folder
 Mnubo.enableFailedDataStore(new File(PATH));
 ```
 
 ## Examples
-
-Suppose the user of the application is logged in (the user token is still valid
-(access or atleast the refresh token)). You want to see all the objects that belongs to this user. In your
-Android Activity, you should have something like this:
+Suppose the user of the application is logged in (the user token is still valid. You want to see all
+the objects that belongs to this user. In your Android `Activity`, you would do something like this:
 
 ```
-    mnuboApi.getUserOperations().findUserObjects(mnuboApi.getAuthenticationOperations().getUsername(), new CompletionCallBack<SmartObjects>() {
+final String username = mnuboApi.getAuthenticationOperations().getUsername();
+mnuboApi.getUserOperations().findUserObjectsAsync(username, new CompletionCallBack<SmartObjects>() {
 
-            @Override
-            public void onCompletion(SmartObjects result, MnuboSdkException ex) {
-                    if (ex == null) {
+        @Override
+        public void onCompletion(SmartObjects result, MnuboSdkException ex) {
+                if (ex == null) {
 
-                        UserObjects result = response.getResult();
+                    UserObjects result = response.getResult();
 
-                        //Do what you want with the objects
+                    //Do what you want with the objects
 
-                    } else {
-                        //handle error which is in response.getError();
-                    }
+                } else {
+                    //handle error
                 }
-            });
+            }
+        });
 ```
 
 ## Documentation ##
-Extensive documentation is available in the appropriates directories of the repository or in the
-generated Javadoc.
-
-## ToDos ##
-* Parcelable on Mnubo models
-* Add buffer of failed operations to be retried later (on the way)
-
+Extensive documentation is available in the generated Javadoc.
 
 ## How to open this project ##
 This project can be opened with Android Studio or Eclipse (Note : Eclipse is not an Android supported IDE anymore). New Android build system is based on Gradle, so you'll need that too.

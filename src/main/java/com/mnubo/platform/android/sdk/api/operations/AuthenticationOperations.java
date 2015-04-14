@@ -27,7 +27,7 @@ import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 
 /**
- * The AuthenticationOperations is an interface to handle the user login process.
+ * AuthenticationOperations is an interface to handle the user login process.
  */
 public interface AuthenticationOperations {
 
