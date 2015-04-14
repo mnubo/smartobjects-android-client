@@ -19,25 +19,42 @@
  *     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *     THE SOFTWARE.
  */
+package com.mnubo.platform.android.sdk.internal.tasks.impl;
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+import android.util.Log;
 
-allprojects {
+import com.mnubo.platform.android.sdk.api.services.buffer.MnuboBufferService;
+import com.mnubo.platform.android.sdk.exceptions.MnuboException;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
+import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
+import com.mnubo.platform.android.sdk.internal.tasks.Task;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
+import static com.mnubo.platform.android.sdk.Strings.SDK_EXECUTING_TASK;
+
+public abstract class TaskImpl<Result> extends Task<Result> {
+
+
+    @Override
+    public MnuboResponse<Result> executeSync(MnuboConnectionManager connectionManager, MnuboBufferService.FailedAttemptCallback failedCallback) {
+
+
+        Result result = null;
+        MnuboException error = null;
+        try {
+            Log.d(TAG, SDK_EXECUTING_TASK);
+
+            result = executeMnuboCall(connectionManager);
+
+        } catch (MnuboException ex) {
+            error = ex;
+
+        } catch (Exception ex) {
+            error = new MnuboException(ex);
         }
+
+        handleError(error, failedCallback);
+
+        return new MnuboResponse<>(result, error);
+
     }
 }

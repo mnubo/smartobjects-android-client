@@ -20,24 +20,28 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.models.common;
 
-allprojects {
+/**
+ * Deviceid and objectid are basically the same but they translate to different query parameters
+ * which are currently required by the Mnubo API. <p/> deviceid and natural are also the same. They
+ * are human readable unique identifier to be used along with the uuid of the identity. <p/>
+ * objectid and deviceid shouldn't be and they will be removed in a near future. The objectid was
+ * originally the uuid of a {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
+ * and the deviceid was the natural key of an {@link com.mnubo.platform.android.sdk.models.smartobjects.SmartObject}
+ *
+ * @see com.mnubo.platform.android.sdk.models.common.SdkId
+ */
+public enum IdType {
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+    deviceid, objectid, natural, uuid;
+
+    public boolean isUUID() {
+        return this.equals(uuid) || this.equals(objectid);
     }
+
+    public boolean isString() {
+        return !isUUID();
+    }
+
 }

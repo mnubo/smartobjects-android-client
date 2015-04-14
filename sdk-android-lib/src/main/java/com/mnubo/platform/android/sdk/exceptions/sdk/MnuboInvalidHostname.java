@@ -20,24 +20,19 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-allprojects {
+import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+/**
+ * This exception is raised when the hostname provided in the {@link
+ * com.mnubo.platform.android.sdk.Mnubo#init(android.content.Context, String, String, String)} call.
+ * <p/> For example, the hostname in the URL below is "mycompany.api.mnubo.com" <p/>
+ * https://mycompany.api.mnubo.com:443
+ */
+public class MnuboInvalidHostname extends MnuboException {
+
+    public MnuboInvalidHostname(Throwable ex) {
+        super("Provided hostname is invalid. The hostname is [example.com] is this URL https://example.com:443.", ex);
     }
 }

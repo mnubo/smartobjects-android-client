@@ -20,24 +20,28 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
-allprojects {
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
+import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+import org.junit.Test;
+
+import static com.mnubo.platform.android.sdk.models.common.IdType.deviceid;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
+public class UpdateObjectTaskTest extends AbstractTaskTest {
+
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final SdkId id = SdkId.build("id", deviceid);
+        final SmartObject smartObject = new SmartObject();
+        UpdateObjectTask updateObjectTask = new UpdateObjectTask(id, smartObject);
+
+        updateObjectTask.executeMnuboCall(connectionManager);
+
+        verify(smartObjectService).update(eq(id), eq(smartObject));
     }
 }

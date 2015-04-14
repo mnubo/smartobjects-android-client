@@ -20,24 +20,17 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.exceptions.sdk;
 
-allprojects {
+import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+/**
+ * This error is raised when the {@link com.mnubo.platform.android.sdk.api.MnuboApi} user operations
+ * are used prior to user logging in.
+ */
+public class MnuboNotLoggedInException extends MnuboException {
+
+    public MnuboNotLoggedInException() {
+        super("The user is not logged in. Please log in before using these operations.");
     }
 }

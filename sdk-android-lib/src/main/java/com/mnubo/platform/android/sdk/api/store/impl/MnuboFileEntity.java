@@ -20,24 +20,42 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.api.store.impl;
 
-allprojects {
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
+
+import java.io.Serializable;
+
+/**
+ * Entity specifically designed to be persisted on the file system. Contains it's location on the
+ * disk.
+ */
+class MnuboFileEntity extends MnuboEntity implements Serializable {
+
+
+    public final static String EXTENSION = "mbo";
+
+    private static final long serialVersionUID = 1L;
+
+    private String file;
+
+    /**
+     * No arg constructor required for Serializable
+     */
+    public MnuboFileEntity() {
+        super();
+    }
+
+    public MnuboFileEntity(Object entity, String file) {
+        super(entity);
+        this.file = file;
+    }
+
+    /**
+     * @return location of the file
+     */
+    public String getFile() {
+        return file;
     }
 }

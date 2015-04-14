@@ -20,24 +20,27 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
-allprojects {
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+public class DeleteObjectTask extends TaskWithRefreshImpl<Boolean> {
+
+    private final SdkId objectId;
+
+
+    public DeleteObjectTask( SdkId objectId) {
+
+        this.objectId = objectId;
+
+    }
+
+    @Override
+    protected Boolean executeMnuboCall(MnuboConnectionManager connectionManager) {
+        connectionManager.getCurrentConnection().getMnuboSDKApi().objectService().delete(objectId);
+        return true;
     }
 }

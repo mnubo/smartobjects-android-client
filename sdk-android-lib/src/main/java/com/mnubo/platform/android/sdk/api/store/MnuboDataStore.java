@@ -20,24 +20,36 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.api.store;
 
-allprojects {
+import java.util.List;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
-    }
+/**
+ * Interface that allows storage of data in queue
+ */
+public interface MnuboDataStore {
+
+    /**
+     * Store the element in the queue.
+     *
+     * @param queueName   the queue name
+     * @param mnuboEntity the entity that will be persisted on disk
+     * @return true if storage is successful, false if not
+     */
+    boolean put(String queueName, Object mnuboEntity);
+
+    /**
+     * Remove the element from the store
+     *
+     * @param entity entity to be removed from the store
+     */
+    boolean remove(Object entity);
+
+    /**
+     * Get all the entities in a folder
+     *
+     * @param queueName queue name
+     * @return List of MnuboEntity if no error, null otherwise
+     */
+    List<MnuboEntity> getEntities(String queueName);
 }

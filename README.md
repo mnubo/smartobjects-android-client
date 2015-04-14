@@ -16,7 +16,7 @@ or add this Gradle dependency to your build file :
 
 ```
 // Using gradle and maven dependency resolution
-compile('com.mnubo:sdk-android:1.1.6@aar') {
+compile('com.mnubo:sdk-android:1.2.0@aar') {
     transitive = true
 }
 ```
@@ -40,7 +40,7 @@ packagingOptions {
     }
 ```
 
-The SDK must be initialized. To do so, call the init() function in your application startup. For
+The SDK must be initialized. To do so, call the `init()` function in your application startup. For
 example :
 
 ```
@@ -60,12 +60,12 @@ The _CONSUMER\_KEY_ and _CONSUMER\_SECRET_ are provided to you by mnubo. The pai
 predefined scope. This scope gives you permission to certain APIs.
 
 Using only your client credentials (_CONSUMER\_KEY_ and _CONSUMER\_SECRET_), you can only use the
-[ClientOperations](src/main/java/com/mnubo/platform/android/sdk/api/operations/ClientOperations.java)
- and [AuthenticationOperations](src/main/java/com/mnubo/platform/android/sdk/api/operations/AuthenticationOperations.java)
+[ClientOperations](sdk-android-lib/src/main/java/com/mnubo/platform/android/sdk/api/operations/ClientOperations.java)
+ and [AuthenticationOperations](sdk-android-lib/src/main/java/com/mnubo/platform/android/sdk/api/operations/AuthenticationOperations.java)
  interfaces, anything else will raise `MnuboAccessDeniedException`.
 
 Once a user has logged in, you can use the other
-[APIs](src/main/java/com/mnubo/platform/android/sdk/api/operations/).
+[APIs](sdk-android-lib/src/main/java/com/mnubo/platform/android/sdk/api/operations/).
 
 ## Using the SDK ##
 Once initialized, you can do a very limited set of commands until the user of your application has
@@ -82,23 +82,29 @@ To get the `MnuboApi` object, use this (after initialization) :
 MnuboApi mnuboApi = Mnubo.getApi();
 ```
 
-## Sign in as a user ##
+## Sign in as a user
 
 You can sign in on behalf of the user and start using the SDK to it's fullest by calling the
 API like this:
 ```
 mnuboApi.getAuthenticationOperations().logInAsync(username, password, new CompletionCallBack<Boolean>() {
-            @Override
-            public void onCompletion(Boolean success, MnuboSdkException error) {
-            if (error == null && success) {
-                // Do something
-            } else if (error instanceof MnuboBadCredentialsException) {
-                // Display invalid credentials error
-            } else {
-                // Display error
-            }
+        @Override
+        public void onCompletion(Boolean success, MnuboSdkException error) {
+        if (error == null && success) {
+            // Do something
+        } else if (error instanceof MnuboBadCredentialsException) {
+            // Display invalid credentials error
+        } else {
+            // Display error
         }
-    });
+    }
+});
+```
+## Check if user is logged in
+
+You can know if the user is logged in like this :
+```
+mnuboApi.getAuthenticationOperations().isUserConnected();
 ```
 
 ## Available API operations ##
@@ -109,17 +115,30 @@ signature.
 Synchronous request are performed on the current thread. Asynchronous request runs in an `AsyncTask`
 and the result is passed through the callback if it is available.
 
-## Offline datastore
-The mnubo Android SDK supports offline caching for requests that fails. If the request fails, the data
-is persisted to the disk in the application cache folder. You can also provide another directory when
-you enable the feature.
+## Offline Buffer Service
+The mnubo Android SDK supports offline caching for requests that fails. As of right now, only a
+limited set of request can be persisted. See the Javadoc for more details
+([here](sdk-android-lib/src/main/java/com/mnubo/platform/android/sdk/api/services/buffer/impl/MnuboBufferServiceImpl.java)).
 
-To enable it, simply call `enableFailedDataStore` like this :
+To enable it, simply call `enableBufferService` like this :
 
 ```
-Mnubo.enableFailedDataStore();
-//or, if you want to write to a specific folder
-Mnubo.enableFailedDataStore(new File(PATH));
+Mnubo.enableBufferService();
+```
+
+When the supported requests raise an exception, they are persisted to the disk. You can retry those
+request like this :
+```
+Mnubo.getBufferService().retryFailedAttempts();
+```
+
+## Data store
+The mnubo Android SDK allows you to write object to the disk. The default location is the
+ application cache directory (using the Android context provided in the init call) but you can use something else
+ if you specify during initialization.
+You can use get the data
+```
+MnuboDataStore store = Mnubo.getDataStore();
 ```
 
 ## Examples
@@ -129,21 +148,24 @@ the objects that belongs to this user. In your Android `Activity`, you would do 
 ```
 final String username = mnuboApi.getAuthenticationOperations().getUsername();
 mnuboApi.getUserOperations().findUserObjectsAsync(username, new CompletionCallBack<SmartObjects>() {
+    @Override
+    public void onCompletion(SmartObjects result, MnuboSdkException ex) {
+            if (ex == null) {
 
-        @Override
-        public void onCompletion(SmartObjects result, MnuboSdkException ex) {
-                if (ex == null) {
+                UserObjects result = response.getResult();
 
-                    UserObjects result = response.getResult();
+                //Do what you want with the objects
 
-                    //Do what you want with the objects
-
-                } else {
-                    //handle error
-                }
+            } else {
+                //handle error
             }
-        });
+        }
+    });
 ```
+
+## Demo
+There is an application demo [here](sdk-android-demo/) that you can look at for example on
+how to use the SDK.
 
 ## Documentation ##
 Extensive documentation is available in the generated Javadoc.
@@ -164,7 +186,7 @@ This project can be opened with Android Studio or Eclipse (Note : Eclipse is not
 ## Gradle properties ##
 If you intent to build the SDK from the sources, the build.gradle files will require various
 properties that are used for publishing. To remove these requirements, get rid of the following
-line in the gradle.build file :
+line in the `sdk-android-lib/gradle.build` file :
 
 ```
 apply from: 'gradle/gradle-mvn-push.gradle'

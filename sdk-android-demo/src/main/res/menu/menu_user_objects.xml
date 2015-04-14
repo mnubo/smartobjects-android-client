@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".UserObjectsActivity">
+
+    <item
+        android:id="@+id/action_change_password"
+        android:title="@string/action_change_password_activity"
+        android:orderInCategory="100"
+        />
+
+    <item
+        android:id="@+id/action_update_profile"
+        android:title="@string/action_change_update_profile_activity"
+        android:orderInCategory="100"
+        />
+
+    <item
+        android:id="@+id/action_sign_out"
+        android:title="@string/action_sign_out"
+        android:orderInCategory="100"
+        />
+</menu>

@@ -50,10 +50,18 @@ def getVersionName() {
     if (!isReleaseBuild()) {
         ext.env = System.getenv()
         ext.buildNumber = env.BUILD_NUMBER ? env.BUILD_NUMBER : "local"
-        return VERSION_NAME.replace("-SNAPSHOT", "-$buildNumber-SNAPSHOT")
+        return VERSION_NAME + "-$buildNumber-SNAPSHOT"
     } else {
-        return VERSION_NAME.replace("-SNAPSHOT","")
+        return VERSION_NAME.replace("-SNAPSHOT", "")
     }
+}
+
+task createVersionFile << {
+    def versionFile = new File("$buildDir/version.properties")
+    Properties properties = new Properties()
+    properties.setProperty("VERSION_NAME", getVersionName())
+    properties.store(versionFile.newWriter(), null)
+    println versionFile.getAbsolutePath()
 }
 
 afterEvaluate { project ->

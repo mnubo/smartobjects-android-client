@@ -20,24 +20,19 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.exceptions.client;
 
-allprojects {
+/**
+ * This exception is raised when the credentials provided to fetch a token are incorrect. Either the
+ * username/password combination of the user currently login or the consumer_key/consumer_secret
+ * provided in the {@link com.mnubo.platform.android.sdk.Mnubo#init(android.content.Context, String,
+ * String, String)} function.
+ */
+public class MnuboBadCredentialsException extends MnuboClientException {
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+    public final static String BAD_CREDENTIALS = "Bad credentials";
+
+    public MnuboBadCredentialsException() {
+        super("Invalid credentials were supplied.");
     }
 }

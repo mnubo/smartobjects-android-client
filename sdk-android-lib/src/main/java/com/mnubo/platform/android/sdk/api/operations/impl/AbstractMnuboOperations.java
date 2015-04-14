@@ -20,24 +20,28 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.api.operations.impl;
 
-allprojects {
+import com.mnubo.platform.android.sdk.api.services.buffer.MnuboBufferService;
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+abstract class AbstractMnuboOperations {
+
+    final MnuboConnectionManager mnuboConnectionManager;
+    protected MnuboBufferService mnuboBufferService = null;
+
+    AbstractMnuboOperations(MnuboConnectionManager mnuboConnectionManager,
+                            MnuboBufferService mnuboBufferService) {
+        this.mnuboConnectionManager = mnuboConnectionManager;
+        this.mnuboBufferService = mnuboBufferService;
     }
+
+    public MnuboBufferService getMnuboBufferService() {
+        return mnuboBufferService;
+    }
+
+    public boolean isBufferServiceEnabled() {
+        return mnuboBufferService.isEnabled();
+    }
+
 }

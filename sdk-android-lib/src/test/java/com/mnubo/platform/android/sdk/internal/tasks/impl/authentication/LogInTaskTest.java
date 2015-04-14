@@ -20,24 +20,24 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.internal.tasks.impl.authentication;
 
-allprojects {
+import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+import org.junit.Test;
+
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
+public class LogInTaskTest extends AbstractTaskTest {
+    @Test
+    public void testExecuteMnuboCall() throws Exception {
+        final String username = "username";
+        final String password = "password";
+        LogInTask logInTask = new LogInTask(username, password);
+
+        logInTask.executeMnuboCall(connectionManager);
+
+        verify(connectionManager).logIn(eq(username), eq(password));
     }
 }

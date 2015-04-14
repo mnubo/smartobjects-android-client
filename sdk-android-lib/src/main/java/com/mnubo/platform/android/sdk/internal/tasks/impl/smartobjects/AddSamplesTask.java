@@ -20,24 +20,41 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
-allprojects {
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
+import com.mnubo.platform.android.sdk.models.common.SdkId;
+import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+import java.util.HashMap;
+import java.util.Map;
+
+public class AddSamplesTask extends TaskWithRefreshImpl<Boolean> {
+
+    private final SdkId id;
+    private final Samples samples;
+
+
+    public AddSamplesTask( SdkId id, Samples samples) {
+
+        this.id = id;
+        this.samples = samples;
+
+    }
+
+    @Override
+    protected Boolean executeMnuboCall(MnuboConnectionManager connectionManager) {
+        connectionManager.getCurrentConnection().getMnuboSDKApi().objectService().addSamples(id, samples);
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "AddSamplesTask{" +
+                "id=" + id +
+                ", samples=" + samples +
+                '}';
     }
 }

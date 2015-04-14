@@ -20,24 +20,30 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
-allprojects {
+import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
+import com.mnubo.platform.android.sdk.internal.connect.connection.refreshable.RefreshableConnection;
+import com.mnubo.platform.android.sdk.internal.tasks.impl.TaskWithRefreshImpl;
+import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+public class CreateObjectTask extends TaskWithRefreshImpl<Boolean> {
+
+    private final SmartObject smartObject;
+    private final Boolean updateIfExists;
+
+
+    public CreateObjectTask( SmartObject smartObject, Boolean updateIfExists) {
+
+        this.smartObject = smartObject;
+        this.updateIfExists = updateIfExists;
+
     }
+
+    @Override
+    protected Boolean executeMnuboCall(MnuboConnectionManager connectionManager) {
+        connectionManager.getCurrentConnection().getMnuboSDKApi().objectService().create(smartObject, updateIfExists);
+        return true;
+    }
+
 }

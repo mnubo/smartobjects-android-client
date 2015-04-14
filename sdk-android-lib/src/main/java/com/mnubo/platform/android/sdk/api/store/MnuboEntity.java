@@ -20,24 +20,30 @@
  *     THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-    }
-}
+package com.mnubo.platform.android.sdk.api.store;
 
-allprojects {
+import java.io.Serializable;
 
-    // Repositories where dependencies are downloaded
-    repositories {
-        jcenter()
-        maven {
-            url 'http://repo.spring.io/milestone'
-        }
+/**
+ * Object that contains all the relevant information to retry a request later.
+ */
+public class MnuboEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private Object value;
+
+
+    public MnuboEntity() {
     }
+
+    public MnuboEntity(Object value) {
+        this.value = value;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+
 }
