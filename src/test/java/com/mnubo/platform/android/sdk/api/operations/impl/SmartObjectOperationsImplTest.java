@@ -255,7 +255,9 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
         verify(mockedTask, only()).executeAsync(eq(mockedSuccessCallback));
 
 
-    }@Test
+    }
+
+    @Test
     public void testSyncAddSample() throws Exception {
         final SdkId objectId = SdkId.build("object-id", deviceid);
         final Samples expectedSamples = new Samples();
