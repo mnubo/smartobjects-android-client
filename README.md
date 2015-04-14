@@ -16,7 +16,7 @@ or add this Gradle dependency to your build file :
 
 ```
 // Using gradle and maven dependency resolution
-compile('com.mnubo:sdk-android:1.1.5@aar') {
+compile('com.mnubo:sdk-android:1.1.6@aar') {
     transitive = true
 }
 ```
