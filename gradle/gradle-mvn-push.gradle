@@ -140,7 +140,8 @@ afterEvaluate { project ->
 nexusStaging {
     packageGroup = GROUP
     stagingProfileId = getStagingProfileId()//f1540904758d
-    delayBetweenRetriesInMillis = 2000
+    delayBetweenRetriesInMillis = 3000
+    numberOfRetries = 10
 }
 
 closeRepository.onlyIf { isReleaseBuild() }
