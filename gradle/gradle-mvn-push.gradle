@@ -139,7 +139,7 @@ afterEvaluate { project ->
 //automatic closing of staging repositories
 nexusStaging {
     packageGroup = GROUP
-    stagingProfileId = getStagingProfileId()//f1540904758d
+    stagingProfileId = getStagingProfileId()
     delayBetweenRetriesInMillis = 3000
     numberOfRetries = 10
 }
