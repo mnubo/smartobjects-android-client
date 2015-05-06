@@ -34,16 +34,22 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 
+import static com.mnubo.platform.android.sdk.Strings.SDK_ERROR_EXECUTING_TASK;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
@@ -54,7 +60,7 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
         MnuboFileDataStore.class,
         ObjectInputStream.class
 })
-public class MnuboFileStoreTest {
+public class MnuboFileDataStoreTest {
 
     private File rootDir = mock(File.class);
     private File mockedFile = mock(File.class);
@@ -65,10 +71,12 @@ public class MnuboFileStoreTest {
 
     private static final String QUEUE_NAME = "folder";
 
-    private final MnuboFileDataStore stringStore = new MnuboFileDataStore(rootDir);
+    private MnuboFileDataStore stringStore;
 
     @Before
     public void setUp() throws Exception {
+        stringStore = new MnuboFileDataStore(rootDir);
+
         mockStatic(TextUtils.class);
         mockStatic(Log.class);
 
@@ -116,6 +124,57 @@ public class MnuboFileStoreTest {
 
         final Boolean success = stringStore.put(QUEUE_NAME, "data");
         assertThat(success, is(equalTo(true)));
+    }
+
+    @Test
+    public void testPutFolderIsFull() throws Exception {
+        final int maxSize = 5;
+        stringStore.setQueueMaximumSize(maxSize);
+
+        when(mockedFile.exists()).thenReturn(false);
+        when(mockedFile.mkdirs()).thenReturn(true);
+        final File[] fullFolder = prepareMockedFileArray(maxSize, true);
+        when(mockedFile.listFiles(any(FileFilter.class))).thenReturn(fullFolder);
+        when(mockedFile.createNewFile()).thenReturn(true);
+
+        final Boolean success = stringStore.put(QUEUE_NAME, "data");
+        assertThat(success, is(equalTo(true)));
+        verify(fullFolder[0]).delete();
+    }
+
+    @Test
+    public void testPutFolderIsFullWithMoreFilesThanMaximum() throws Exception {
+        final int maxSize = 5;
+        stringStore.setQueueMaximumSize(maxSize);
+
+        when(mockedFile.exists()).thenReturn(false);
+        when(mockedFile.mkdirs()).thenReturn(true);
+        final File[] fullFolder = prepareMockedFileArray(maxSize+2, true);
+        when(mockedFile.listFiles(any(FileFilter.class))).thenReturn(fullFolder);
+        when(mockedFile.createNewFile()).thenReturn(true);
+
+        final Boolean success = stringStore.put(QUEUE_NAME, "data");
+        assertThat(success, is(equalTo(true)));
+        verify(fullFolder[0]).delete();
+        verify(fullFolder[1]).delete();
+        verify(fullFolder[2]).delete();
+    }
+
+    @Test
+    public void testPutFolderIsFullDeleteNotworking() throws Exception {
+        final int maxSize = 5;
+        stringStore.setQueueMaximumSize(maxSize);
+
+        when(mockedFile.exists()).thenReturn(false);
+        when(mockedFile.mkdirs()).thenReturn(true);
+        final File[] fullFolder = prepareMockedFileArray(maxSize, false);
+        when(mockedFile.listFiles(any(FileFilter.class))).thenReturn(fullFolder);
+        when(mockedFile.createNewFile()).thenReturn(true);
+
+        final Boolean success = stringStore.put(QUEUE_NAME, "data");
+        assertThat(success, is(equalTo(true)));
+        verify(fullFolder[0]).delete();
+        verifyStatic();
     }
 
     @Test
@@ -185,6 +244,18 @@ public class MnuboFileStoreTest {
 
         //unable to mock objectinputstream
         //List<MnuboEntity> entityList = stringStore.getEntities("folder");
+    }
+
+    private File[] prepareMockedFileArray(int size, boolean removeFileWorks){
+        File[]  files = new File[size];
+        for (int i = 0; i < size; i++) {
+            File mockedFile = mock(File.class);
+            when(mockedFile.getName()).thenReturn(i + ".mbo");
+            when(mockedFile.getAbsolutePath()).thenReturn("/path/" + i + ".mbo");
+            when(mockedFile.delete()).thenReturn(removeFileWorks);
+            files[i] = mockedFile;
+        }
+        return files;
     }
 
 }

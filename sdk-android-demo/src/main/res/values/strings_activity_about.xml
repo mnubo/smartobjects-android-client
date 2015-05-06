@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_activity_about">About</string>
+    <string name="lbl_store_files_qty">Number of files in the store :</string>
+    <string name="action_about">About</string>
+
+</resources>

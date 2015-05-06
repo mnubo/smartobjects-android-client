@@ -52,4 +52,17 @@ public interface MnuboDataStore {
      * @return List of MnuboEntity if no error, null otherwise
      */
     List<MnuboEntity> getEntities(String queueName);
+
+    /**
+     * Override the default size of queues. Default size depends on implementation.
+     * Must be greater or equal to 0.
+     * @param size maximum number of entities written in a queue,
+     *             0 for unlimited
+     */
+    void setQueueMaximumSize(int size);
+
+    /**
+     * Gets the current queue size limit
+     */
+    int getQueueMaximumSize();
 }

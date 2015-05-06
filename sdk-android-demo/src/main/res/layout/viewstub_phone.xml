@@ -42,4 +42,11 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_phone_retry_failed_events"
+        android:text="@string/btn_retry_failed_events"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
 </LinearLayout>

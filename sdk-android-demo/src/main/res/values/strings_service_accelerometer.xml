@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="accel_service_has_started">Accelerometer Service has started recording.</string>
-    <string name="accel_service_has_stopped_uploaded">Stopped recording and data was uploaded.</string>
-    <string name="accel_service_has_stopped">Stopped recording and data was not uploaded.</string>
-</resources>

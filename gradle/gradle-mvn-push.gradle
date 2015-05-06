@@ -149,7 +149,7 @@ afterEvaluate { project ->
 nexusStaging {
     packageGroup = GROUP
     stagingProfileId = getStagingProfileId()
-    delayBetweenRetriesInMillis = 3000
+    delayBetweenRetriesInMillis = 4000
     numberOfRetries = 10
 }
 

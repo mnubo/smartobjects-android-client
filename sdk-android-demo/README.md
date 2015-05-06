@@ -19,7 +19,7 @@ compile project(':sdk-android-lib')
 ```
 for this one :
 ```
-compile("com.mnubo:sdk-android:1.2.0@aar") {
+compile("com.mnubo:sdk-android:1.2.1@aar") {
     transitive = true
 }
 ```

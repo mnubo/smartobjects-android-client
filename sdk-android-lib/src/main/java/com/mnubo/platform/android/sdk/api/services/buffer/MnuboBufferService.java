@@ -30,6 +30,8 @@ import com.mnubo.platform.android.sdk.internal.tasks.Task;
  */
 public interface MnuboBufferService {
 
+    public final static String RETRY_QUEUE_NAME = "failed";
+
     /**
      * Tells you if the service is enabled or not
      * @return true if enable, false otherwise

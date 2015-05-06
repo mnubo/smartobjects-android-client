@@ -18,6 +18,7 @@ import com.mnubo.platform.android.demo.R;
 import com.mnubo.platform.android.demo.intentutils.Extras;
 import com.mnubo.platform.android.demo.model.phone.Phone;
 import com.mnubo.platform.android.demo.services.phone.PhoneEventService;
+import com.mnubo.platform.android.demo.services.phone.RetryEventService;
 import com.mnubo.platform.android.sdk.exceptions.MnuboException;
 import com.mnubo.platform.android.sdk.models.common.IdType;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -110,23 +111,6 @@ public class UserObjectActivity extends MnuboAbstractActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user_object, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void parseBundle(Bundle extras) {
         if (extras != null) {
             this.objectId = extras.getString(Extras.EXTRA_USEROBJECT_UUID);
@@ -215,12 +199,25 @@ public class UserObjectActivity extends MnuboAbstractActivity {
                 postEvent(Type.launch);
             }
         });
+
+        Button btnRetryFailedEvents = (Button) findViewById(R.id.btn_phone_retry_failed_events);
+        btnRetryFailedEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retryFailedEvents();
+            }
+        });
     }
 
     private void postEvent(Type type) {
         Intent intent = new Intent(getApplicationContext(), PhoneEventService.class);
         intent.putExtra(Extras.EXTRA_EVENT_TYPE, type.toString());
         intent.putExtra(Extras.EXTRA_USEROBJECT_UUID, objectId);
+        startService(intent);
+    }
+
+    private void retryFailedEvents() {
+        Intent intent = new Intent(getApplicationContext(), RetryEventService.class);
         startService(intent);
     }
 

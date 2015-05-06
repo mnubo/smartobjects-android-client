@@ -53,8 +53,6 @@ public class MnuboBufferServiceImpl implements MnuboBufferService {
 
     private final static String TAG = MnuboBufferServiceImpl.class.getName();
 
-    private final static String RETRY_QUEUE_NAME = "failed";
-
     private final MnuboDataStore mnuboDataStore;
     private final MnuboConnectionManager mnuboConnectionManager;
 
@@ -105,11 +103,12 @@ public class MnuboBufferServiceImpl implements MnuboBufferService {
             Log.d(TAG, String.format(SDK_BUFFER_SERVICE_RETRYING, entities.size()));
 
             for (MnuboEntity entity : entities) {
-                if (entity != null) {
+                if (entity.getValue() != null) {
                     if (entity.getValue() instanceof AddSamplesTask) {
                         AddSamplesTask addSamplesTask = (AddSamplesTask) entity.getValue();
                         Log.d(TAG, String.format(SDK_BUFFER_SERVICE_RETRY_TASK, addSamplesTask));
                         addSamplesTask.executeSync(mnuboConnectionManager, taskFailedAttemptCallback);
+
                     } else if (entity.getValue() instanceof AddSampleOnPublicSensorTask) {
                         AddSampleOnPublicSensorTask addSampleOnPublicSensorTask = (AddSampleOnPublicSensorTask) entity.getValue();
                         Log.d(TAG, String.format(SDK_BUFFER_SERVICE_RETRY_TASK, addSampleOnPublicSensorTask));

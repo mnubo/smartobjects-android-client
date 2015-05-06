@@ -25,10 +25,12 @@ package com.mnubo.platform.android.sdk.api.store.impl;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
+import com.mnubo.platform.android.sdk.Strings;
 import com.mnubo.platform.android.sdk.api.store.MnuboDataStore;
+import com.mnubo.platform.android.sdk.api.store.MnuboEntity;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,7 +39,10 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,10 +50,15 @@ import static com.mnubo.platform.android.sdk.api.store.impl.MnuboFileEntity.EXTE
 
 /**
  * Implements a MnuboStore that saves data in folders (queue) on the disk
+ * <p/>
+ * The store has a size limit of 100 entities by queue (folder). You can change it see the
+ * #setQueueMaximumSize.
  */
 public class MnuboFileDataStore implements MnuboDataStore {
 
     private final static String TAG = MnuboFileDataStore.class.getName();
+
+    private int maximumSize = 100;
 
     private final File rootDir;
 
@@ -103,12 +113,29 @@ public class MnuboFileDataStore implements MnuboDataStore {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setQueueMaximumSize(int size) {
+        this.maximumSize = size;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getQueueMaximumSize() {
+        return maximumSize;
+    }
+
     private boolean write(String queueName, Object entity) {
 
         OutputStream fos;
         File file;
         try {
-            file = getFilename(getQueueFolder(queueName), entity.hashCode());
+            final File queueFolder = prepareQueueFolder(getQueueFolder(queueName));
+            file = getFilename(queueFolder, entity.hashCode());
             fos = new FileOutputStream(file);
 
         } catch (IOException ie) {
@@ -171,7 +198,7 @@ public class MnuboFileDataStore implements MnuboDataStore {
 
     private File getFilename(File queueFolder, int hashCode) throws IOException {
         long timestamp = Calendar.getInstance().getTimeInMillis();
-        File file = new File(queueFolder, String.format("%s-%s.%s", hashCode, timestamp, EXTENSION));
+        File file = new File(queueFolder, String.format("%s-%s.%s", timestamp, hashCode, EXTENSION));
         boolean exists = file.exists();
         if (!exists) {
             exists = file.createNewFile();
@@ -198,5 +225,48 @@ public class MnuboFileDataStore implements MnuboDataStore {
 
         }
         return file;
+    }
+
+    private File prepareQueueFolder(File file) {
+        if (getQueueMaximumSize() == 0) {
+            return file;
+        }
+        File[] files = file.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File fileToFilter) {
+                return fileToFilter.isFile();
+            }
+        });
+        if (files != null && files.length >= getQueueMaximumSize()) {
+            int filesToRemove = files.length - getQueueMaximumSize() + 1;
+            removeOldestFileFromFolder(files, filesToRemove);
+        }
+        return file;
+    }
+
+    /**
+     * Files name are based on the timestamp. It means that the oldest files will be first in a
+     * regular string sort.
+     *
+     * @param files list of files
+     * @param filesToRemove qty of files to remove to make room
+     */
+    private void removeOldestFileFromFolder(final File[] files, int filesToRemove) {
+        List<File> listFiles = Arrays.asList(files);
+        Collections.sort(listFiles, new Comparator<File>() {
+            @Override
+            public int compare(File lhs, File rhs) {
+                return lhs.getName().compareToIgnoreCase(rhs.getName());
+            }
+        });
+
+        for (int i = 0; i < filesToRemove; i++) {
+            final File fileToRemove = listFiles.get(i);
+            if (!fileToRemove.delete()) {
+                Log.e(TAG, String.format(Strings.SDK_DATA_STORE_UNABLE_TO_REMOVE_OLD_DATA, fileToRemove.getAbsolutePath()));
+            } else {
+                Log.d(TAG, String.format(Strings.SDK_DATA_STORE_REMOVED_OLD_DATA, fileToRemove.getAbsolutePath()));
+            }
+        }
     }
 }

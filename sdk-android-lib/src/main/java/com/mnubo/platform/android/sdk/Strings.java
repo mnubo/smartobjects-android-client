@@ -54,13 +54,16 @@ public interface Strings {
     public final static String SDK_URL_DEBUG = "Building Mnubo API url with the following : [protocol=%s], [hostname=%s], [port=%s]";
 
 
-    /* Data Store */
+    /* Buffer service */
     public final static String SDK_BUFFER_SERVICE_RETRYING = "Retrying [%s] previously failed attempts.";
     public final static String SDK_BUFFER_SERVICE_RETRY_TASK = "Retrying task : [%s]";
 
-    /* Buffer service */
+    /* Data Store */
     public final static String SDK_ENABLE_BUFFER_SERVICE = "The SDK will now persist failed attempts to [%s].";
     public final static String SDK_DATA_STORE_UNABLE_TO_RETRIEVE = "Unable to retrieve failed attempts.";
+    public final static String SDK_DATA_STORE_FULL = "The file store is full.";
+    public final static String SDK_DATA_STORE_REMOVED_OLD_DATA = SDK_DATA_STORE_FULL + " Removed file with name : %s";
+    public final static String SDK_DATA_STORE_UNABLE_TO_REMOVE_OLD_DATA = SDK_DATA_STORE_FULL + " The store will grow. Unable to remove old file with name : %s";
 
 
     /* Tasks */

@@ -63,10 +63,6 @@ public class PhoneEventService extends IntentService {
         SdkId id = SdkId.build(this.objectId, IdType.objectid);
         try {
             mnuboApi.getSmartObjectOperations().addSamplesAsync(id, samples, null);
-            mnuboDataStore.put(MYSTORE, samples);
-
-            Log.d(SERVICE_TAG, "SUCCESS : LETS ATTEMPT FAILED PUSHES");
-            Mnubo.getBufferService().retryFailedAttempts();
         } catch (MnuboException ex) {
             Log.e(SERVICE_TAG, "Unable to post phone samples", ex);
             broadcastMessage("Event posting failed.");

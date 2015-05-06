@@ -16,7 +16,7 @@ or add this Gradle dependency to your build file :
 
 ```
 // Using gradle and maven dependency resolution
-compile('com.mnubo:sdk-android:1.2.0@aar') {
+compile('com.mnubo:sdk-android:1.2.1@aar') {
     transitive = true
 }
 ```
@@ -139,6 +139,14 @@ The mnubo Android SDK allows you to write object to the disk. The default locati
 You can use get the data
 ```
 MnuboDataStore store = Mnubo.getDataStore();
+```
+
+### Data store limit
+The mnubo Android SDK allows you to set up a file limit to prevent writing to much data to disk.
+Set the limit to 0 to allow unlimited writing to the store. Any integer above 0 will be enforced. Once
+the limit is reached, the SDK will remove the oldest file to allow a new write.
+```
+Mnubo.getDataStore().setQueueMaximumSize(5);
 ```
 
 ## Examples

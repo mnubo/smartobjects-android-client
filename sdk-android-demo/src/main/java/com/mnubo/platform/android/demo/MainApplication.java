@@ -14,6 +14,7 @@ public class MainApplication extends Application {
                 getString(R.string.mnubo_consumer_secret),
                 getString(R.string.mnubo_hostname));
         Mnubo.enableBufferService();
+        Mnubo.getDataStore().setQueueMaximumSize(5);
 
     }
 
