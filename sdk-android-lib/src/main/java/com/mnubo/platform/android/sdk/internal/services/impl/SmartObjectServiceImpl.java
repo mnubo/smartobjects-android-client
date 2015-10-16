@@ -37,11 +37,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+import static com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult.ASC;
+
 public class SmartObjectServiceImpl extends AbstractMnuboService implements SmartObjectService {
 
 
-    public SmartObjectServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.objects, restTemplate);
+    public SmartObjectServiceImpl(String platformBaseUrl, RestTemplate restTemplate, String path) {
+        super(platformBaseUrl, PlatformPath.objects, restTemplate, path);
     }
 
     @Override
@@ -103,21 +105,35 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
 
     @Override
     public Samples searchSamples(SdkId objectId, String sensorName) {
-        return this.searchSamples(objectId, sensorName, null, null, null, 0);
+        return this.searchSamples(objectId, sensorName, null, null, null, 0, ASC);
+    }
+
+    @Override
+    public Samples searchSamples(SdkId objectId, String sensorName, int resultSizeLimit,
+                                 SampleOrderResult order){
+        return this.searchSamples(objectId, sensorName, null, null, null, resultSizeLimit, order);
     }
 
     @Override
     public Samples searchSamples(SdkId objectId, String sensorName, ValueType value) {
-        return this.searchSamples(objectId, sensorName, value, null, null, 0);
+        return this.searchSamples(objectId, sensorName, value, null, null, 0, ASC);
     }
 
     @Override
-    public Samples searchSamples(SdkId objectId, String sensorName, ValueType value, String from, String to) {
-        return this.searchSamples(objectId, sensorName, value, from, to, 0);
+    public Samples searchSamples(SdkId objectId, String sensorName, ValueType value, String from,
+                                 String to) {
+        return this.searchSamples(objectId, sensorName, value, from, to, 0, ASC);
     }
 
     @Override
-    public Samples searchSamples(SdkId objectId, String sensorName, ValueType value, String from, String to, int resultSizeLimit) {
+    public Samples searchSamples(SdkId objectId, String sensorName, ValueType value, String from,
+                                 String to, int resultSizeLimit) {
+        return this.searchSamples(objectId, sensorName, value, from, to, resultSizeLimit, ASC);
+    }
+
+    @Override
+    public Samples searchSamples(SdkId objectId, String sensorName, ValueType value,
+                          String from, String to, int resultSizeLimit, SampleOrderResult order){
         Validate.notNull(objectId, "The objectId  shouldn't be null.");
         Validate.notBlank(sensorName, "The sensor name shouldn't be null or empty.");
 
@@ -129,6 +145,7 @@ public class SmartObjectServiceImpl extends AbstractMnuboService implements Smar
         query.value(value);
         query.timeRange(from, to);
         query.limit(resultSizeLimit);
+        query.ordering(order);
 
         return getRestTemplate().getForObject(query.buildUrl(), Samples.class);
     }

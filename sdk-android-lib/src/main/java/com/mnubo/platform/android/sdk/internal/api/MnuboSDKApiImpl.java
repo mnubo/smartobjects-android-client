@@ -25,13 +25,9 @@ package com.mnubo.platform.android.sdk.internal.api;
 
 import com.mnubo.platform.android.sdk.internal.connect.MnuboAPIErrorHandler;
 import com.mnubo.platform.android.sdk.internal.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.services.CollectionService;
-import com.mnubo.platform.android.sdk.internal.services.GroupService;
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.internal.services.UserService;
 import com.mnubo.platform.android.sdk.internal.services.impl.ClientServiceImpl;
-import com.mnubo.platform.android.sdk.internal.services.impl.CollectionServiceImpl;
-import com.mnubo.platform.android.sdk.internal.services.impl.GroupServiceImpl;
 import com.mnubo.platform.android.sdk.internal.services.impl.SmartObjectServiceImpl;
 import com.mnubo.platform.android.sdk.internal.services.impl.UserServiceImpl;
 
@@ -44,16 +40,12 @@ public class MnuboSDKApiImpl extends AbstractOAuth2ApiBinding implements MnuboSD
     private final ClientService clientService;
     private final UserService userService;
     private final SmartObjectService smartObjectService;
-    private final GroupService groupService;
-    private final CollectionService collectionService;
 
-    public MnuboSDKApiImpl(final String accessToken, final String platformBaseUrl) {
+    public MnuboSDKApiImpl(final String accessToken, final String platformBaseUrl, String path) {
         super(accessToken);
-        this.clientService = new ClientServiceImpl(platformBaseUrl, getRestTemplate());
-        this.userService = new UserServiceImpl(platformBaseUrl, getRestTemplate());
-        this.smartObjectService = new SmartObjectServiceImpl(platformBaseUrl, getRestTemplate());
-        this.groupService = new GroupServiceImpl(platformBaseUrl, getRestTemplate());
-        this.collectionService = new CollectionServiceImpl(platformBaseUrl, getRestTemplate());
+        this.clientService = new ClientServiceImpl(platformBaseUrl, getRestTemplate(), path);
+        this.userService = new UserServiceImpl(platformBaseUrl, getRestTemplate(), path);
+        this.smartObjectService = new SmartObjectServiceImpl(platformBaseUrl, getRestTemplate(), path);
 
     }
 
@@ -79,16 +71,6 @@ public class MnuboSDKApiImpl extends AbstractOAuth2ApiBinding implements MnuboSD
     @Override
     public SmartObjectService objectService() {
         return this.smartObjectService;
-    }
-
-    @Override
-    public GroupService groupService() {
-        return this.groupService;
-    }
-
-    @Override
-    public CollectionService collectionService() {
-        return this.collectionService;
     }
 
 }

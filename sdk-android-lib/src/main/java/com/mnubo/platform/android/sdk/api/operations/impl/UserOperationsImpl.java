@@ -28,11 +28,9 @@ import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectio
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
-import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 import com.mnubo.platform.android.sdk.models.users.User;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newFindUserObjectsTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newGetUserTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newUpdatePasswordTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newUpdateUserTask;
@@ -42,24 +40,6 @@ public class UserOperationsImpl extends AbstractMnuboOperations implements UserO
     public UserOperationsImpl(MnuboConnectionManager mnuboConnectionManager,
                               MnuboBufferService mnuboBufferService) {
         super(mnuboConnectionManager, mnuboBufferService);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MnuboResponse<SmartObjects> findUserObjects(String username, Boolean details, String objectModelName) {
-        final Task<SmartObjects> task = newFindUserObjectsTask(username, details, objectModelName);
-        return task.executeSync(mnuboConnectionManager);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void findUserObjectsAsync(final String username, final Boolean details, final String objectModelName, final CompletionCallBack<SmartObjects> completionCallBack) {
-        final Task<SmartObjects> task = newFindUserObjectsTask(username, details, objectModelName);
-        task.executeAsync(mnuboConnectionManager, completionCallBack);
     }
 
     /**

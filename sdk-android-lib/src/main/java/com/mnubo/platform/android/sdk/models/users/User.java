@@ -30,9 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.Attribute;
-import com.mnubo.platform.android.sdk.models.groups.Group;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -65,10 +63,6 @@ public class User implements Parcelable, Serializable {
     @JsonProperty("registration_date")
     private String registrationDate;
 
-    private List<Collection> collections;
-
-    private List<Group> groups;
-
     private List<Attribute> attributes = new ArrayList<>();
 
     private boolean isAdmin;
@@ -87,8 +81,6 @@ public class User implements Parcelable, Serializable {
         this.firstname = in.readString();
         this.lastname = in.readString();
         this.registrationDate = in.readString();
-        this.collections = in.readArrayList(null);
-        this.groups = in.readArrayList(null);
         this.attributes = in.readArrayList(null);
         this.isAdmin = in.readInt() == 1;
     }
@@ -141,22 +133,6 @@ public class User implements Parcelable, Serializable {
         this.registrationDate = registrationDate;
     }
 
-    public List<Collection> getCollections() {
-        return collections;
-    }
-
-    public void setCollections(List<Collection> collections) {
-        this.collections = collections;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
     public List<Attribute> getAttributes() {
         return attributes;
     }
@@ -194,8 +170,6 @@ public class User implements Parcelable, Serializable {
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", registrationDate='" + registrationDate + '\'' +
-                ", collections=" + collections +
-                ", groups=" + groups +
                 ", attributes=" + attributes +
                 ", isAdmin=" + isAdmin +
                 ", id=" + id +
@@ -212,13 +186,10 @@ public class User implements Parcelable, Serializable {
         if (isAdmin != user.isAdmin) return false;
         if (attributes != null ? !attributes.equals(user.attributes) : user.attributes != null)
             return false;
-        if (collections != null ? !collections.equals(user.collections) : user.collections != null)
-            return false;
         if (confirmedPassword != null ? !confirmedPassword.equals(user.confirmedPassword) : user.confirmedPassword != null)
             return false;
         if (firstname != null ? !firstname.equals(user.firstname) : user.firstname != null)
             return false;
-        if (groups != null ? !groups.equals(user.groups) : user.groups != null) return false;
         if (id != null ? !id.equals(user.id) : user.id != null) return false;
         if (lastname != null ? !lastname.equals(user.lastname) : user.lastname != null)
             return false;
@@ -240,8 +211,6 @@ public class User implements Parcelable, Serializable {
         result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
-        result = 31 * result + (collections != null ? collections.hashCode() : 0);
-        result = 31 * result + (groups != null ? groups.hashCode() : 0);
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
         result = 31 * result + (isAdmin ? 1 : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
@@ -265,8 +234,6 @@ public class User implements Parcelable, Serializable {
         dest.writeString(this.firstname);
         dest.writeString(this.lastname);
         dest.writeString(this.registrationDate);
-        dest.writeList(this.collections);
-        dest.writeList(this.groups);
         dest.writeList(this.attributes);
         dest.writeInt(isAdmin ? 1 : 0);
     }

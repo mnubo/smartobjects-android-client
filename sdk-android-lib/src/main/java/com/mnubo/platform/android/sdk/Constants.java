@@ -72,5 +72,9 @@ public interface Constants {
      */
     String OBJECT_MODEL = "object_model";
 
+    /**
+     * Used as a query param
+     */
+    String ORDERING_RESULT = "order";
 
 }

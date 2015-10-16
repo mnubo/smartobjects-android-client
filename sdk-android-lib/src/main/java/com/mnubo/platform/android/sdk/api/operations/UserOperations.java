@@ -36,30 +36,6 @@ import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
 public interface UserOperations {
 
     /**
-     * Fetch all of the objects that belongs to the username that matches a specific object model.
-     * <p/>
-     * Called url = GET : /users/{username}/objects
-     *
-     * @param username        owner of the objects
-     * @param details         true will return all data, false will return minimal data
-     * @param objectModelName specific object model name, null doesn't specify the object model
-     */
-    MnuboResponse<SmartObjects> findUserObjects(String username, final Boolean details, final String objectModelName);
-
-    /**
-     * Fetch all of the objects that belongs to the username that matches a specific object model.
-     * The result will be available through the given callback.
-     * <p/>
-     * Called url = GET : /users/{username}/objects
-     *
-     * @param username           owner of the objects
-     * @param details            true will return all data, false will return minimal data
-     * @param objectModelName    specific object model name
-     * @param completionCallBack the callback that will be executed on completion of the request
-     */
-    void findUserObjectsAsync(String username, final Boolean details, final String objectModelName, CompletionCallBack<SmartObjects> completionCallBack);
-
-    /**
      * Fetch a specific user information.
      * <p/>
      * Called url = GET : /users/{username}

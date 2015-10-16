@@ -31,7 +31,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.AbstractOwnable;
 import com.mnubo.platform.android.sdk.models.common.Attribute;
 
@@ -50,7 +49,6 @@ import static com.mnubo.platform.android.sdk.Constants.OBJECT_MODEL;
 /**
  * A <code>SmartObject</code> on the Mnubo Platform, it belongs to a single {@link
  * com.mnubo.platform.android.sdk.models.users.User} and can be in different {@link
- * com.mnubo.platform.android.sdk.models.collections.Collection} <p/> It also has a list of {@link
  * com.mnubo.platform.android.sdk.models.common.Attribute}.
  * <p/>
  * The required fields for the <code>SmartObject</code> are: <ul> <li>deviceId</li> <li>owner :
@@ -83,8 +81,6 @@ public class SmartObject extends AbstractOwnable implements Serializable {
 
     private List<Attribute> attributes = new ArrayList<>();
 
-    private List<Collection> collections = new ArrayList<>();
-
     public SmartObject() {
     }
 
@@ -109,7 +105,6 @@ public class SmartObject extends AbstractOwnable implements Serializable {
         this.registrationDate = in.readString();
         this.registrationLocation = in.readParcelable(null);
         this.attributes = in.readArrayList(null);
-        this.collections = in.readArrayList(null);
     }
 
     public UUID getObjectId() {
@@ -160,27 +155,6 @@ public class SmartObject extends AbstractOwnable implements Serializable {
         this.attributes = attributes;
     }
 
-    public List<Collection> getCollections() {
-        return collections;
-    }
-
-    public void setCollections(List<Collection> collections) {
-        this.collections = collections;
-    }
-
-    public void addToCollectionsWithNaturalKey(final Collection collection) {
-
-        for (int index = 0; index < collections.size(); index++) {
-            if (collections.get(index).getNaturalKey() != null) {
-                if (collections.get(index).getNaturalKey().equals(collection.getNaturalKey())) {
-                    collections.set(index, collection);
-                    return;
-                }
-            }
-        }
-        collections.add(collection);
-    }
-
     public void setRegistrationLocationWithLocation(final Location location) {
 
         if (location == null) {
@@ -229,7 +203,6 @@ public class SmartObject extends AbstractOwnable implements Serializable {
                 ", registrationDate='" + registrationDate + '\'' +
                 ", registrationLocation=" + registrationLocation +
                 ", attributes=" + attributes +
-                ", collections=" + collections +
                 '}';
     }
 
@@ -241,8 +214,6 @@ public class SmartObject extends AbstractOwnable implements Serializable {
         SmartObject that = (SmartObject) o;
 
         if (attributes != null ? !attributes.equals(that.attributes) : that.attributes != null)
-            return false;
-        if (collections != null ? !collections.equals(that.collections) : that.collections != null)
             return false;
         if (deviceId != null ? !deviceId.equals(that.deviceId) : that.deviceId != null)
             return false;
@@ -269,7 +240,6 @@ public class SmartObject extends AbstractOwnable implements Serializable {
         result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
         result = 31 * result + (registrationLocation != null ? registrationLocation.hashCode() : 0);
         result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
-        result = 31 * result + (collections != null ? collections.hashCode() : 0);
         return result;
     }
 
@@ -291,7 +261,6 @@ public class SmartObject extends AbstractOwnable implements Serializable {
         dest.writeString(this.registrationDate);
         dest.writeParcelable(this.registrationLocation, flags);
         dest.writeList(this.attributes);
-        dest.writeList(this.collections);
 
     }
 

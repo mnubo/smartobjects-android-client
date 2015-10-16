@@ -37,8 +37,8 @@ import java.util.List;
 
 public class UserServiceImpl extends AbstractMnuboService implements UserService {
 
-    public UserServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.users, restTemplate);
+    public UserServiceImpl(String platformBaseUrl, RestTemplate restTemplate, String path) {
+        super(platformBaseUrl, PlatformPath.users, restTemplate, path);
     }
 
     @Override

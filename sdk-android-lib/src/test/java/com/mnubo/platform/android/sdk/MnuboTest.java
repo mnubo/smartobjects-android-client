@@ -55,7 +55,7 @@ public class MnuboTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInitNullKey() throws Exception {
 
         Mnubo.init(mockedContext, null, "secret", "hostname");
@@ -69,7 +69,7 @@ public class MnuboTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInitNullSecret() throws Exception {
 
         Mnubo.init(mockedContext, "key", null, "hostname");
@@ -83,7 +83,7 @@ public class MnuboTest {
 
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInitNullHostname() throws Exception {
 
         Mnubo.init(mockedContext, "key", "secret", null);

@@ -1,9 +1,0 @@
-<menu xmlns:tools="http://schemas.android.com/tools"
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      tools:context="com.mnubo.platform.android.demo.views.user.UserProfileActivity">
-      <item
-          android:id="@+id/action_about"
-          android:title="@string/action_about"
-          android:orderInCategory="100"
-          />
-</menu>

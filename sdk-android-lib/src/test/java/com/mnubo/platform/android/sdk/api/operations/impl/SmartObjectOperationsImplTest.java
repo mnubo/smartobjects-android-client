@@ -26,7 +26,6 @@ import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSampleOnPublicSensorTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.AddSamplesTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.CreateObjectTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects.DeleteObjectTask;
@@ -300,51 +299,6 @@ public class SmartObjectOperationsImplTest extends AbstractOperationsTest {
 
         verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), eq(mockedSuccessCallback));
 
-
-    }
-
-    @Test
-    public void testSyncAddSampleOnPublicSensor() throws Exception {
-        final SdkId objectId = SdkId.build("object-id", deviceid);
-        final Sample sample = new Sample();
-        final String sensorName = "sensorName";
-
-        final AddSampleOnPublicSensorTask mockedTask = mock(AddSampleOnPublicSensorTask.class);
-        when(mockedTask.executeSync(eq(mockedConnectionManager))).thenReturn(new MnuboResponse<>(true, null));
-        when(TaskFactory.newAddSamplesOnPublicSensorTask(eq(objectId), eq(sensorName), eq(sample))).thenReturn(mockedTask);
-
-        Boolean result = smartObjectOperations.addSampleOnPublicSensor(objectId, sensorName, sample).getResult();
-
-        assertEquals(true, result);
-        verify(mockedTask, only()).executeSync(eq(mockedConnectionManager));
-    }
-
-    @Test
-    public void testAsyncAddSampleOnPublicSensor() throws Exception {
-        final SdkId objectId = SdkId.build("object-id", deviceid);
-        final String sensorName = "sensorName";
-        final Sample sample = new Sample();
-
-        final AddSampleOnPublicSensorTask mockedTask = mock(AddSampleOnPublicSensorTask.class);
-        when(TaskFactory.newAddSamplesOnPublicSensorTask(eq(objectId), eq(sensorName), eq(sample))).thenReturn(mockedTask);
-
-        smartObjectOperations.addSampleOnPublicSensorAsync(objectId, sensorName, sample, null);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), isNull(CompletionCallBack.class));
-    }
-
-    @Test
-    public void testAsyncAddSampleOnPublicSensorWithCallback() throws Exception {
-        final SdkId objectId = SdkId.build("object-id", deviceid);
-        final String sensorName = "sensorName";
-        final Sample sample = new Sample();
-
-        final AddSampleOnPublicSensorTask mockedTask = mock(AddSampleOnPublicSensorTask.class);
-        when(TaskFactory.newAddSamplesOnPublicSensorTask(eq(objectId), eq(sensorName), eq(sample))).thenReturn(mockedTask);
-
-        smartObjectOperations.addSampleOnPublicSensorAsync(objectId, sensorName, sample, mockedSuccessCallback);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), eq(mockedSuccessCallback));
 
     }
 

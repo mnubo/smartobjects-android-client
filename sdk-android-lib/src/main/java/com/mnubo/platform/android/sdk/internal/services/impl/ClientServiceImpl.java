@@ -34,8 +34,8 @@ import org.springframework.web.client.RestTemplate;
 public class ClientServiceImpl extends AbstractMnuboService implements ClientService {
 
 
-    public ClientServiceImpl(String platformBaseUrl, RestTemplate restTemplate) {
-        super(platformBaseUrl, PlatformPath.users, restTemplate);
+    public ClientServiceImpl(String platformBaseUrl, RestTemplate restTemplate, String path) {
+        super(platformBaseUrl, PlatformPath.users, restTemplate, path);
     }
 
     @Override

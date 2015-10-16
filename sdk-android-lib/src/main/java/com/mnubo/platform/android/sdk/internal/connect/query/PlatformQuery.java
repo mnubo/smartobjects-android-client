@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.connect.query;
 
+import com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult;
 import com.mnubo.platform.android.sdk.models.common.IdType;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
 
@@ -33,14 +34,18 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static com.mnubo.platform.android.sdk.BuildConstants.PATH;
 import static com.mnubo.platform.android.sdk.Constants.DETAILS;
 import static com.mnubo.platform.android.sdk.Constants.FROM;
 import static com.mnubo.platform.android.sdk.Constants.ID_TYPE;
 import static com.mnubo.platform.android.sdk.Constants.LIMIT;
+import static com.mnubo.platform.android.sdk.Constants.ORDERING_RESULT;
 import static com.mnubo.platform.android.sdk.Constants.TO;
 import static com.mnubo.platform.android.sdk.Constants.UPDATE_IF_EXISTS;
 import static com.mnubo.platform.android.sdk.Constants.VALUE_TYPE;
@@ -48,7 +53,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
 public class PlatformQuery {
 
-    private final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+    private final List<String> queryParams = new ArrayList<>();
 
     private final List<String> uriVariables = new ArrayList<>();
 
@@ -60,17 +65,13 @@ public class PlatformQuery {
 
     private Object body;
 
-    public PlatformQuery(String platformBaseUrl, PlatformPath platformPath) {
-        this(platformBaseUrl, PATH, platformPath);
-    }
-
-    public PlatformQuery(String platformBaseUrl, String rootPath, PlatformPath platformPath) {
+    public PlatformQuery(String platformBaseUrl, String path, PlatformPath platformPath) {
         Validate.notBlank(platformBaseUrl, "Platform base url cannot be null or empty.");
-        Validate.notBlank(rootPath, "Platform base url cannot be null or empty.");
+        Validate.notBlank(path, "Platform base url cannot be null or empty.");
         Validate.notNull(platformPath, "Platform path cannot be null.");
 
         this.platformPath = platformPath;
-        this.platformBaseUrl = platformBaseUrl + rootPath;
+        this.platformBaseUrl = platformBaseUrl + path;
     }
 
     public void setUri(String uri, String... uriVariables) {
@@ -101,8 +102,14 @@ public class PlatformQuery {
     }
 
     public PlatformQuery timeRange(String from, String to) {
+
         queryParam(FROM, from);
         queryParam(TO, to);
+        return this;
+    }
+
+    public PlatformQuery ordering(SampleOrderResult order) {
+        queryParam(ORDERING_RESULT, order.toString());
         return this;
     }
 
@@ -115,23 +122,23 @@ public class PlatformQuery {
     }
 
     public PlatformQuery updateIfExists(boolean updateIfExists) {
-        queryParams.set(UPDATE_IF_EXISTS, String.valueOf(updateIfExists));
+        queryParam(UPDATE_IF_EXISTS, String.valueOf(updateIfExists));
         return this;
     }
 
     public PlatformQuery queryParam(String key, Object value) {
         if (StringUtils.isNotBlank(key) && value != null) {
-            this.queryParams.add(key, value.toString());
+            this.queryParams.add(key + "=" + value.toString());
         }
-
         return this;
     }
 
     public PlatformQuery queryParams(String key, List<String> values) {
-        if (StringUtils.isNotBlank(key) && !CollectionUtils.isEmpty(values)) {
-            this.queryParams.put(key, values);
+        if (StringUtils.isNotBlank(key) && values != null) {
+            for (String value :values ) {
+                queryParam( key, value);
+            }
         }
-
         return this;
     }
 
@@ -140,9 +147,8 @@ public class PlatformQuery {
         return this;
     }
 
-
     public String buildUrl() {
-        return URIBuilder.fromUri(this.build()).queryParams(this.queryParams).build().toString();
+        return addqueryParamsToUri(URIBuilder.fromUri(this.build()).build().toString());
     }
 
     String build() {
@@ -156,6 +162,17 @@ public class PlatformQuery {
 
     Object[] getUriVariables() {
         return uriVariables.toArray();
+    }
+
+    private String addqueryParamsToUri( String uri ) {
+
+        if( queryParams.size() > 0 ) {
+
+            String params = StringUtils.join(queryParams, "&");
+            return uri + "?" + params;
+        }
+        return uri;
+
     }
 
     public Object getBody() {

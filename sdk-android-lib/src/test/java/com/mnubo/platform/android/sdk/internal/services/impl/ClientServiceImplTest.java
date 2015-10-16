@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.services.impl;
 
+import com.mnubo.platform.android.sdk.Config.MnuboSDKConfig;
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 import com.mnubo.platform.android.sdk.internal.services.ClientService;
 import com.mnubo.platform.android.sdk.models.security.ResetPassword;
@@ -31,6 +32,7 @@ import com.mnubo.platform.android.sdk.models.users.User;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.mnubo.platform.android.sdk.Config.MnuboSDKConfig.DEFAULT_BASE_PATH;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
@@ -44,7 +46,7 @@ public class ClientServiceImplTest extends AbstractServicesTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        this.mnuboUserApi = new MnuboSDKApiImpl(CLIENT_ACCESS_TOKEN, PLATFORM_BASE_URL);
+        this.mnuboUserApi = new MnuboSDKApiImpl(CLIENT_ACCESS_TOKEN, PLATFORM_BASE_URL, DEFAULT_BASE_PATH);
         setUpMockServer();
 
         clientService = mnuboUserApi.clientService();
