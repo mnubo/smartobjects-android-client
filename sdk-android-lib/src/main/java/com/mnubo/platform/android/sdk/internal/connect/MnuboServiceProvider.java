@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.connect;
 
+import com.mnubo.platform.android.sdk.Config.MnuboSDKConfig;
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 
@@ -32,15 +33,18 @@ class MnuboServiceProvider extends AbstractOAuth2ServiceProvider<MnuboSDKApi> {
 
     private final String platformBaseUrl;
 
-    public MnuboServiceProvider(String platformBaseUrl, String consumerKey, String consumerSecret,
+    private final String path;
+
+    public MnuboServiceProvider(String platformBaseUrl, MnuboSDKConfig config,
                                 String authorizeUrl, String accessTokenUrl) {
-        super(new MnuboOAuth2Template(consumerKey, consumerSecret,
-                authorizeUrl, accessTokenUrl));
+        super(new MnuboOAuth2Template(config.getSecurityConsumerKey(), config.getSecurityConsumerSecret(),
+                                      authorizeUrl, accessTokenUrl));
         this.platformBaseUrl = platformBaseUrl;
+        this.path = config.getBasePath();
     }
 
     public MnuboSDKApi getApi(String accessToken) {
-        return new MnuboSDKApiImpl(accessToken, platformBaseUrl);
+        return new MnuboSDKApiImpl(accessToken, platformBaseUrl, path);
     }
 
 }

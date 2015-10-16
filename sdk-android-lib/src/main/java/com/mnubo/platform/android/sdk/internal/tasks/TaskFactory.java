@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks;
 
+import com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.authentication.LogInTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmPasswordResetTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.client.ConfirmUserCreationTask;
@@ -80,6 +81,16 @@ public class TaskFactory {
 
     public static Task<Samples> newSearchSamplesTask(SdkId objectId, String sensorName) {
         return new SearchSamplesTask(objectId, sensorName);
+    }
+
+    public static Task<Samples> newSearchSamplesTask(SdkId objectId, String sensorName, int limit,
+                                                     SampleOrderResult order) {
+        return new SearchSamplesTask(objectId, sensorName, limit, order);
+    }
+
+    public static Task<Samples> newSearchSamplesTask(SdkId objectId, String sensorName, String from,
+                                                     String to, int limit, SampleOrderResult order) {
+        return new SearchSamplesTask(objectId, sensorName, from, to, limit, order);
     }
 
     public static Task<Boolean> newAddSamplesTask(SdkId objectId, Samples samples) {

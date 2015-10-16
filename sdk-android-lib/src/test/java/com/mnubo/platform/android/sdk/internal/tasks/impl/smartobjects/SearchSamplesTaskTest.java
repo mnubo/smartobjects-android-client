@@ -22,13 +22,16 @@
 
 package com.mnubo.platform.android.sdk.internal.tasks.impl.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.AbstractTaskTest;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
+import com.mnubo.platform.android.sdk.models.common.ValueType;
 
 import org.junit.Test;
 
 import static com.mnubo.platform.android.sdk.models.common.IdType.deviceid;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.verify;
 
 public class SearchSamplesTaskTest extends AbstractTaskTest {
@@ -41,6 +44,8 @@ public class SearchSamplesTaskTest extends AbstractTaskTest {
 
         searchSamplesTask.executeMnuboCall(connectionManager);
 
-        verify(smartObjectService).searchSamples(eq(id), eq(sensorName));
+        verify(smartObjectService).searchSamples(eq(id), eq(sensorName), eq(ValueType.samples),
+                                                 isNull(String.class), isNull(String.class), eq(0),
+                                                 eq(SampleOrderResult.ASC));
     }
 }

@@ -1,9 +1,0 @@
-<resources>
-    <string name="lbl_phone_model">Phone model : </string>
-    <string name="btn_update_phone">Update phone</string>
-    <string name="btn_create_phone">Create phone</string>
-    <string name="btn_post_install_event">Install Event</string>
-    <string name="btn_post_launched_event">Launch Event</string>
-
-    <string name="btn_retry_failed_events">Retry failed events</string>
-</resources>

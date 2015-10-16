@@ -25,6 +25,7 @@ package com.mnubo.platform.android.sdk.api.operations.impl;
 import com.mnubo.platform.android.sdk.api.operations.SmartObjectOperations;
 import com.mnubo.platform.android.sdk.api.services.buffer.MnuboBufferService;
 import com.mnubo.platform.android.sdk.internal.connect.connection.MnuboConnectionManager;
+import com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.Task;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -33,7 +34,6 @@ import com.mnubo.platform.android.sdk.models.smartobjects.samples.Sample;
 import com.mnubo.platform.android.sdk.models.smartobjects.samples.Samples;
 
 import static com.mnubo.platform.android.sdk.api.MnuboApi.CompletionCallBack;
-import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesOnPublicSensorTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newAddSamplesTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newCreateObjectTask;
 import static com.mnubo.platform.android.sdk.internal.tasks.TaskFactory.newDeleteObjectTask;
@@ -107,6 +107,27 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
      * {@inheritDoc}
      */
     @Override
+    public MnuboResponse<Samples> searchSamples(SdkId id, String sensorName, String from, String to,
+                                                int limit, SampleOrderResult order) {
+        final Task<Samples> task = newSearchSamplesTask(id, sensorName, from, to, limit, order);
+        return task.executeSync(mnuboConnectionManager);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void searchSamplesAsync(final SdkId id, final String sensorName, String from, String to,
+                                   int limit, SampleOrderResult order,
+                                   final CompletionCallBack<Samples> completionCallBack) {
+        final Task<Samples> task = newSearchSamplesTask(id, sensorName, from, to, limit, order);
+        task.executeAsync(mnuboConnectionManager, completionCallBack);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MnuboResponse<Boolean> addSamples(SdkId id, Samples samples) {
         final Task<Boolean> task = newAddSamplesTask(id, samples);
         final MnuboResponse<Boolean> result;
@@ -149,24 +170,6 @@ public class SmartObjectOperationsImpl extends AbstractMnuboOperations implement
         final Samples samples = new Samples();
         samples.addSample(sample);
         addSamplesAsync(id, samples, completionCallBack);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId id, String sensorName, Sample sample) {
-        final Task<Boolean> task = newAddSamplesOnPublicSensorTask(id, sensorName, sample);
-        return task.executeSync(mnuboConnectionManager);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addSampleOnPublicSensorAsync(SdkId id, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack) {
-        final Task<Boolean> task = newAddSamplesOnPublicSensorTask(id, sensorName, sample);
-        task.executeAsync(mnuboConnectionManager, completionCallBack);
     }
 
     @Override

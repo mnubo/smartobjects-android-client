@@ -1,1 +1,1 @@
-include 'sdk-android-lib', 'sdk-android-demo'
+include 'sdk-android-lib'

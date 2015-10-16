@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.services.impl;
 
+import com.mnubo.platform.android.sdk.Config.MnuboSDKConfig;
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApiImpl;
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
@@ -38,6 +39,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static com.mnubo.platform.android.sdk.Config.MnuboSDKConfig.DEFAULT_BASE_PATH;
+import static com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult.DESC;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -55,7 +58,7 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        this.mnuboUserApi = new MnuboSDKApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL);
+        this.mnuboUserApi = new MnuboSDKApiImpl(USER_ACCESS_TOKEN, PLATFORM_BASE_URL, DEFAULT_BASE_PATH);
         setUpMockServer();
 
         smartObjectService = mnuboUserApi.objectService();
@@ -170,7 +173,7 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
     public void getObjectSamples() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&order=ASC")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
@@ -180,10 +183,23 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
     }
 
     @Test
+    public void getObjectSamplesWithOrderAndLimit() throws Exception {
+        final Samples expectedSamples = new Samples();
+
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&limit=11&order=DESC")))
+                .andExpect(method(GET))
+                .andExpect(userAuthMatch())
+                .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
+
+        Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", 11, DESC);
+        mockServiceServer.verify();
+    }
+
+    @Test
     public void getObjectSamplesWithValueType() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&order=ASC")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
@@ -196,7 +212,7 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
     public void getObjectSamplesWithValueTypeWithTimeRange() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&order=ASC")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
@@ -209,12 +225,25 @@ public class ObjectServiceImplTest extends AbstractServicesTest {
     public void getObjectSamplesWithValueTypeWithTimeRangeAndLimit() throws Exception {
         final Samples expectedSamples = new Samples();
 
-        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&limit=10")))
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&limit=10&order=ASC")))
                 .andExpect(method(GET))
                 .andExpect(userAuthMatch())
                 .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
 
         Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last, "from", "to", 10);
+        mockServiceServer.verify();
+    }
+
+    @Test
+    public void getObjectSamplesWithValueTypeWithTimeRangeAndLimitAndOrder() throws Exception {
+        final Samples expectedSamples = new Samples();
+
+        mockServiceServer.expect(requestTo(expectedUrl("/objects/objectid/sensors/sensorName/samples?id_type=objectid&value=last&from=from&to=to&limit=10&order=DESC")))
+                .andExpect(method(GET))
+                .andExpect(userAuthMatch())
+                .andRespond(withSuccess(toJson(expectedSamples), APPLICATION_JSON_UTF8));
+
+        Samples samples = smartObjectService.searchSamples(SdkId.valueOf("objectid"), "sensorName", ValueType.last, "from", "to", 10, DESC);
         mockServiceServer.verify();
     }
 

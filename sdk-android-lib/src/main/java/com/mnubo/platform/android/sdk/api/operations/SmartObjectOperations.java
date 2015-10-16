@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.api.operations;
 
+import com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
@@ -106,6 +107,43 @@ public interface SmartObjectOperations {
     void searchSamplesAsync(SdkId id, String sensorName, CompletionCallBack<Samples> completionCallBack);
 
     /**
+     * This function will fetch all of the samples recorded for a specific object's sensor, according
+     * to the date range, adding a limit of sample shown and ordering result expected ASC or DESC.
+     * <p/>
+     * Called url = GET : /objects/{id}/sensors/{sensorname}/samples
+     *
+     * @param id         SdkId built with a device_id or an object_id
+     * @param sensorName the name of the sensor the <code>Samples</code> will be fetched from. that
+     *                   sensor must belong to the object matching the <code>id</code>
+     * @param from       Beginning date range.
+     * @param to         Ending date range.
+     * @param limit      Number of samples expected.
+     * @param order      Ordering expected, ASC or DESC.
+     */
+    MnuboResponse<Samples> searchSamples(SdkId id, String sensorName, String from, String to,
+                                         int limit, SampleOrderResult order);
+
+    /**
+     * This function will fetch all of the samples recorded for a specific object's sensor, according
+     * to the date range, adding a limit of sample shown and ordering result expected ASC or DESC.
+     * The result will be available through the given callback.
+     * <p/>
+     * Called url = GET : /objects/{id}/sensors/{sensorname}/samples
+     *
+     * @param id                 SdkId built with a device_id or an object_id
+     * @param sensorName         the name of the sensor the <code>Samples</code> will be fetched
+     *                           from. that sensor must belong to the object matching the
+     *                           <code>id</code>
+     * @param from               Beginning date range.
+     * @param to                 Ending date range.
+     * @param limit              Number of samples expected.
+     * @param order              Ordering expected, ASC or DESC.
+     * @param completionCallBack The callback that will be executed on completion of the request
+     */
+    void searchSamplesAsync(SdkId id, String sensorName, String from, String to, int limit,
+                            SampleOrderResult order, CompletionCallBack<Samples> completionCallBack);
+
+    /**
      * This function will add samples data to the specified object's sensor synchronously. This
      * function supports offline data store if the request fails.
      * <p/>
@@ -152,35 +190,6 @@ public interface SmartObjectOperations {
      * @param completionCallBack the callback that will be executed on completion of the request
      */
     void addSampleAsync(SdkId id, Sample sample, CompletionCallBack<Boolean> completionCallBack);
-
-    /**
-     * This function allows you to add one sample data to a publicly available object's sensor
-     * synchronously. This function supports offline data store if the request fails.
-     * <p/>
-     * Called url = POST : /objects/{id}/sensors/{sensorName}/sample
-     *
-     * @param id         SdkId built with a device_id or an object_id
-     * @param sensorName the name of the sensor the <code>Samples</code> will be fetched from. that
-     *                   sensor must belong to the object matching the <code>id</code>
-     * @param sample     the <code>Sample</code> to be added
-     */
-    MnuboResponse<Boolean> addSampleOnPublicSensor(SdkId id, String sensorName, Sample sample);
-
-    /**
-     * This function allows you to add one sample data to a publicly available object's sensor
-     * asynchronously. This function supports offline data store if the request fails. The result
-     * will be available through the given callback.
-     * <p/>
-     * Called url = POST : /objects/{id}/sensors/{sensorName}/sample
-     *
-     * @param id                 SdkId built with a device_id or an object_id
-     * @param sensorName         the name of the sensor the <code>Samples</code> will be fetched
-     *                           from. that sensor must belong to the object matching the
-     *                           <code>id</code>
-     * @param sample             the <code>Sample</code> to be added
-     * @param completionCallBack the callback that will be executed on completion of the request
-     */
-    void addSampleOnPublicSensorAsync(SdkId id, String sensorName, Sample sample, CompletionCallBack<Boolean> completionCallBack);
 
     /**
      * This function allows you to add an object in the mnubo platform.

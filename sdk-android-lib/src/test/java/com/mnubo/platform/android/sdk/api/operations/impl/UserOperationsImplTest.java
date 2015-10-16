@@ -25,12 +25,10 @@ import com.mnubo.platform.android.sdk.api.operations.AbstractOperationsTest;
 import com.mnubo.platform.android.sdk.internal.services.UserService;
 import com.mnubo.platform.android.sdk.internal.tasks.MnuboResponse;
 import com.mnubo.platform.android.sdk.internal.tasks.TaskFactory;
-import com.mnubo.platform.android.sdk.internal.tasks.impl.user.FindUserObjectsTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.user.GetUserTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdatePasswordTask;
 import com.mnubo.platform.android.sdk.internal.tasks.impl.user.UpdateUserTask;
 import com.mnubo.platform.android.sdk.models.security.UpdatePassword;
-import com.mnubo.platform.android.sdk.models.smartobjects.SmartObjects;
 import com.mnubo.platform.android.sdk.models.users.User;
 
 import org.junit.Before;
@@ -53,9 +51,6 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
     private final UserService mockedUserService = mock(UserService.class);
 
     @SuppressWarnings("unchecked")
-    private final CompletionCallBack<SmartObjects> mockedSmartObjectsCallback = mock(CompletionCallBack.class);
-
-    @SuppressWarnings("unchecked")
     private final CompletionCallBack<User> mockedUserCallback = mock(CompletionCallBack.class);
 
     @SuppressWarnings("unchecked")
@@ -67,136 +62,6 @@ public class UserOperationsImplTest extends AbstractOperationsTest {
         super.setUp();
 
         when(mockedMnuboSDKApi.userService()).thenReturn(mockedUserService);
-    }
-
-    @Test
-    public void testSyncFindUserObjects() throws Exception {
-        final String username = "username";
-        final SmartObjects expectedResult = new SmartObjects();
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(mockedTask.executeSync(eq(mockedConnectionManager))).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(false), isNull(String.class))).thenReturn(mockedTask);
-
-        final SmartObjects result = userOperations.findUserObjects(username, false, null).getResult();
-
-        assertEquals(expectedResult, result);
-        verify(mockedTask, only()).executeSync(eq(mockedConnectionManager));
-
-    }
-
-    @Test
-    public void testAsyncFindUserObjects() throws Exception {
-        final String username = "username";
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(false), isNull(String.class))).thenReturn(mockedTask);
-
-        userOperations.findUserObjectsAsync(username, false, null, null);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), isNull(CompletionCallBack.class));
-
-
-    }
-
-    @Test
-    public void testAsyncFindUserObjectsWithCallback() throws Exception {
-        final String username = "username";
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(false), isNull(String.class))).thenReturn(mockedTask);
-
-        userOperations.findUserObjectsAsync(username, false, null, mockedSmartObjectsCallback);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), eq(mockedSmartObjectsCallback));
-
-
-    }
-
-    @Test
-    public void testSyncFindUserObjectsDetails() throws Exception {
-        final String username = "username";
-        final SmartObjects expectedResult = new SmartObjects();
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(mockedTask.executeSync(eq(mockedConnectionManager))).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(true), isNull(String.class))).thenReturn(mockedTask);
-
-        final SmartObjects result = userOperations.findUserObjects(username, true, null).getResult();
-
-        assertEquals(expectedResult, result);
-        verify(mockedTask, only()).executeSync(eq(mockedConnectionManager));
-
-    }
-
-    @Test
-    public void testAsyncFindUserObjectsDetails() throws Exception {
-        final String username = "username";
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(true), isNull(String.class))).thenReturn(mockedTask);
-
-        userOperations.findUserObjectsAsync(username, true, null, null);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), isNull(CompletionCallBack.class));
-    }
-
-    @Test
-    public void testAsyncFindUserObjectsDetailsWithCallback() throws Exception {
-        final String username = "username";
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(true), isNull(String.class))).thenReturn(mockedTask);
-
-        userOperations.findUserObjectsAsync(username, true, null, mockedSmartObjectsCallback);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), eq(mockedSmartObjectsCallback));
-
-    }
-
-    @Test
-    public void testSyncFindUserObjectsDetailsAndObjectModel() throws Exception {
-        final String username = "username";
-        final String objectModelName = "objectModelName";
-
-        final SmartObjects expectedResult = new SmartObjects();
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(mockedTask.executeSync(eq(mockedConnectionManager))).thenReturn(new MnuboResponse<>(expectedResult, null));
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(true), eq(objectModelName))).thenReturn(mockedTask);
-
-        final SmartObjects result = userOperations.findUserObjects(username, true, objectModelName).getResult();
-
-        assertEquals(expectedResult, result);
-        verify(mockedTask, only()).executeSync(eq(mockedConnectionManager));
-
-    }
-
-    @Test
-    public void testAsyncFindUserObjectsDetailsAndObjectModel() throws Exception {
-        final String username = "username";
-        final String objectModelName = "objectModelName";
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(true), eq(objectModelName))).thenReturn(mockedTask);
-
-        userOperations.findUserObjectsAsync(username, true, objectModelName, null);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), isNull(CompletionCallBack.class));
-
-    }
-
-    @Test
-    public void testAsyncFindUserObjectsDetailsAndObjectModelWithCallback() throws Exception {
-        final String username = "username";
-        final String objectModelName = "objectModelName";
-
-        final FindUserObjectsTask mockedTask = mock(FindUserObjectsTask.class);
-        when(TaskFactory.newFindUserObjectsTask(eq(username), eq(true), eq(objectModelName))).thenReturn(mockedTask);
-
-        userOperations.findUserObjectsAsync(username, true, objectModelName, mockedSmartObjectsCallback);
-
-        verify(mockedTask, only()).executeAsync(eq(mockedConnectionManager), eq(mockedSmartObjectsCallback));
     }
 
     @Test

@@ -36,10 +36,14 @@ class AbstractMnuboService {
 
     private final RestTemplate restTemplate;
 
-    AbstractMnuboService(String platformBaseUrl, PlatformPath platformPath, RestTemplate restTemplate) {
+    private final String path;
+
+    AbstractMnuboService(String platformBaseUrl, PlatformPath platformPath, RestTemplate restTemplate,
+                         String path) {
         this.platformBaseUrl = platformBaseUrl;
         this.platformPath = platformPath;
         this.restTemplate = restTemplate;
+        this.path = path;
     }
 
     String getPlatformBaseUrl() {
@@ -47,7 +51,7 @@ class AbstractMnuboService {
     }
 
     PlatformQuery getQuery() {
-        return new PlatformQuery(this.getPlatformBaseUrl(), this.platformPath);
+        return new PlatformQuery(this.getPlatformBaseUrl(), this.path, this.platformPath);
     }
 
     RestTemplate getRestTemplate() {

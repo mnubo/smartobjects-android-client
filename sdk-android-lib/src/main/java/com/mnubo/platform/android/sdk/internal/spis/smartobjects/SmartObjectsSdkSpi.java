@@ -22,6 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.spis.smartobjects;
 
+import com.mnubo.platform.android.sdk.internal.services.impl.SampleOrderResult;
 import com.mnubo.platform.android.sdk.models.common.SdkId;
 import com.mnubo.platform.android.sdk.models.common.ValueType;
 import com.mnubo.platform.android.sdk.models.smartobjects.SmartObject;
@@ -44,6 +45,9 @@ public interface SmartObjectsSdkSpi {
 
     Samples searchSamples(SdkId objectId, String sensorName);
 
+    Samples searchSamples(SdkId objectId, String sensorName, int resultSizeLimit,
+                          SampleOrderResult order);
+
     Samples searchSamples(SdkId objectId, String sensorName, ValueType value);
 
     Samples searchSamples(SdkId objectId, String sensorName, ValueType value,
@@ -51,6 +55,9 @@ public interface SmartObjectsSdkSpi {
 
     Samples searchSamples(SdkId objectId, String sensorName, ValueType value,
                           String from, String to, int resultSizeLimit);
+
+    Samples searchSamples(SdkId objectId, String sensorName, ValueType value,
+                          String from, String to, int resultSizeLimit, SampleOrderResult order);
 
     void addSamples(SdkId objectId, Samples samples);
 

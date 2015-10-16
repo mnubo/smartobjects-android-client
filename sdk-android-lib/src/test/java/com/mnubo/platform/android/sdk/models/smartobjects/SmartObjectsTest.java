@@ -26,7 +26,6 @@ import android.location.Location;
 import android.os.Parcel;
 
 import com.mnubo.platform.android.sdk.mocks.MockParcel;
-import com.mnubo.platform.android.sdk.models.collections.Collection;
 
 import org.junit.Test;
 
@@ -53,7 +52,6 @@ public class SmartObjectsTest {
         smartObject.setAttribute("test", "test");
         Location location = mock(Location.class);
         smartObject.setRegistrationLocationWithLocation(location);
-        smartObject.getCollections().add(new Collection());
 
         SmartObjects smartObjects = new SmartObjects();
         smartObjects.addObject(smartObject);

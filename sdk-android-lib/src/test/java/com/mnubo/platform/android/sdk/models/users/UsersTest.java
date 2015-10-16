@@ -25,9 +25,7 @@ package com.mnubo.platform.android.sdk.models.users;
 import android.os.Parcel;
 
 import com.mnubo.platform.android.sdk.mocks.MockParcel;
-import com.mnubo.platform.android.sdk.models.collections.Collection;
 import com.mnubo.platform.android.sdk.models.common.Attribute;
-import com.mnubo.platform.android.sdk.models.groups.Group;
 
 import org.junit.Test;
 
@@ -61,14 +59,6 @@ public class UsersTest {
         final ArrayList<Attribute> attributes = new ArrayList<>();
         attributes.add(new Attribute("name", "value"));
         user.setAttributes(attributes);
-
-        final ArrayList<Collection> collections = new ArrayList<>();
-        collections.add(new Collection());
-        user.setCollections(collections);
-
-        final ArrayList<Group> groups = new ArrayList<>();
-        groups.add(new Group());
-        user.setGroups(groups);
 
         users.addUser(user);
 

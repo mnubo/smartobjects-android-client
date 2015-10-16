@@ -22,7 +22,7 @@
 
 package com.mnubo.platform.android.sdk.internal.connect;
 
-import com.mnubo.platform.android.sdk.BuildConstants;
+import com.mnubo.platform.android.sdk.Config.MnuboSDKConfig;
 import com.mnubo.platform.android.sdk.internal.api.MnuboSDKApi;
 
 import org.springframework.social.connect.support.OAuth2ConnectionFactory;
@@ -30,12 +30,11 @@ import org.springframework.social.connect.support.OAuth2ConnectionFactory;
 public class MnuboConnectionFactory extends OAuth2ConnectionFactory<MnuboSDKApi> {
 
 
-    public MnuboConnectionFactory(String platformBaseUrl, String consumerKey, String consumerSecret,
+    public MnuboConnectionFactory(String platformBaseUrl, MnuboSDKConfig config,
                                   String authorizeUrl, String accessTokenUrl) {
-        super(BuildConstants.MNUBO_PROVIDER,
-                new MnuboServiceProvider(platformBaseUrl, consumerKey, consumerSecret,
-                        authorizeUrl, accessTokenUrl),
-                new MnuboAdapter());
+        super(config.getMnuboProvider(), new MnuboServiceProvider(platformBaseUrl, config,
+                                                                  authorizeUrl, accessTokenUrl),
+                                         new MnuboAdapter());
     }
 
 }

@@ -24,8 +24,6 @@ package com.mnubo.platform.android.sdk.internal.api;
 
 
 import com.mnubo.platform.android.sdk.internal.services.ClientService;
-import com.mnubo.platform.android.sdk.internal.services.CollectionService;
-import com.mnubo.platform.android.sdk.internal.services.GroupService;
 import com.mnubo.platform.android.sdk.internal.services.SmartObjectService;
 import com.mnubo.platform.android.sdk.internal.services.UserService;
 
@@ -33,10 +31,6 @@ public interface MnuboSDKApi {
     UserService userService();
 
     SmartObjectService objectService();
-
-    GroupService groupService();
-
-    CollectionService collectionService();
 
     ClientService clientService();
 }

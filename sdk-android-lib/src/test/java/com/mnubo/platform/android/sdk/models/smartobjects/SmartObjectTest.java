@@ -27,7 +27,6 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.mnubo.platform.android.sdk.mocks.MockParcel;
-import com.mnubo.platform.android.sdk.models.collections.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +83,6 @@ public class SmartObjectTest {
         smartObject.setAttribute("test", "test");
         Location location = mock(Location.class);
         smartObject.setRegistrationLocationWithLocation(location);
-        smartObject.getCollections().add(new Collection());
 
         Parcel parcel = MockParcel.obtain();
         smartObject.writeToParcel(parcel, 0);
