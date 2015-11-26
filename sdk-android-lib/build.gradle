@@ -57,6 +57,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    provided 'org.projectlombok:lombok:1.16.6'
+
     compile "org.apache.httpcomponents:httpclient-android:$HTTP_CLIENT_ANDROID"
 
     compile "org.springframework.android:spring-android-rest-template:$SPRING_ANDROID_VERSION"
