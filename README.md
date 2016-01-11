@@ -1,15 +1,49 @@
-# mnubo Android SDK #
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android)
+# mnubo Android SDK
+
+Table of Content
+================
+ 
+[1. Introduction](#section1)
+
+[2. Architecture](#section2) 
+
+[3. Pre-requisites](#section3)
+
+[4. Installation & Configuration](#section4) 
+
+[5. Usage](#section5)
+
+[6. Important notes](#section6) 
+
+[7. Source code](#section7)
+
+[8. Known limitations](#section8)
+
+[9. References](#section9)
+
+---
+#<a name="section1"></a>1. Introduction
 
 This SDK provides you with a wrapper to use the mnubo's service easily from your Android application.
 Basically this SDK sets up a connection with the mnubo API and ensure oAuth2 headers are present in
 your calls to it.
 
-## Artifacts ##
-Sources, Javadoc and the library itself are located
-[here](http://search.maven.org/#search|gav|1|g%3A%22com.mnubo%22%20AND%20a%3A%22sdk-android%22).
+---
+#<a name="section3"></a>2. Architecture
 
-## Geting started ##
+To use the mnubo's SDK, you must have a `MnuboApi` object. The `MnuboApi` is used to perform all
+the operations. 
+
+---
+#<a name="section3"></a>3. Prerequisites
+
+- Maven
+- Android OS
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android)
+
+---
+#<a name="section4"></a>4. Installation & Configuration
 
 The library can be picked up from Github or MavenCentral. Add the aar to your project dependencies
 or add this Gradle dependency to your build file :
@@ -54,6 +88,32 @@ public void onCreate() {
                 "mycompany.api.mnubo.com");
 }
 ```
+
+## How to open this project ##
+This project can be opened with Android Studio or Eclipse (Note : Eclipse is not an Android supported IDE anymore). New Android build system is based on Gradle, so you'll need that too.
+
+ 1. Download and install [Android Studio](http://developer.android.com/sdk/index.html)
+ 2. Download and install Gradle
+ 3. Clone this repo
+ 4. Start Android Studio
+ 5. Open the project
+   1. File -> Open
+   2. Go to the cloned repository and select the build.gradle file in the top directory
+   3. Keep the default options (Use gradle wrapper)
+   4. Android Studio should detect an existing project, and ask you what do to about it. Select "Open existing project"
+
+## Gradle properties ##
+If you intent to build the SDK from the sources, the build.gradle files will require various
+properties that are used for publishing. To remove these requirements, get rid of the following
+line in the `sdk-android-lib/gradle.build` file :
+
+```
+apply from: 'gradle/gradle-mvn-push.gradle'
+```
+
+
+---
+#<a name="section5"></a>5. Usage
 
 ## Key and secret ##
 The _CONSUMER\_KEY_ and _CONSUMER\_SECRET_ are provided to you by mnubo. The pair (key/secret) has a
@@ -175,27 +235,28 @@ mnuboApi.getUserOperations().findUserObjectsAsync(username, new CompletionCallBa
 There is an application demo [here](sdk-android-demo/) that you can look at for example on
 how to use the SDK.
 
+---
+#<a name="section6"></a>6. Important notes
+
+N/A
+
+---
+#<a name="section7"></a>7. Source code
+
+Sources, Javadoc and the library itself are located
+[here](http://search.maven.org/#search|gav|1|g%3A%22com.mnubo%22%20AND%20a%3A%22sdk-android%22).
+
+https://github.com/mnubo/mnubo-Android-SDK
+
+---
+#<a name="section8"></a>8. Known limitations
+
+N/A
+
+---
+#<a name="section9"></a>9. References
+
 ## Documentation ##
 Extensive documentation is available in the generated Javadoc.
 
-## How to open this project ##
-This project can be opened with Android Studio or Eclipse (Note : Eclipse is not an Android supported IDE anymore). New Android build system is based on Gradle, so you'll need that too.
-
- 1. Download and install [Android Studio](http://developer.android.com/sdk/index.html)
- 2. Download and install Gradle
- 3. Clone this repo
- 4. Start Android Studio
- 5. Open the project
-   1. File -> Open
-   2. Go to the cloned repository and select the build.gradle file in the top directory
-   3. Keep the default options (Use gradle wrapper)
-   4. Android Studio should detect an existing project, and ask you what do to about it. Select "Open existing project"
-
-## Gradle properties ##
-If you intent to build the SDK from the sources, the build.gradle files will require various
-properties that are used for publishing. To remove these requirements, get rid of the following
-line in the `sdk-android-lib/gradle.build` file :
-
-```
-apply from: 'gradle/gradle-mvn-push.gradle'
-```
+http://developer.android.com/sdk/index.html
