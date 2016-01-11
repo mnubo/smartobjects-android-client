@@ -256,7 +256,6 @@ N/A
 ---
 #<a name="section9"></a>9. References
 
-## Documentation ##
 Extensive documentation is available in the generated Javadoc.
 
 [android SDK](http://developer.android.com/sdk/index.html)
