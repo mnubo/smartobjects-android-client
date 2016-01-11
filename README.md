@@ -259,4 +259,4 @@ N/A
 ## Documentation ##
 Extensive documentation is available in the generated Javadoc.
 
-http://developer.android.com/sdk/index.html
+[android SDK](http://developer.android.com/sdk/index.html)
