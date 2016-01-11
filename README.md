@@ -246,7 +246,7 @@ N/A
 Sources, Javadoc and the library itself are located
 [here](http://search.maven.org/#search|gav|1|g%3A%22com.mnubo%22%20AND%20a%3A%22sdk-android%22).
 
-[android SDK on git](https://github.com/mnubo/mnubo-Android-SDK)
+[android SDK on git](https://github.com/mnubo/mnubo-android-sdk)
 
 ---
 #<a name="section8"></a>8. Known limitations
