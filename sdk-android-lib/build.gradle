@@ -1,10 +1,7 @@
 apply plugin: 'com.android.library'
 
-def publishConfig = USE_LOCAL_FLAVOR == "true" ? "localRelease" : "productionRelease"
-
-task testTmp << {
-    println publishConfig
-}
+group = GROUP
+version = VERSION_NAME
 
 android {
     compileSdkVersion 22
@@ -14,32 +11,6 @@ android {
         targetSdkVersion 22
         versionCode = VERSION_CODE
         versionName = getVersionName()
-    }
-
-    defaultPublishConfig publishConfig
-
-    productFlavors {
-        local
-        production
-    }
-
-    sourceSets {
-        main.setRoot('src/main')
-        androidTest.setRoot('src/test')
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE' //jackson
-        exclude 'META-INF/LICENSE' //jackson
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/ASL2.0'
     }
 
     compileOptions {
@@ -53,37 +24,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     provided 'org.projectlombok:lombok:1.16.6'
+    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.1.2'
 
-    compile "org.apache.httpcomponents:httpclient-android:$HTTP_CLIENT_ANDROID"
+    compile 'joda-time:joda-time:2.9.1'
+    compile 'com.google.guava:guava:18.0'
 
-    compile "org.springframework.android:spring-android-rest-template:$SPRING_ANDROID_VERSION"
-    compile("org.springframework.android:spring-android-auth:$SPRING_ANDROID_VERSION") {
-        exclude group: 'org.springframework.social'
-        exclude group: 'org.springframework', module: 'spring-core'
-    }
-    compile("org.springframework.social:spring-social-core:$SPRING_SOCIAL_CORE_VERSION") {
-        exclude group: 'org.springframework', module: 'spring-web'
-    }
-    compile "org.apache.commons:commons-lang3:$COMMONS_LANG_VERSION"
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.6.3'
 
-    compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON_VERSION"
-    compile "com.github.daddykotex:geojson-jackson-android:$ANDROID_GEOJSON_VERSION@aar"
+    testCompile "junit:junit:4.12"
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.1.2'
+    testCompile("org.mockito:mockito-core:1.9.5")
 
-    testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile("org.springframework:spring-test:$SPRING_TEST_VERSION") {
-        exclude module: "spring-core"
-    }
-    testCompile("org.mockito:mockito-core:$MOCKITO_CORE_VERSION") {
-        exclude module: "hamcrest-core"
-    }
-    testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
-    testCompile("org.powermock:powermock-api-mockito:$POWERMOCK_VERSION") {
+    testCompile "org.powermock:powermock-module-junit4:1.6.1"
+    testCompile("org.powermock:powermock-api-mockito:1.6.1") {
         exclude module: "mockito-all"
     }
 }
