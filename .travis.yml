@@ -1,0 +1,14 @@
+language: android
+android:
+  components:
+  - build-tools-23.0.1
+  - android-23
+  - extra
+script: ./build.sh
+env:
+  global:
+  - NEXUS_USERNAME=mnuboci
+  - SIGNING_SECRETKEYRINGFILE=gradle/mnubo.secring.gpg
+  - secure: hG0zbVeZENnxgdhesZoVJCmlM+35Rt0LGmfgbDwhM1zo/WQkZcj6/E0KgqSSCXvbNegq8yOb9VaVTSYnDzTr8JxLX84VzbBr1wd5dXsRrF6g6QRhV22Kg+icUYmxZDUBbP970ZrcNt3oCu3nE+9cWACxST+353UKApTRqNC5a84=
+  - secure: WUiz2fjYe2lg9a11XyXAVbXLSKNJ14gsWqoZgJwGkGgbcxsipGJUl278O8blRxgrQX/kYEW7JYWJrbdSyVfQW27yjyH5QViAcK2HYPg3l7d5313XOlgUYH/xxPQOE5NwCGW0avWTgA3lsxd1qbTJAG4BLVgZ4gqDv41pMZs0Dug=
+  - secure: JPu7dPtgo8g2HW57uag2XiNsUpEFME7ibxhivGBEU0d2cF16kBygtLeu3yAhDCXrEg1LHlZu799J2HhRDeun8aAJkkMrTxz1jhTJ5vGTR1D9NvKpJK4LgvvnCeL1HgCxqm7hR5iJvCaw7Ckiop/H3HkIbqHX9xelXv2+7ewgsOo=

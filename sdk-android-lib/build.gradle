@@ -1,45 +1,38 @@
+/*
+ * Copyright (c) 2016 Mnubo. Released under MIT License.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 apply plugin: 'com.android.library'
 
-def publishConfig = USE_LOCAL_FLAVOR == "true" ? "localRelease" : "productionRelease"
-
-task testTmp << {
-    println publishConfig
-}
+group = GROUP
+version = VERSION_NAME
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
         versionCode = VERSION_CODE
         versionName = getVersionName()
-    }
-
-    defaultPublishConfig publishConfig
-
-    productFlavors {
-        local
-        production
-    }
-
-    sourceSets {
-        main.setRoot('src/main')
-        androidTest.setRoot('src/test')
-    }
-
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE' //jackson
-        exclude 'META-INF/LICENSE' //jackson
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/ASL2.0'
     }
 
     compileOptions {
@@ -53,34 +46,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "org.apache.httpcomponents:httpclient-android:$HTTP_CLIENT_ANDROID"
 
-    compile "org.springframework.android:spring-android-rest-template:$SPRING_ANDROID_VERSION"
-    compile("org.springframework.android:spring-android-auth:$SPRING_ANDROID_VERSION") {
-        exclude group: 'org.springframework.social'
-        exclude group: 'org.springframework', module: 'spring-core'
-    }
-    compile("org.springframework.social:spring-social-core:$SPRING_SOCIAL_CORE_VERSION") {
-        exclude group: 'org.springframework', module: 'spring-web'
-    }
-    compile "org.apache.commons:commons-lang3:$COMMONS_LANG_VERSION"
+    provided 'org.projectlombok:lombok:1.16.6'
+    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.1.2'
 
-    compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON_VERSION"
-    compile "com.github.daddykotex:geojson-jackson-android:$ANDROID_GEOJSON_VERSION@aar"
+    compile 'joda-time:joda-time:2.9.1'
+    compile 'com.google.guava:guava:18.0'
 
-    testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile("org.springframework:spring-test:$SPRING_TEST_VERSION") {
-        exclude module: "spring-core"
-    }
-    testCompile("org.mockito:mockito-core:$MOCKITO_CORE_VERSION") {
-        exclude module: "hamcrest-core"
-    }
-    testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
-    testCompile("org.powermock:powermock-api-mockito:$POWERMOCK_VERSION") {
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.6.3'
+
+    testCompile "junit:junit:4.12"
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.1.2'
+    testCompile("org.mockito:mockito-core:1.9.5")
+
+    testCompile "org.powermock:powermock-module-junit4:1.6.1"
+    testCompile("org.powermock:powermock-api-mockito:1.6.1") {
         exclude module: "mockito-all"
     }
 }

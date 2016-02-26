@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright (c) 2016 Mnubo. Released under MIT License.
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in
+  ~ all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  ~ THE SOFTWARE.
+  -->
+
+<resources>
+    <string name="app_name">android-sdk-v3</string>
+    <string name="app_name_windturbine">Wind Turbine</string>
+    <string name="app_name_tennis">Tennis</string>
+    <string name="app_name_objects">Objects</string>
+    <string name="app_name_owner">Owner</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+    <string name="update_owner">Update owner</string>
+    <string name="update_tennis">Update tennis</string>
+    <string name="update_windturbine">Update wind turbine</string>
+    <string name="send_events">Send events for this object</string>
+
+    <string name="tennis">Tennis</string>
+    <string name="tennis_color">Color</string>
+    <string name="tennis_make">Make</string>
+    <string name="tennis_year">Year</string>
+    <string name="tennis_country">Country</string>
+
+    <string name="windturbine">Wind turbine</string>
+    <string name="windturbine_make">Make</string>
+    <string name="windturbine_model">Model</string>
+    <string name="windturbine_rotor_diameter">Rotor Diameter</string>
+    <string name="windturbine_high">High</string>
+    <string name="windturbine_swept_area">Swept Area</string>
+    <string name="windturbine_max_output">Max Output</string>
+
+    <string name="menu_owner">Owner</string>
+    <string name="menu_objects">Objects</string>
+    <string name="menu_windturbine">Wind Turbine</string>
+    <string name="menu_tennis">Tennis</string>
+    <string name="menu_resend">Send stored events</string>
+    <string name="menu_logout">Log out</string>
+
+    <string name="title_activity_owner_with_menu">OwnerWithMenuActivity</string>
+</resources>
