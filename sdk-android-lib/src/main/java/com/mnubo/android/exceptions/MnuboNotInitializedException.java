@@ -22,12 +22,16 @@
 
 package com.mnubo.android.exceptions;
 
+import android.content.Context;
+
 import com.mnubo.android.Mnubo;
+import com.mnubo.android.api.AuthenticationProblemCallback;
+import com.mnubo.android.config.MnuboSDKConfig;
 
 /**
  * This exception is raised when you call {@link Mnubo#getApi()} when
- * {@link Mnubo#init(android.content.Context, String, String,
- * String)} was not called yet.
+ * {@link Mnubo#init(Context, MnuboSDKConfig, AuthenticationProblemCallback)}
+ * was not called yet.
  */
 public class MnuboNotInitializedException extends RuntimeException {
 

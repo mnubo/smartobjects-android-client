@@ -28,7 +28,7 @@ import com.mnubo.android.exceptions.MnuboException;
  * Interface definition for a callback to be invoked when an action an request to mnubo API as
  * returned, successful or not.
  *
- * @param <Type> The type of <code>MnuboResponse<Type></code>result that will be sent in the {link #onCompletion} method
+ * @param <Type> The type of <code>result</code>result that will be sent in the {link CompletionCallback#onSuccess} method
  */
 public interface CompletionCallback<Type> {
 

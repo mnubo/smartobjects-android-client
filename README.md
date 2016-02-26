@@ -114,7 +114,7 @@ API like this (note that this call performs Network IO, and you should not do it
 ```
 boolean succress = Mnubo.logIn(username, password);
 ```
-## Check if user is logged in
+## Check if user is logged in ##
 
 You can know if the user is logged in like this :
 ```
@@ -180,7 +180,7 @@ Mnubo.getStore().setRootDir(new File("/where/you/need"));
 Mnubo.getStore().setSizeLimit(250); //default is 200 files
 ```
 
-## Examples
+## Examples ##
 Assuming you are logged in, this is how you post events:
 ```
 List<Event> myEvents =
@@ -208,7 +208,7 @@ Mnubo.getApi().getEventOperations().sendEventsAsync(deviceId, myEvents, new Comp
 });
 ```
 
-## Demo
+## Demo ##
 There is an application demo [here](demo/) that you can look at for example on
 how to use the SDK.
 

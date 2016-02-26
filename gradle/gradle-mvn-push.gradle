@@ -21,7 +21,7 @@ apply plugin: 'signing'
 apply plugin: 'io.codearte.nexus-staging'
 
 def isReleaseBuild() {
-    return hasProperty('RELEASE') && RELEASE == "true"
+    return hasProperty('TRAVIS_PULL_REQUEST') && TRAVIS_PULL_REQUEST == false
 }
 
 def getReleaseRepositoryUrl() {
@@ -35,36 +35,45 @@ def getSnapshotRepositoryUrl() {
 }
 
 def getRepositoryUsername() {
-    return hasProperty('nexusUsername') ? nexusUsername : ""
+    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
 }
 
 def getRepositoryPassword() {
-    return hasProperty('nexusPassword') ? nexusPassword : ""
+    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
-def getStagingProfileId() {
-    return hasProperty('nexusStagingProfile') ? nexusStagingProfile : ""
+def setSigningConfig(Project project) {
+    ext.env = System.getenv()
+    project.ext.set("signing.keyId", env.SIGNING_KEYID)
+    project.ext.set("signing.password", env.SIGNING_PASSWORD)
+    project.ext.set("signing.secretKeyRingFile", env.SIGNING_SECRETKEYRINGFILE)
+}
+
+def getSigningKeyId() {
+    return hasProperty('SIGNING_KEYID') ? SIGNING_KEYID : ""
+}
+
+def getSigningPassword() {
+    return hasProperty('SIGNING_PASSWORD') ? SIGNING_PASSWORD : ""
+}
+
+def getSigningSecRingFile() {
+    return hasProperty('SIGNING_SECRETKEYRINGFILE') ? SIGNING_SECRETKEYRINGFILE : ""
 }
 
 def getVersionName() {
     if (!isReleaseBuild()) {
         ext.env = System.getenv()
-        ext.buildNumber = env.BUILD_NUMBER ? env.BUILD_NUMBER : "local"
+        ext.buildNumber = env.TRAVIS_BUILD_NUMBER ? env.TRAVIS_BUILD_NUMBER : "local"
         return VERSION_NAME + "-$buildNumber-SNAPSHOT"
     } else {
         return VERSION_NAME.replace("-SNAPSHOT", "")
     }
 }
 
-task createVersionFile << {
-    def versionFile = new File("$buildDir/version.properties")
-    Properties properties = new Properties()
-    properties.setProperty("VERSION_NAME", getVersionName())
-    properties.store(versionFile.newWriter(), null)
-    println versionFile.getAbsolutePath()
-}
-
 afterEvaluate { project ->
+    setSigningConfig(project)
+
     uploadArchives {
         repositories {
             mavenDeployer {
@@ -119,15 +128,6 @@ afterEvaluate { project ->
 
     task androidJavadocs(type: Javadoc) {
         source = android.sourceSets.main.java.srcDirs
-        exclude '**/*.md'
-        options {
-            links "http://fasterxml.github.io/jackson-databind/javadoc/2.5/"
-            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
-        }
-        if (JavaVersion.current().isJava8Compatible()) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
 
     task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
@@ -148,7 +148,6 @@ afterEvaluate { project ->
 //automatic closing of staging repositories
 nexusStaging {
     packageGroup = GROUP
-    stagingProfileId = getStagingProfileId()
     delayBetweenRetriesInMillis = 10000
     numberOfRetries = 6
 }
