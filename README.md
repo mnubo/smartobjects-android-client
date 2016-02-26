@@ -1,56 +1,21 @@
-# mnubo Android SDK
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android)
+[![Build Status](https://travis-ci.org/mnubo/mnubo-android-sdk.svg?branch=master)](https://travis-ci.org/mnubo/mnubo-android-sdk)
 
-Table of Content
-================
- 
-[1. Introduction](#section1)
-
-[2. Architecture](#section2) 
-
-[3. Pre-requisites](#section3)
-
-[4. Installation & Configuration](#section4) 
-
-[5. Usage](#section5)
-
-[6. Important notes](#section6) 
-
-[7. Source code](#section7)
-
-[8. Known limitations](#section8)
-
-[9. References](#section9)
-
----
-#<a name="section1"></a>1. Introduction
+## Introduction ##
 
 This SDK provides you with a wrapper to use the mnubo's service easily from your Android application.
 Basically this SDK sets up a connection with the mnubo API and ensure oAuth2 headers are present in
 your calls to it.
 
----
-#<a name="section3"></a>2. Architecture
 
-To use the mnubo's SDK, you must have a `MnuboApi` object. The `MnuboApi` is used to perform all
-the operations. 
-
----
-#<a name="section3"></a>3. Prerequisites
-
-- Maven
-- Android OS
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android)
-
----
-#<a name="section4"></a>4. Installation & Configuration
+## Installation & Configuration ##
 
 The library can be picked up from Github or MavenCentral. Add the aar to your project dependencies
 or add this Gradle dependency to your build file :
 
 ```
 // Using gradle and maven dependency resolution
-compile('com.mnubo:sdk-android:1.0.0@aar') {
+compile('com.mnubo:sdk-android:2.0.0@aar') {
     transitive = true
 }
 ```
@@ -96,10 +61,9 @@ public void onCreate() {
 ## Key ##
 The _CONSUMER\_KEY_ is provided to you by mnubo. The SDK can only be used by a logged in owner. If no
 owner logs into the app, all operations will give you an access_denied.
----
-#<a name="section5"></a>5. Usage
 
 ## Using the SDK ##
+
 Once initialized and logged in, you can get an instance of the `MnuboApi` and use it to interact
 with mnubo servers.
 
@@ -107,21 +71,21 @@ with mnubo servers.
 MnuboApi mnuboApi = Mnubo.getApi();
 ```
 
-## Logging in ##
+### Logging in ###
 
 You can sign in on behalf of the user and start using the SDK to it's fullest by calling the
 API like this (note that this call performs Network IO, and you should not do it on the main thread):
 ```
 boolean succress = Mnubo.logIn(username, password);
 ```
-## Check if user is logged in ##
+### Check if user is logged in ###
 
 You can know if the user is logged in like this :
 ```
 boolean loggedIn = Mnubo.isLoggedIn();
 ```
 
-## Available API operations ##
+### Available API operations ###
 All operations will perform a token refresh if the current access\_token has expired.
 Operations have both synchronous and asynchronous signature.
 
@@ -143,7 +107,7 @@ Mnubo.getApi().getEventOperations().sendEventsAsync(deviceId, events, new Comple
 });
 ```
 
-## Data store ##
+### Data store ###
 The SDK comes with a store that allows you to store data. Currently, the store only allows to save
 events.
 
@@ -180,7 +144,7 @@ Mnubo.getStore().setRootDir(new File("/where/you/need"));
 Mnubo.getStore().setSizeLimit(250); //default is 200 files
 ```
 
-## Examples ##
+### Examples ###
 Assuming you are logged in, this is how you post events:
 ```
 List<Event> myEvents =
@@ -213,26 +177,9 @@ There is an application demo [here](demo/) that you can look at for example on
 how to use the SDK.
 
 ---
-#<a name="section6"></a>6. Important notes
-
-N/A
-
----
-#<a name="section7"></a>7. Source code
+## Important notes ##
 
 Sources, Javadoc and the library itself are located
 [here](http://search.maven.org/#search|gav|1|g%3A%22com.mnubo%22%20AND%20a%3A%22sdk-android%22).
 
-[android SDK on git](https://github.com/mnubo/mnubo-android-sdk)
-
----
-#<a name="section8"></a>8. Known limitations
-
-N/A
-
----
-#<a name="section9"></a>9. References
-
 Extensive documentation is available in the generated Javadoc.
-
-[android SDK](http://developer.android.com/sdk/index.html)

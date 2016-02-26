@@ -21,7 +21,9 @@ apply plugin: 'signing'
 apply plugin: 'io.codearte.nexus-staging'
 
 def isReleaseBuild() {
-    return hasProperty('TRAVIS_PULL_REQUEST') && TRAVIS_PULL_REQUEST == false
+    def isRelease = System.env.TRAVIS_PULL_REQUEST == "false"
+    System.println("Is release: " + isRelease)
+    return isRelease
 }
 
 def getReleaseRepositoryUrl() {
@@ -49,18 +51,6 @@ def setSigningConfig(Project project) {
     project.ext.set("signing.secretKeyRingFile", env.SIGNING_SECRETKEYRINGFILE)
 }
 
-def getSigningKeyId() {
-    return hasProperty('SIGNING_KEYID') ? SIGNING_KEYID : ""
-}
-
-def getSigningPassword() {
-    return hasProperty('SIGNING_PASSWORD') ? SIGNING_PASSWORD : ""
-}
-
-def getSigningSecRingFile() {
-    return hasProperty('SIGNING_SECRETKEYRINGFILE') ? SIGNING_SECRETKEYRINGFILE : ""
-}
-
 def getVersionName() {
     if (!isReleaseBuild()) {
         ext.env = System.getenv()
@@ -72,7 +62,9 @@ def getVersionName() {
 }
 
 afterEvaluate { project ->
-    setSigningConfig(project)
+    if(isReleaseBuild()){
+        setSigningConfig(project)
+    }
 
     uploadArchives {
         repositories {
