@@ -8,7 +8,7 @@ script: ./build.sh
 env:
   global:
   - NEXUS_USERNAME=mnuboci
-  - SIGNING_SECRETKEYRINGFILE=gradle/mnubo.secring.gpg
-  - secure: hG0zbVeZENnxgdhesZoVJCmlM+35Rt0LGmfgbDwhM1zo/WQkZcj6/E0KgqSSCXvbNegq8yOb9VaVTSYnDzTr8JxLX84VzbBr1wd5dXsRrF6g6QRhV22Kg+icUYmxZDUBbP970ZrcNt3oCu3nE+9cWACxST+353UKApTRqNC5a84=
-  - secure: WUiz2fjYe2lg9a11XyXAVbXLSKNJ14gsWqoZgJwGkGgbcxsipGJUl278O8blRxgrQX/kYEW7JYWJrbdSyVfQW27yjyH5QViAcK2HYPg3l7d5313XOlgUYH/xxPQOE5NwCGW0avWTgA3lsxd1qbTJAG4BLVgZ4gqDv41pMZs0Dug=
-  - secure: JPu7dPtgo8g2HW57uag2XiNsUpEFME7ibxhivGBEU0d2cF16kBygtLeu3yAhDCXrEg1LHlZu799J2HhRDeun8aAJkkMrTxz1jhTJ5vGTR1D9NvKpJK4LgvvnCeL1HgCxqm7hR5iJvCaw7Ckiop/H3HkIbqHX9xelXv2+7ewgsOo=
+  - SIGNING_SECRETKEYRINGFILE=../gradle/mnubo.secring.gpg
+  - secure: jg8IdnBe6t8gXD+m6RTUnmrKkoq5D17ix8hm5IisE8cTPSH4ZTN9kcu/fZ4KW26HLvqXjGNmNJ4AP+TMkGjYIhNhs1wVnX7qkNbmwhgjYtpxN9cEuI58IJBUKsLDeNmXcRpMGwvta3C0N17iyJ97RhExj9xSP6a7P09DAANVowk=
+  - secure: del1HTxbwZ6YJXBMyLHLEyPt3b3sikv1i1RI+wsFYn/JiCYOsxDXaI3WsatRPp4Zh/a7R9OFBOgNMo+igc0o6Yj0bEqwQJIyqKpA93O7v3x9xEUTqerEy/LuBdvzTrmQSoAnWP/GeavjBd4D+5BwwRXCJnB29Rkvlw1wkl5UCAc=
+  - secure: F+Qctq95gES2a7PlCeANYaQwi5FH46Ee74ycSCFUnEgqYugl4IC8RY3U34xwM3OGhmF9XzYd8wuitGFkuZikcLnwigRA+7czM2/5xp3X0fzTp5Mtv4h3FEdn6xizMT+6KE/PmFoznS6C73iOqV2hb8iRRtG/zujWLxHToa/DOjs=
