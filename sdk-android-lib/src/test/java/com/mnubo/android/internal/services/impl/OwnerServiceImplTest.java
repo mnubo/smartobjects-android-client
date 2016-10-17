@@ -80,9 +80,9 @@ public class OwnerServiceImplTest {
         DateTime now = DateTime.now(UTC);
 
         Owner owner = Owner.builder()
-                .username(username)
-                .password(password)
-                .registrationDate(now)
+                .attribute("x_registration_date", now)
+                .attribute("x_registration_latitude", 123.213d)
+                .attribute("x_registration_longitude", 45.321d)
                 .build();
 
         ownerService.update(username, owner);

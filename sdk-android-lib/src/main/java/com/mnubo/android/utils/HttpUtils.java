@@ -23,7 +23,6 @@
 package com.mnubo.android.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.base.Preconditions;
 import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.exceptions.MnuboNetworkException;
 
@@ -38,8 +37,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
 public class HttpUtils {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -47,7 +44,7 @@ public class HttpUtils {
     public static OkHttpClient newClient(Interceptor... interceptors) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         for (Interceptor interceptor : interceptors) {
-            Preconditions.checkArgument(interceptor != null, "interceptors should not be null");
+            ValidationUtils.notNull(interceptor != null, "interceptors should not be null");
             client.addInterceptor(interceptor);
         }
         return client.build();
@@ -64,7 +61,7 @@ public class HttpUtils {
     public static HttpUrl addPathVariables(@NonNull HttpUrl url, @NonNull String... variables) {
         HttpUrl.Builder builder = url.newBuilder();
         for (String path : variables) {
-            Preconditions.checkArgument(!isNullOrEmpty(path), "path variable should not be null or empty");
+            ValidationUtils.notNullOrEmpty(path, "path variable should not be null or empty");
             builder.addPathSegment(path);
         }
         return builder.build();

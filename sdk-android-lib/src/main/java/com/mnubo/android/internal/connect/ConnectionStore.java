@@ -26,7 +26,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
+import com.mnubo.android.utils.ValidationUtils;
 
 import lombok.NonNull;
 
@@ -42,7 +42,7 @@ class ConnectionStore {
     private final SharedPreferences sharedPreferences;
 
     public ConnectionStore(Context context) {
-        Preconditions.checkArgument(context != null, "context cannot be null");
+        ValidationUtils.notNull(context, "context cannot be null");
 
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
     }

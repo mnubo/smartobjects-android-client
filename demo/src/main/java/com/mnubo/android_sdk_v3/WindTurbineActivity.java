@@ -136,7 +136,6 @@ public class WindTurbineActivity extends AbstractLoggedInActivity {
         String deviceId = username + "-windturbine";
         SmartObject object =
                 SmartObject.builder()
-                        .objectType("windturbine")
                         .attribute("model", model)
                         .attribute("make", make)
                         .attribute("rotor_diameter", rotorDiameter)

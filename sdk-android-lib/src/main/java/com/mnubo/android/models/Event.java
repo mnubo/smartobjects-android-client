@@ -26,12 +26,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
-
-import org.joda.time.DateTime;
+import com.mnubo.android.utils.ValidationUtils;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +37,6 @@ import lombok.Singular;
 import lombok.Value;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
-import static com.google.common.base.Strings.isNullOrEmpty;
 
 
 @Value
@@ -47,27 +44,20 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 public class Event implements Serializable {
     public final static String EVENTS = "events";
 
-    public static final String OBJECT = "x_object";
     public static final String EVENT_TYPE = "x_event_type";
-    public static final String TIMESTAMP = "x_timestamp";
 
     @JsonProperty(EVENT_TYPE)
     final String eventType;
-    @JsonProperty(TIMESTAMP)
-    final DateTime timestamp;
     @Getter(onMethod = @__(@JsonAnyGetter))
-    final ImmutableMap<String, Object> timeseries;
+    final Map<String, Object> timeseries;
 
     @JsonCreator
     @Builder(toBuilder = true)
     public Event(@JsonProperty(EVENT_TYPE) String eventType,
-                 @JsonProperty(TIMESTAMP) DateTime timestamp,
-                 @Singular("timeserie") ImmutableMap<String, Object> timeseries) {
-        Preconditions.checkArgument(!isNullOrEmpty(eventType), "Missing x_event_type");
+                 @Singular("timeserie") Map<String, Object> timeseries) {
+        ValidationUtils.notNullOrEmpty(eventType, "Missing x_event_type");
 
         this.eventType = eventType;
         this.timeseries = timeseries;
-        this.timestamp = timestamp;
-
     }
 }

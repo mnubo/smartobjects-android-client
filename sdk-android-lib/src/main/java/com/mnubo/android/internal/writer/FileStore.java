@@ -25,8 +25,7 @@ package com.mnubo.android.internal.writer;
 
 import android.util.Log;
 
-import com.google.common.base.Strings;
-import com.mnubo.android.models.Event;
+import com.mnubo.android.utils.ValidationUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,7 +84,7 @@ public class FileStore {
             return values;
 
         } catch (Exception e) {
-            Log.e(TAG, String.format("An error has occured while reading the file : %s", file.getAbsolutePath()), e);
+            Log.e(TAG, String.format("An error has occurred while reading the file : %s", file.getAbsolutePath()), e);
             return null;
         }
     }
@@ -95,9 +94,7 @@ public class FileStore {
     }
 
     public File prepareFolder(String folderName, File rootDir, int sizeLimit) throws IOException {
-        if (Strings.isNullOrEmpty(folderName)) {
-            throw new IllegalArgumentException("The queue name should not be null or empty");
-        }
+        ValidationUtils.notNullOrEmpty(folderName, "The queue name should not be null or empty");
 
         File file = new File(rootDir, folderName);
         if (!file.exists()) {

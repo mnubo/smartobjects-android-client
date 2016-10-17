@@ -24,8 +24,7 @@ package com.mnubo.android.config;
 
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import com.mnubo.android.utils.ValidationUtils;
 
 import java.util.Properties;
 
@@ -60,7 +59,7 @@ public class MnuboSDKConfig {
     private final HttpUrl restitutionUrl;
 
     MnuboSDKConfig(String key, HttpUrl oauthUrl, HttpUrl ingestionUrl, HttpUrl restitutionUrl) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(key), "consumerKey must not be empty");
+        ValidationUtils.notNullOrEmpty(key, "consumerKey must not be empty");
 
         this.key = key;
         this.oauthUrl = oauthUrl;

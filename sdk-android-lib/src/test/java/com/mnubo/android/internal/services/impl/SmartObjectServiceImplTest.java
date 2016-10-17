@@ -75,8 +75,9 @@ public class SmartObjectServiceImplTest {
 
         String deviceId = "deviceId";
         SmartObject smartObject = SmartObject.builder()
-                .objectType("type")
-                .registrationDate(DateTime.now())
+                .attribute("x_registration_date", DateTime.now())
+                .attribute("x_registration_latitude", 123.123d)
+                .attribute("x_registration_longitude", 45.12d)
                 .build();
 
         smartObjectService.update(deviceId, smartObject);

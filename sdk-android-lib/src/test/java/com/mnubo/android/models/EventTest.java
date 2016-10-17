@@ -35,9 +35,6 @@ import static org.hamcrest.core.Is.is;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by davidfrancoeur on 2015-12-06.
- */
 public class EventTest {
 
     @Test(expected = IllegalArgumentException.class)
@@ -57,13 +54,12 @@ public class EventTest {
 
     @Test
     public void testSerialize() throws Exception {
-        UUID eventId = UUID.randomUUID();
         String type = "type";
         DateTime now = DateTime.now(UTC);
         String testValue = "test";
         Event event = Event.builder()
                 .eventType(type)
-                .timestamp(now)
+                .timeserie("x_timestamp", now)
                 .timeserie("test", testValue)
                 .build();
         String payload = JsonUtils.toJson(event);
