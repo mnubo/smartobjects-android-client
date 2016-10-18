@@ -43,17 +43,12 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by davidfrancoeur on 2015-12-07.
- */
 public class SmartObjectServiceImplTest {
 
     private SmartObjectService smartObjectService;
     private MockWebServer server;
 
-    private MnuboConnectionManager mnuboConnectionManager;
-
-    OkHttpClient okHttpClient =
+    private OkHttpClient okHttpClient =
             new OkHttpClient.Builder()
                     .addInterceptor(new AccessTokenAuthenticationInterceptor("token"))
                     .build();
@@ -62,7 +57,7 @@ public class SmartObjectServiceImplTest {
     public void setUp() throws Exception {
         server = new MockWebServer();
         server.start();
-        mnuboConnectionManager = mock(MnuboConnectionManager.class);
+        MnuboConnectionManager mnuboConnectionManager = mock(MnuboConnectionManager.class);
         when(mnuboConnectionManager.getUserAuthenticatedHttpClient()).thenReturn(okHttpClient);
 
         smartObjectService = new SmartObjectServiceImpl(mnuboConnectionManager, server.url("/rest"));

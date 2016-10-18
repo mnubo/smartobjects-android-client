@@ -29,7 +29,6 @@ import com.mnubo.android.models.SmartObject;
 
 import lombok.NonNull;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 import static com.mnubo.android.models.SmartObject.OBJECTS_PATH;
