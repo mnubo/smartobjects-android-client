@@ -23,13 +23,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 24
+    //https://developer.android.com/studio/releases/build-tools.html
+    buildToolsVersion "24.0.3"
 
     defaultConfig {
         applicationId "com.mnubo.android_sdk_v3"
         minSdkVersion 22
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -56,13 +57,18 @@ android {
     lintOptions {
         abortOnError false
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    // https://developer.android.com/topic/libraries/support-library/features.html
+    compile 'com.android.support:support-compat:24.2.1'
+    compile 'com.android.support:design:24.2.1'
     // This is where you'd typically add the dependency like:
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:design:23.2.0'
     //compile 'com.mnubo:sdk-android-lib:2.+'
     compile project(':sdk-android-lib')
     testCompile 'junit:junit:4.12'
