@@ -1,10 +1,15 @@
 #!/bin/bash
+
+# override key/secret with what is available from ENV variables
+sed -i "" -e "s/KEY_VALUE/$CONSUMER_KEY/g" sdk-android-test/src/main/res/values/keys.xml
+sed -i "" -e "s/SECRET_VALUE/$CONSUMER_SECRET/g" sdk-android-test/src/main/res/values/keys.xml
+
 if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     echo 'RELEASE'
     # encrypted using `travis encrypt-file`
     openssl aes-256-cbc -K $encrypted_8bb023dc1fa3_key -iv $encrypted_8bb023dc1fa3_iv -in gradle/mnubo.secring.gpg.enc -out gradle/mnubo.secring.gpg -d
-    ./gradlew -S sdk-android-lib:clean sdk-android-lib:build sdk-android-lib:uploadArchives sdk-android-lib:closeRepository sdk-android-lib:promoteRepository
+    ./gradlew -S clean sdk-android-lib:build sdk-android-test:connectedAndroidTest sdk-android-lib:uploadArchives sdk-android-lib:closeRepository sdk-android-lib:promoteRepository
 else
     echo 'BUILDING MR'
-    ./gradlew -S sdk-android-lib:clean sdk-android-lib:build
+    ./gradlew -S clean sdk-android-lib:build sdk-android-test:connectedAndroidTest
 fi

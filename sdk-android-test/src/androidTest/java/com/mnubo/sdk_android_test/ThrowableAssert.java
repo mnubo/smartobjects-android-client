@@ -20,25 +20,38 @@
  * THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-        classpath "com.github.dcendents:android-maven-gradle-plugin:1.3"
-    }
-}
+package com.mnubo.sdk_android_test;
 
-allprojects {
-    //Prevent failure on androidJavadocs but still produce the docs
-    tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
+import static org.junit.Assert.*;
+
+public class ThrowableAssert {
+
+    private final Exception thrown;
+
+    public ThrowableAssert(Exception thrown) {
+        this.thrown = thrown;
     }
 
-    repositories {
-        jcenter()
+    public static ThrowableAssert assertThrown(Thrower thrower) {
+        try {
+            thrower.throwing();
+        } catch (Exception ex) {
+            return new ThrowableAssert(ex);
+        }
+        throw  new IllegalStateException("expeted method to throw");
+    }
+
+    public <T> ThrowableAssert assertClass(Class<T> clazz) {
+        assertEquals(thrown.getClass(), clazz);
+        return this;
+    }
+
+    public ThrowableAssert assertMessage(String expectedMessage) {
+        assertEquals(expectedMessage, thrown.getMessage());
+        return this;
+    }
+
+    interface Thrower {
+        void throwing() throws Exception;
     }
 }

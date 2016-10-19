@@ -20,25 +20,34 @@
  * THE SOFTWARE.
  */
 
-// Required for the Android build tools
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.1"
-        classpath "com.github.dcendents:android-maven-gradle-plugin:1.3"
-    }
-}
+package com.mnubo.sdk_android_test;
 
-allprojects {
-    //Prevent failure on androidJavadocs but still produce the docs
-    tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
+import org.junit.Assert;
+
+import lombok.SneakyThrows;
+
+public class EventuallyAssert {
+    public static EventuallyAssert eventually(Runnable asserts) {
+        return new EventuallyAssert(60000, 2000, asserts);
     }
 
-    repositories {
-        jcenter()
+    @SneakyThrows
+    private EventuallyAssert(long timeoutInMs, long intervalInMs, Runnable asserts) {
+        long start = System.currentTimeMillis();
+        Throwable lastException = new Exception();
+
+        while (lastException != null && System.currentTimeMillis() - start < timeoutInMs) {
+            try {
+                asserts.run();
+                lastException = null;
+            } catch(Throwable e) {
+                lastException = e;
+                Thread.sleep(intervalInMs);
+            }
+        }
+
+        if (lastException != null) {
+            Assert.fail("EventuallyAssert failed with " + lastException.getMessage());
+        }
     }
 }

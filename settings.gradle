@@ -20,4 +20,4 @@
  * THE SOFTWARE.
  */
 
-include ':sdk-android-lib', ':demo'
+include ':sdk-android-lib', ':demo', ':sdk-android-test'
