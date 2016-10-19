@@ -15,7 +15,7 @@ or add this Gradle dependency to your build file :
 
 ```
 // Using gradle and maven dependency resolution
-compile('com.mnubo:sdk-android:2.0.0@aar') {
+compile('com.mnubo:sdk-android:2.1.0@aar') {
     transitive = true
 }
 ```
@@ -76,7 +76,7 @@ MnuboApi mnuboApi = Mnubo.getApi();
 You can sign in on behalf of the user and start using the SDK to it's fullest by calling the
 API like this (note that this call performs Network IO, and you should not do it on the main thread):
 ```
-boolean succress = Mnubo.logIn(username, password);
+boolean success = Mnubo.logIn(username, password);
 ```
 ### Check if user is logged in ###
 
@@ -137,8 +137,8 @@ Mnubo.getStore().readEvents(new MnuboStore.ReadEventsCallback() {
 ```
 
 The mnubo Android SDK allows you to write object to the disk. The default location is the application
-cache directory (using the Android context provided in the init call) but you can use something else
-you can provide another directory if you want:
+cache directory (using the Android context provided in the init call) but you can
+provide another directory if you want:
 ```
 Mnubo.getStore().setRootDir(new File("/where/you/need"));
 Mnubo.getStore().setSizeLimit(250); //default is 200 files
