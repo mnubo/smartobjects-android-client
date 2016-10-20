@@ -28,7 +28,7 @@ version = VERSION_NAME
 android {
     compileSdkVersion 24
     //https://developer.android.com/studio/releases/build-tools.html
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "24.0.3" // make sure this number matches .travis.yml
 
     defaultConfig {
         minSdkVersion 15
