@@ -1,5 +1,5 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.mnubo/sdk-android)
-[![Build Status](https://travis-ci.org/mnubo/mnubo-android-sdk.svg?branch=master)](https://travis-ci.org/mnubo/mnubo-android-sdk)
+[![Build Status](https://travis-ci.org/mnubo/smartobjects-android-client.svg?branch=master)](https://travis-ci.org/mnubo/smartobjects-android-client)
 
 ## Introduction ##
 
