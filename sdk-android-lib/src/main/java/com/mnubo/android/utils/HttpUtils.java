@@ -23,6 +23,7 @@
 package com.mnubo.android.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.exceptions.MnuboNetworkException;
 
@@ -86,19 +87,19 @@ public class HttpUtils {
         return response;
     }
 
-    public static String executeForBodyAsString(OkHttpClient client, Request request) throws MnuboException {
+    public static <T> T executeForBodyAsObject(OkHttpClient client, Request request, Class<T> clazz) throws MnuboException {
         Response response = executeAndThrowOnFailure(client, request);
         try {
-            return response.body().string();
+            return JsonUtils.fromJson(response.body().byteStream(), clazz);
         } catch (IOException e) {
-            throw new MnuboException("Impossible to read response.", e);
+            throw new MnuboException("Impossible to parse JSON.", e);
         }
     }
 
-    public static <T> T executeForBodyAsObject(OkHttpClient client, Request request, Class<T> clazz) throws MnuboException {
-        String payload = executeForBodyAsString(client, request);
+    public static <T> T executeForBodyAsObject(OkHttpClient client, Request request, TypeReference typeReference) throws MnuboException {
+        Response response = executeAndThrowOnFailure(client, request);
         try {
-            return JsonUtils.fromJson(payload, clazz);
+            return JsonUtils.fromJson(response.body().byteStream(), typeReference);
         } catch (IOException e) {
             throw new MnuboException("Impossible to parse JSON.", e);
         }
