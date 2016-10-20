@@ -69,7 +69,6 @@ public class OwnerActivity extends AbstractLoggedInActivity {
         String username = "PgMKqC";
         Owner owner =
                 Owner.builder()
-                        .username(username)
                         .attribute("attribute1", attribute1)
                         .build();
 

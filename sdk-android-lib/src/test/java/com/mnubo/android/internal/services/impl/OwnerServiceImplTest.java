@@ -44,18 +44,13 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by davidfrancoeur on 2015-12-07.
- */
 public class OwnerServiceImplTest {
 
 
     private OwnerService ownerService;
     private MockWebServer server;
 
-    private MnuboConnectionManager mnuboConnectionManager;
-
-    OkHttpClient okHttpClient =
+    private OkHttpClient okHttpClient =
             new OkHttpClient.Builder()
                     .addInterceptor(new AccessTokenAuthenticationInterceptor("token"))
                     .build();
@@ -65,7 +60,7 @@ public class OwnerServiceImplTest {
         server = new MockWebServer();
         server.start();
 
-        mnuboConnectionManager = mock(MnuboConnectionManager.class);
+        MnuboConnectionManager mnuboConnectionManager = mock(MnuboConnectionManager.class);
         when(mnuboConnectionManager.getUserAuthenticatedHttpClient()).thenReturn(okHttpClient);
 
         ownerService = new OwnerServiceImpl(mnuboConnectionManager, server.url("/rest"));
@@ -76,13 +71,12 @@ public class OwnerServiceImplTest {
         server.enqueue(new MockResponse().setResponseCode(200));
 
         String username = "username";
-        String password = "password";
         DateTime now = DateTime.now(UTC);
 
         Owner owner = Owner.builder()
-                .username(username)
-                .password(password)
-                .registrationDate(now)
+                .attribute("x_registration_date", now)
+                .attribute("x_registration_latitude", 123.213d)
+                .attribute("x_registration_longitude", 45.321d)
                 .build();
 
         ownerService.update(username, owner);

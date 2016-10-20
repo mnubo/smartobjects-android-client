@@ -20,33 +20,38 @@
  * THE SOFTWARE.
  */
 
-package com.mnubo.android.models;
+package com.mnubo.sdk_android_test;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import static org.junit.Assert.*;
 
-import java.util.Map;
+public class ThrowableAssert {
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Singular;
-import lombok.Value;
+    private final Exception thrown;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
-
-@Value
-@JsonInclude(value = NON_EMPTY)
-public class SmartObject {
-    public static final String OBJECTS_PATH = "objects";
-
-    @Getter(onMethod = @__(@JsonAnyGetter))
-    final Map<String, Object> attributes;
-
-    @JsonCreator
-    @Builder(toBuilder = true)
-    public SmartObject(@Singular Map<String, Object> attributes) {
-        this.attributes = attributes;
+    public ThrowableAssert(Exception thrown) {
+        this.thrown = thrown;
     }
 
+    public static ThrowableAssert assertThrown(Thrower thrower) {
+        try {
+            thrower.throwing();
+        } catch (Exception ex) {
+            return new ThrowableAssert(ex);
+        }
+        throw  new IllegalStateException("expeted method to throw");
+    }
+
+    public <T> ThrowableAssert assertClass(Class<T> clazz) {
+        assertEquals(thrown.getClass(), clazz);
+        return this;
+    }
+
+    public ThrowableAssert assertMessage(String expectedMessage) {
+        assertEquals(expectedMessage, thrown.getMessage());
+        return this;
+    }
+
+    interface Thrower {
+        void throwing() throws Exception;
+    }
 }

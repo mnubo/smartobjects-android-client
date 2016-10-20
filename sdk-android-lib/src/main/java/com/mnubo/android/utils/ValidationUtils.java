@@ -20,33 +20,14 @@
  * THE SOFTWARE.
  */
 
-package com.mnubo.android.models;
+package com.mnubo.android.utils;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.Map;
-
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Singular;
-import lombok.Value;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
-
-@Value
-@JsonInclude(value = NON_EMPTY)
-public class SmartObject {
-    public static final String OBJECTS_PATH = "objects";
-
-    @Getter(onMethod = @__(@JsonAnyGetter))
-    final Map<String, Object> attributes;
-
-    @JsonCreator
-    @Builder(toBuilder = true)
-    public SmartObject(@Singular Map<String, Object> attributes) {
-        this.attributes = attributes;
+public class ValidationUtils {
+    public static void notNull(Object object, String message) {
+        if (object == null) throw new IllegalArgumentException(message);
     }
 
+    public static void notNullOrEmpty(String object, String message) {
+        if (object == null || object.trim().isEmpty()) throw new IllegalArgumentException(message);
+    }
 }

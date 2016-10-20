@@ -74,7 +74,6 @@ public class EventServiceImplTest {
 
         Event event = Event.builder()
                 .eventType("type")
-                .timestamp(DateTime.now())
                 .build();
 
         List<Event> events = Collections.singletonList(event);

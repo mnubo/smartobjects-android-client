@@ -27,6 +27,8 @@ import com.mnubo.android.utils.JsonUtils;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -35,30 +37,25 @@ import static org.hamcrest.core.Is.is;
 import static org.joda.time.DateTimeZone.UTC;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by davidfrancoeur on 2015-12-07.
- */
 public class SmartObjectTest {
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testBuildEmpty() throws Exception {
-        SmartObject.builder().build();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testBuildNoObjectType() throws Exception {
-        SmartObject.builder()
-                .build();
-    }
 
     @Test
     public void testBuild() throws Exception {
+        final DateTime now = DateTime.now();
         SmartObject smartObject = SmartObject.builder()
-                .objectType("type")
+                .attribute("x_object_type", "type")
+                .attribute("x_registration_date", now)
+                .attribute("x_registration_latitude", 123.213d)
+                .attribute("x_registration_longitude", 45.321d)
                 .build();
         assertThat(smartObject, is(notNullValue()));
-        assertThat(smartObject.getObjectType(), is(equalTo("type")));
-        assertThat(smartObject.getAttributes(), is(notNullValue()));
+        Map<String, Object> expected = new HashMap<String, Object>(){{
+            put("x_object_type", "type");
+            put("x_registration_date", now);
+            put("x_registration_latitude", 123.213d);
+            put("x_registration_longitude", 45.321d);
+        }};
+        assertThat(smartObject.getAttributes(), is(equalTo(expected)));
     }
 
     @Test
@@ -66,15 +63,19 @@ public class SmartObjectTest {
         String type = "type";
         DateTime now = DateTime.now(UTC);
         String testValue = "test";
+        double latitude = 123.213d;
+        double longitude = 45.321d;
         SmartObject smartObject = SmartObject.builder()
-                .objectType(type)
-                .registrationDate(now)
+                .attribute("x_object_type", "type")
+                .attribute("x_registration_date", now)
+                .attribute("x_registration_latitude", latitude)
+                .attribute("x_registration_longitude", longitude)
                 .attribute("test", testValue)
                 .build();
         String payload = JsonUtils.toJson(smartObject);
         assertThat(payload, is(notNullValue()));
-        String expectedPayload = String.format("{\"x_object_type\":\"%s\",\"x_registration_date\":\"%s\",\"test\":\"%s\"}",
-                type, now, testValue);
+        String expectedPayload = String.format("{\"x_object_type\":\"%s\",\"x_registration_date\":\"%s\",\"x_registration_latitude\":%s,\"x_registration_longitude\":%s,\"test\":\"%s\"}",
+                type, now, latitude, longitude, testValue);
         assertThat(payload, equalTo(expectedPayload));
     }
 }

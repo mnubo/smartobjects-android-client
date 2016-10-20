@@ -23,15 +23,19 @@
 package com.mnubo.android.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 
 public class JsonUtils {
+    public final static TypeReference MAP_TYPE_REF = new TypeReference<Map<String, Object>>() {};
     private static final ObjectMapper objectMapper = new ObjectMapper();
     static {
         objectMapper.registerModule(new JodaModule());
@@ -43,7 +47,11 @@ public class JsonUtils {
         return objectMapper.writeValueAsString(object);
     }
 
-    public static <T> T fromJson(String source, Class<T> clazz) throws IOException {
+    public static <T> T fromJson(InputStream source, Class<T> clazz) throws IOException {
         return objectMapper.readValue(source, clazz);
+    }
+
+    public static <T> T fromJson(InputStream source, TypeReference typeReference) throws IOException {
+        return objectMapper.readValue(source, typeReference);
     }
 }

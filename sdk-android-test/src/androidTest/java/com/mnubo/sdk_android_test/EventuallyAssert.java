@@ -20,33 +20,34 @@
  * THE SOFTWARE.
  */
 
-package com.mnubo.android.models;
+package com.mnubo.sdk_android_test;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import org.junit.Assert;
 
-import java.util.Map;
+import lombok.SneakyThrows;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Singular;
-import lombok.Value;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
-
-@Value
-@JsonInclude(value = NON_EMPTY)
-public class SmartObject {
-    public static final String OBJECTS_PATH = "objects";
-
-    @Getter(onMethod = @__(@JsonAnyGetter))
-    final Map<String, Object> attributes;
-
-    @JsonCreator
-    @Builder(toBuilder = true)
-    public SmartObject(@Singular Map<String, Object> attributes) {
-        this.attributes = attributes;
+public class EventuallyAssert {
+    public static EventuallyAssert eventually(Runnable asserts) {
+        return new EventuallyAssert(60000, 2000, asserts);
     }
 
+    @SneakyThrows
+    private EventuallyAssert(long timeoutInMs, long intervalInMs, Runnable asserts) {
+        long start = System.currentTimeMillis();
+        Throwable lastException = new Exception();
+
+        while (lastException != null && System.currentTimeMillis() - start < timeoutInMs) {
+            try {
+                asserts.run();
+                lastException = null;
+            } catch(Throwable e) {
+                lastException = e;
+                Thread.sleep(intervalInMs);
+            }
+        }
+
+        if (lastException != null) {
+            Assert.fail("EventuallyAssert failed with " + lastException.getMessage());
+        }
+    }
 }

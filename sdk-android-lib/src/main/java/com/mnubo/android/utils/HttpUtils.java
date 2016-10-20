@@ -23,7 +23,7 @@
 package com.mnubo.android.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.base.Preconditions;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.exceptions.MnuboNetworkException;
 
@@ -38,8 +38,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
 public class HttpUtils {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -47,7 +45,7 @@ public class HttpUtils {
     public static OkHttpClient newClient(Interceptor... interceptors) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         for (Interceptor interceptor : interceptors) {
-            Preconditions.checkArgument(interceptor != null, "interceptors should not be null");
+            ValidationUtils.notNull(interceptor != null, "interceptors should not be null");
             client.addInterceptor(interceptor);
         }
         return client.build();
@@ -64,7 +62,7 @@ public class HttpUtils {
     public static HttpUrl addPathVariables(@NonNull HttpUrl url, @NonNull String... variables) {
         HttpUrl.Builder builder = url.newBuilder();
         for (String path : variables) {
-            Preconditions.checkArgument(!isNullOrEmpty(path), "path variable should not be null or empty");
+            ValidationUtils.notNullOrEmpty(path, "path variable should not be null or empty");
             builder.addPathSegment(path);
         }
         return builder.build();
@@ -89,19 +87,19 @@ public class HttpUtils {
         return response;
     }
 
-    public static String executeForBodyAsString(OkHttpClient client, Request request) throws MnuboException {
+    public static <T> T executeForBodyAsObject(OkHttpClient client, Request request, Class<T> clazz) throws MnuboException {
         Response response = executeAndThrowOnFailure(client, request);
         try {
-            return response.body().string();
+            return JsonUtils.fromJson(response.body().byteStream(), clazz);
         } catch (IOException e) {
-            throw new MnuboException("Impossible to read response.", e);
+            throw new MnuboException("Impossible to parse JSON.", e);
         }
     }
 
-    public static <T> T executeForBodyAsObject(OkHttpClient client, Request request, Class<T> clazz) throws MnuboException {
-        String payload = executeForBodyAsString(client, request);
+    public static <T> T executeForBodyAsObject(OkHttpClient client, Request request, TypeReference typeReference) throws MnuboException {
+        Response response = executeAndThrowOnFailure(client, request);
         try {
-            return JsonUtils.fromJson(payload, clazz);
+            return JsonUtils.fromJson(response.body().byteStream(), typeReference);
         } catch (IOException e) {
             throw new MnuboException("Impossible to parse JSON.", e);
         }

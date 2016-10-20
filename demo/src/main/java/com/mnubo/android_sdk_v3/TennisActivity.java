@@ -122,7 +122,6 @@ public class TennisActivity extends AbstractLoggedInActivity {
         String deviceId = username + "-tennis";
         SmartObject object =
                 SmartObject.builder()
-                        .objectType("tennis")
                         .attribute("color", color)
                         .attribute("make", make)
                         .attribute("year", year)

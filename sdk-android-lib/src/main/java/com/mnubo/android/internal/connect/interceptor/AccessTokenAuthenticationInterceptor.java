@@ -22,7 +22,7 @@
 
 package com.mnubo.android.internal.connect.interceptor;
 
-import com.google.common.base.Preconditions;
+import com.mnubo.android.utils.ValidationUtils;
 
 import java.io.IOException;
 
@@ -32,18 +32,13 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static com.google.common.base.Strings.isNullOrEmpty;
-
-/**
- * Created by davidfrancoeur on 2015-11-29.
- */
 @Value
 public class AccessTokenAuthenticationInterceptor implements Interceptor {
 
     private final String accessToken;
 
     public AccessTokenAuthenticationInterceptor(@NonNull String accessToken) {
-        Preconditions.checkArgument(!isNullOrEmpty(accessToken), "accessToken must not be empty");
+        ValidationUtils.notNullOrEmpty(accessToken, "accessToken must not be empty");
         this.accessToken = accessToken;
     }
 
