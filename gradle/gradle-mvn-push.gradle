@@ -141,6 +141,3 @@ nexusStaging {
     delayBetweenRetriesInMillis = 10000
     numberOfRetries = 6
 }
-
-closeRepository.onlyIf { isReleaseBuild() }
-promoteRepository.onlyIf { isReleaseBuild() }

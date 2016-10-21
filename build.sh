@@ -8,7 +8,8 @@ if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
     tar -xvf gradle/data.tar -C gradle/
     mv gradle/keys.xml sdk-android-test/src/main/res/values/
 
-    ./gradlew -S clean sdk-android-lib:build sdk-android-test:connectedAndroidTest sdk-android-lib:uploadArchives sdk-android-lib:closeRepository sdk-android-lib:promoteRepository
+    # forget closing and promote it fails half of the time
+    ./gradlew -S clean sdk-android-lib:build sdk-android-test:connectedAndroidTest sdk-android-lib:uploadArchives
 else
     echo 'BUILDING MR'
     ./gradlew -S clean sdk-android-lib:build sdk-android-test:connectedAndroidTest
