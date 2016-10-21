@@ -93,6 +93,8 @@ public class HttpUtils {
             return JsonUtils.fromJson(response.body().byteStream(), clazz);
         } catch (IOException e) {
             throw new MnuboException("Impossible to parse JSON.", e);
+        } finally {
+            response.close();
         }
     }
 
@@ -102,6 +104,8 @@ public class HttpUtils {
             return JsonUtils.fromJson(response.body().byteStream(), typeReference);
         } catch (IOException e) {
             throw new MnuboException("Impossible to parse JSON.", e);
+        } finally {
+            response.close();
         }
     }
 
@@ -110,6 +114,8 @@ public class HttpUtils {
             return response.body().string();
         } catch (IOException e) {
             return null;
+        } finally {
+            response.close();
         }
     }
 
