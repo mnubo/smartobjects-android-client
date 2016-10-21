@@ -40,7 +40,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -63,7 +62,7 @@ public class EndtoEndTesting {
 
         the boolean is used to mimic a @BeforeClass
      */
-    private boolean initialized = false;
+    private static boolean initialized = false;
     /*
         Data model details
      */
@@ -95,7 +94,6 @@ public class EndtoEndTesting {
     @Before
     public void setUp() throws Exception {
         if(!initialized) {
-
             final String consumerKey = getInstrumentation().getTargetContext().getResources().getString(R.string.consumer_key);
             final String consumerSecret = getInstrumentation().getTargetContext().getResources().getString(R.string.consumer_secret);
             ValidationUtils.notNullOrEmpty(consumerKey, "THE CONSUMER KEY IS NOT AVAILABLE.");
@@ -127,7 +125,7 @@ public class EndtoEndTesting {
     }
 
     @Test
-    public void testSendEvents_andExist() throws Exception {
+    public void testSendEvents() throws Exception {
         assertTrue("Test was not initialized.", initialized);
 
         final UUID eventId1 = UUID.randomUUID();
