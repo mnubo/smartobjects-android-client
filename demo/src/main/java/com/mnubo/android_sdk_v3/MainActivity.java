@@ -41,12 +41,8 @@ public class MainActivity extends Activity {
     private final static Properties props = new Properties();
 
     static {
-        props.put(MnuboSDKConfig.CONFIG_KEY, "JYWYwGU0mZGoVSdPi06g39Gl0gDX4OSCcHhuHKXAOqvowDrMUj");
-
-        props.put(MnuboSDKConfig.CONFIG_URL, "http://sdbxfedungeon.mtl.mnubo.com:8090/rest");
-        props.put(MnuboSDKConfig.CONFIG_INGESTION_URL, "http://sdbxfedungeon.mtl.mnubo.com:8090/rest");
-        props.put(MnuboSDKConfig.CONFIG_RESTITUTION_URL, "http://sdbxfedungeon.mtl.mnubo.com:8091/rest");
-        props.put(MnuboSDKConfig.CONFIG_OAUTH_URL, "http://sdbxfedungeon.mtl.mnubo.com:8189/oauth/token");
+        props.put(MnuboSDKConfig.CONFIG_KEY, "TTtFCVUySo1cpGMm1WhiyugtbF8pVb8BhHyIy6UaOct1O2vpBu");
+        props.put(MnuboSDKConfig.CONFIG_URL, "https://rest.sandbox.mnubo.com");
     }
 
     private final static MnuboSDKConfig config = MnuboSDKConfig.withProperties(props);
@@ -59,11 +55,11 @@ public class MainActivity extends Activity {
         Mnubo.init(this, config, new AuthenticationProblemCallback() {
             @Override
             public void onError() {
-                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                startActivity(new Intent(getApplicationContext(), ChooseLoginActivity.class));
             }
         });
 
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        startActivity(new Intent(getApplicationContext(), ChooseLoginActivity.class));
 
     }
 
