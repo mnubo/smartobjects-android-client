@@ -29,4 +29,5 @@ public interface OwnerService {
 
     void update(String username, Owner owner) throws MnuboException;
 
+    void create(String username, String password, Owner owner) throws MnuboException;
 }

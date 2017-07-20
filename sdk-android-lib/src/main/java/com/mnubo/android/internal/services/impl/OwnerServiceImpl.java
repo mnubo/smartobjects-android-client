@@ -45,11 +45,28 @@ public class OwnerServiceImpl extends AbstractMnuboService implements OwnerServi
     }
 
     @Override
-    public void update(@NonNull String username,@NonNull Owner owner) throws MnuboException {
+    public void update(@NonNull String username, @NonNull Owner owner) throws MnuboException {
         Request request =
                 requestBuilder()
                         .url(addPathVariables(getUrl(), username))
                         .put(buildBody(owner))
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
+    public void create(String username, String password, Owner owner) throws MnuboException {
+        final Owner toCreate =
+                Owner.builder()
+                .attributes(owner.getAttributes())
+                .attribute("username", username)
+                .attribute("x_password", password)
+                .build();
+
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl()))
+                        .post(buildBody(toCreate))
                         .build();
         executeAndThrowOnFailure(getOkHttpClient(), request);
     }

@@ -88,4 +88,34 @@ public class OwnerServiceImplTest {
         assertThat(request.getMethod(), is(equalTo("PUT")));
         assertThat(request.getBody().readUtf8(), is(equalTo(expectedPayload)));
     }
+
+    @Test
+    public void testCreate() throws Exception {
+        server.enqueue(new MockResponse().setResponseCode(200));
+
+        String username = "username";
+        String password = "passs";
+        DateTime now = DateTime.now(UTC);
+
+        Owner owner = Owner.builder()
+                .attribute("x_registration_date", now)
+                .attribute("x_registration_latitude", 123.213d)
+                .attribute("x_registration_longitude", 45.321d)
+                .build();
+
+        Owner created = Owner.builder()
+            .attributes(owner.getAttributes())
+            .attribute("username", username)
+            .attribute("x_password", password)
+            .build();
+
+        ownerService.create(username, password, owner);
+
+        String expectedPayload = JsonUtils.toJson(created);
+        RecordedRequest request = server.takeRequest();
+        assertThat(request.getHeader("Authorization"), is(equalTo("Bearer " + "token")));
+        assertThat(request.getPath(), is(equalTo("/rest/owners")));
+        assertThat(request.getMethod(), is(equalTo("POST")));
+        assertThat(request.getBody().readUtf8(), is(equalTo(expectedPayload)));
+    }
 }
