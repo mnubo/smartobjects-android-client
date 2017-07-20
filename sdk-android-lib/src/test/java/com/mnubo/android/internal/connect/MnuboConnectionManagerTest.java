@@ -91,7 +91,6 @@ public class MnuboConnectionManagerTest {
                 .key("key")
                 .ingestionUrl(server.url("/rest"))
                 .oauthUrl(server.url("/oauth/token"))
-                .restitutionUrl(server.url("/rest"))
                 .build();
 
         authenticationProblemCallback = mock(AuthenticationProblemCallback.class);

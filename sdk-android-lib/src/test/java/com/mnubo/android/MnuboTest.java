@@ -60,7 +60,6 @@ public class MnuboTest {
             .key("key")
             .ingestionUrl(HttpUrl.parse("http://example.com"))
             .oauthUrl(HttpUrl.parse("http://example.com"))
-            .restitutionUrl(HttpUrl.parse("http://example.com"))
             .build();
 
     @Before
