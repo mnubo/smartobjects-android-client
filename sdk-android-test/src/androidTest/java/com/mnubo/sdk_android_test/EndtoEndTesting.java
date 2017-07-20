@@ -139,30 +139,6 @@ public class EndtoEndTesting {
             add(Event.builder().eventType(eventType).timeserie(TIMESTAMP, timestamp).timeserie(EVENT_ID, eventId2.toString()).timeserie(TIMESERIES_TEXT_ATTR, value2).build());
         }};
         Mnubo.getApi().getEventOperations().sendEvents(deviceId, events);
-
-        eventually(new Runnable() {
-            @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchEvent(eventId1, EVENT_ID, TIMESERIES_TEXT_ATTR, TIMESTAMP);
-
-                assertEquals(eventId1.toString(), objectAfterUpdate.get(text(EVENT_ID)));
-                assertEquals(timestamp.toString(), objectAfterUpdate.get(datetime(TIMESTAMP)));
-                assertEquals(value1, objectAfterUpdate.get(text(TIMESERIES_TEXT_ATTR)));
-            }
-        });
-
-        eventually(new Runnable() {
-            @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchEvent(eventId2, EVENT_ID, TIMESERIES_TEXT_ATTR, TIMESTAMP);
-
-                assertEquals(eventId2.toString(), objectAfterUpdate.get(text(EVENT_ID)));
-                assertEquals(timestamp.toString(), objectAfterUpdate.get(datetime(TIMESTAMP)));
-                assertEquals(value2, objectAfterUpdate.get(text(TIMESERIES_TEXT_ATTR)));
-            }
-        });
     }
 
     @Test
@@ -176,18 +152,6 @@ public class EndtoEndTesting {
                 .attribute(REG_DATE, timestamp)
                 .build();
         Mnubo.getApi().getSmartObjectOperations().update(deviceId, objectBody);
-
-        eventually(new Runnable() {
-            @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchObject(deviceId, DEVICE_ID, OBJECT_TYPE, OBJECT_TEXT_ATTR, REG_DATE);
-
-                assertEquals(deviceId, objectAfterUpdate.get(text(DEVICE_ID)));
-                assertEquals(newValue, objectAfterUpdate.get(text(OBJECT_TEXT_ATTR)));
-                assertEquals(objectType, objectAfterUpdate.get(text(OBJECT_TYPE)));
-            }
-        });
     }
 
     @Test
@@ -200,17 +164,6 @@ public class EndtoEndTesting {
                 .attribute(REG_DATE, timestamp)
                 .build();
         Mnubo.getApi().getOwnerOperations().update(username, ownerBody);
-
-        eventually(new Runnable() {
-            @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchOwner(username, USERNAME, OWNER_TEXT_ATTR, REG_DATE);
-
-                assertEquals(username, objectAfterUpdate.get(text(USERNAME)));
-                assertEquals(newValue, objectAfterUpdate.get(text(OWNER_TEXT_ATTR)));
-            }
-        });
     }
 
     @Test
