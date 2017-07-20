@@ -25,6 +25,7 @@ package com.mnubo.android.api.operations;
 import com.mnubo.android.api.CompletionCallback;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
 
 /**
  * The OwnerOperations interface allows you to query the mnubo API the user resources of the mnubo
@@ -35,4 +36,6 @@ public interface OwnerOperations extends OwnerService {
     void updateAsync(String username, Owner owner, CompletionCallback<Void> callback);
 
     void createAsync(String username, String password, Owner owner, CompletionCallback<Void> callback);
+
+    void createObjectAsync(String deviceId, String objectType, SmartObject smartObject, CompletionCallback<Void> callback);
 }

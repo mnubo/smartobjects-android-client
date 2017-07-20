@@ -29,6 +29,7 @@ import com.mnubo.android.internal.connect.MnuboConnectionManager;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.internal.services.impl.OwnerServiceImpl;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
 
 import java.util.concurrent.Callable;
 
@@ -70,6 +71,22 @@ public class OwnerOperationsImpl implements OwnerOperations {
             @Override
             public Void call() throws Exception {
                 ownerService.create(username, password, owner);
+                return null;
+            }
+        }, callback);
+    }
+
+    @Override
+    public void createObject(final String deviceId, final String objectType, final SmartObject smartObject) throws MnuboException {
+        ownerService.createObject(deviceId, objectType, smartObject);
+    }
+
+    @Override
+    public void createObjectAsync(final String deviceId, final String objectType, final SmartObject smartObject, CompletionCallback<Void> callback) {
+        executeAsync(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                ownerService.createObject(deviceId, objectType, smartObject);
                 return null;
             }
         }, callback);

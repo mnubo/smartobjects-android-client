@@ -26,6 +26,7 @@ import com.mnubo.android.internal.connect.MnuboConnectionManager;
 import com.mnubo.android.internal.connect.interceptor.AccessTokenAuthenticationInterceptor;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
 import com.mnubo.android.utils.JsonUtils;
 
 import org.joda.time.DateTime;
@@ -55,12 +56,15 @@ public class OwnerServiceImplTest {
                     .addInterceptor(new AccessTokenAuthenticationInterceptor("token"))
                     .build();
 
+    private final String username = "username";
+
     @Before
     public void setUp() throws Exception {
         server = new MockWebServer();
         server.start();
 
         MnuboConnectionManager mnuboConnectionManager = mock(MnuboConnectionManager.class);
+        when(mnuboConnectionManager.getUsername()).thenReturn(username);
         when(mnuboConnectionManager.getUserAuthenticatedHttpClient()).thenReturn(okHttpClient);
 
         ownerService = new OwnerServiceImpl(mnuboConnectionManager, server.url("/rest"));
@@ -115,6 +119,35 @@ public class OwnerServiceImplTest {
         RecordedRequest request = server.takeRequest();
         assertThat(request.getHeader("Authorization"), is(equalTo("Bearer " + "token")));
         assertThat(request.getPath(), is(equalTo("/rest/owners")));
+        assertThat(request.getMethod(), is(equalTo("POST")));
+        assertThat(request.getBody().readUtf8(), is(equalTo(expectedPayload)));
+    }
+
+    @Test
+    public void testCreateObject() throws Exception {
+        server.enqueue(new MockResponse().setResponseCode(200));
+
+        final String deviceId = "deviceId";
+        final String objectType = "mytype";
+        SmartObject smartObject = SmartObject.builder()
+                .attribute("x_registration_date", DateTime.now())
+                .attribute("x_registration_latitude", 123.123d)
+                .attribute("x_registration_longitude", 45.12d)
+                .build();
+
+        SmartObject created = SmartObject.builder()
+                .attributes(smartObject.getAttributes())
+                .attribute("x_device_id", deviceId)
+                .attribute("x_object_type", objectType)
+                .build();
+
+
+        ownerService.createObject(deviceId, objectType, smartObject);
+
+        String expectedPayload = JsonUtils.toJson(created);
+        RecordedRequest request = server.takeRequest();
+        assertThat(request.getHeader("Authorization"), is(equalTo("Bearer " + "token")));
+        assertThat(request.getPath(), is(equalTo(String.format("/rest/owners/%s/objects", username))));
         assertThat(request.getMethod(), is(equalTo("POST")));
         assertThat(request.getBody().readUtf8(), is(equalTo(expectedPayload)));
     }

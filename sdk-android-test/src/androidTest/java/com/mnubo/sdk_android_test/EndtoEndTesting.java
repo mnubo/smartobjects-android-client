@@ -155,6 +155,18 @@ public class EndtoEndTesting {
     }
 
     @Test
+    public void testCreateOwnersObject() throws Exception {
+        assertTrue("Test was not initialized.", initialized);
+
+        final String newValue = UUID.randomUUID().toString();
+        SmartObject objectBody = SmartObject.builder()
+                .attribute(OBJECT_TEXT_ATTR, newValue)
+                .attribute(REG_DATE, timestamp)
+                .build();
+        Mnubo.getApi().getOwnerOperations().createObject(newValue, objectType, objectBody);
+    }
+
+    @Test
     public void testUpdateOwner() throws Exception {
         assertTrue("Test was not initialized.", initialized);
 

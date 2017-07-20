@@ -53,6 +53,10 @@ abstract class AbstractMnuboService {
                 .build();
     }
 
+    protected String getUsername() {
+        return mnuboConnectionManager.getUsername();
+    }
+
     protected Request.Builder requestBuilder() {
         return new Request.Builder()
                 .url(getUrl());

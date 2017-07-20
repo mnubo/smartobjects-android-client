@@ -26,6 +26,7 @@ import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.internal.connect.MnuboConnectionManager;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
 
 import lombok.NonNull;
 import okhttp3.HttpUrl;
@@ -66,6 +67,23 @@ public class OwnerServiceImpl extends AbstractMnuboService implements OwnerServi
         Request request =
                 requestBuilder()
                         .url(addPathVariables(getUrl()))
+                        .post(buildBody(toCreate))
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
+    public void createObject(@NonNull String deviceId, @NonNull String objectType, @NonNull SmartObject smartObject) throws MnuboException {
+        final SmartObject toCreate =
+                SmartObject.builder()
+                        .attributes(smartObject.getAttributes())
+                        .attribute("x_device_id", deviceId)
+                        .attribute("x_object_type", objectType)
+                        .build();
+
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl(), getUsername(), SmartObject.OBJECTS_PATH))
                         .post(buildBody(toCreate))
                         .build();
         executeAndThrowOnFailure(getOkHttpClient(), request);

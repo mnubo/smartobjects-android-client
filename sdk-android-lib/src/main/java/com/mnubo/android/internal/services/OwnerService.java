@@ -24,10 +24,15 @@ package com.mnubo.android.internal.services;
 
 import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
+
+import lombok.NonNull;
 
 public interface OwnerService {
 
     void update(String username, Owner owner) throws MnuboException;
 
     void create(String username, String password, Owner owner) throws MnuboException;
+
+    void createObject(String deviceId, String objectType, SmartObject smartObject) throws MnuboException;
 }
