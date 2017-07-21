@@ -175,7 +175,7 @@ public class EndtoEndTesting {
                 .attribute(OWNER_TEXT_ATTR, newValue)
                 .attribute(REG_DATE, timestamp)
                 .build();
-        Mnubo.getApi().getOwnerOperations().update(username, ownerBody);
+        Mnubo.getApi().getOwnerOperations().update(ownerBody);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class EndtoEndTesting {
                 .attribute(OWNER_TEXT_ATTR, newValue)
                 .attribute(REG_DATE, timestamp)
                 .build();
-        Mnubo.getApi().getOwnerOperations().create(username, newValue, ownerBody);
+        Mnubo.getApi().getOwnerOperations().create(newValue, ownerBody);
     }
 
     @Test
@@ -223,28 +223,6 @@ public class EndtoEndTesting {
             @Override
             public void throwing() throws Exception {
                 Mnubo.getApi().getSmartObjectOperations().update("unknown_device", objectBody);
-            }
-        });
-        assertable.assertClass(MnuboException.class);
-        assertable.assertMessage("The response code [403] was not in the 2xx family. The error message was: Access Denied");
-    }
-
-    @Test
-    public void testAttemptToUpdateAnotherOwner() throws Exception {
-        assertTrue("Test was not initialized.", initialized);
-
-        final String unknownUsername = "unknownOwner@mnubo.com";
-        final String firstName = "firstnameAt" + DateTime.now();
-        final Owner ownerBody = Owner.builder()
-                .attribute("x_registration_date", timestamp)
-                .attribute("firstname", firstName)
-                .build();
-
-        //Update owner
-        ThrowableAssert assertable = ThrowableAssert.assertThrown(new ThrowableAssert.Thrower() {
-            @Override
-            public void throwing() throws Exception {
-                Mnubo.getApi().getOwnerOperations().update(unknownUsername, ownerBody);
             }
         });
         assertable.assertClass(MnuboException.class);

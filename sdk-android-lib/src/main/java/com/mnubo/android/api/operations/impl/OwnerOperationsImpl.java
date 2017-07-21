@@ -46,31 +46,31 @@ public class OwnerOperationsImpl implements OwnerOperations {
     }
 
     @Override
-    public void updateAsync(final String username, final Owner owner, CompletionCallback<Void> callback) {
+    public void updateAsync(final Owner owner, CompletionCallback<Void> callback) {
         executeAsync(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                ownerService.update(username, owner);
+                ownerService.update(owner);
                 return null;
             }
         }, callback);
     }
     @Override
-    public void update(String username, Owner owner) throws MnuboException {
-        ownerService.update(username, owner);
+    public void update(Owner owner) throws MnuboException {
+        ownerService.update(owner);
     }
 
     @Override
-    public void create(String username, String password, Owner owner) throws MnuboException {
-        ownerService.create(username, password, owner);
+    public void create(String password, Owner owner) throws MnuboException {
+        ownerService.create(password, owner);
     }
 
     @Override
-    public void createAsync(final String username, final String password, final Owner owner, CompletionCallback<Void> callback) {
+    public void createAsync(final String password, final Owner owner, CompletionCallback<Void> callback) {
         executeAsync(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                ownerService.create(username, password, owner);
+                ownerService.create(password, owner);
                 return null;
             }
         }, callback);

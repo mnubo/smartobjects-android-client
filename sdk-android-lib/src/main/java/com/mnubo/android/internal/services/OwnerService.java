@@ -30,9 +30,9 @@ import lombok.NonNull;
 
 public interface OwnerService {
 
-    void update(String username, Owner owner) throws MnuboException;
+    void update(Owner owner) throws MnuboException;
 
-    void create(String username, String password, Owner owner) throws MnuboException;
+    void create(String password, Owner owner) throws MnuboException;
 
     void createObject(String deviceId, String objectType, SmartObject smartObject) throws MnuboException;
 }

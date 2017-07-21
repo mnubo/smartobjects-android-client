@@ -74,7 +74,6 @@ public class OwnerServiceImplTest {
     public void testUpdate() throws Exception {
         server.enqueue(new MockResponse().setResponseCode(200));
 
-        String username = "username";
         DateTime now = DateTime.now(UTC);
 
         Owner owner = Owner.builder()
@@ -83,7 +82,7 @@ public class OwnerServiceImplTest {
                 .attribute("x_registration_longitude", 45.321d)
                 .build();
 
-        ownerService.update(username, owner);
+        ownerService.update(owner);
 
         String expectedPayload = JsonUtils.toJson(owner);
         RecordedRequest request = server.takeRequest();
@@ -97,7 +96,6 @@ public class OwnerServiceImplTest {
     public void testCreate() throws Exception {
         server.enqueue(new MockResponse().setResponseCode(200));
 
-        String username = "username";
         String password = "passs";
         DateTime now = DateTime.now(UTC);
 
@@ -113,7 +111,7 @@ public class OwnerServiceImplTest {
             .attribute("x_password", password)
             .build();
 
-        ownerService.create(username, password, owner);
+        ownerService.create(password, owner);
 
         String expectedPayload = JsonUtils.toJson(created);
         RecordedRequest request = server.takeRequest();

@@ -33,9 +33,9 @@ import com.mnubo.android.models.SmartObject;
  */
 public interface OwnerOperations extends OwnerService {
 
-    void updateAsync(String username, Owner owner, CompletionCallback<Void> callback);
+    void updateAsync(Owner owner, CompletionCallback<Void> callback);
 
-    void createAsync(String username, String password, Owner owner, CompletionCallback<Void> callback);
+    void createAsync(String password, Owner owner, CompletionCallback<Void> callback);
 
     void createObjectAsync(String deviceId, String objectType, SmartObject smartObject, CompletionCallback<Void> callback);
 }
