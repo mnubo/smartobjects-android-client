@@ -46,6 +46,16 @@ public class OwnerServiceImpl extends AbstractMnuboService implements OwnerServi
     }
 
     @Override
+    public void delete() throws MnuboException {
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl(), getUsername()))
+                        .delete()
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
     public void update(@NonNull Owner owner) throws MnuboException {
         Request request =
                 requestBuilder()

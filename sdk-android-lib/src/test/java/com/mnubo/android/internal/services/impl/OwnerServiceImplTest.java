@@ -122,6 +122,18 @@ public class OwnerServiceImplTest {
     }
 
     @Test
+    public void testDelete() throws Exception {
+        server.enqueue(new MockResponse().setResponseCode(200));
+
+        ownerService.delete();
+
+        RecordedRequest request = server.takeRequest();
+        assertThat(request.getHeader("Authorization"), is(equalTo("Bearer " + "token")));
+        assertThat(request.getPath(), is(equalTo(String.format("/rest/owners/%s", username))));
+        assertThat(request.getMethod(), is(equalTo("DELETE")));
+    }
+
+    @Test
     public void testCreateObject() throws Exception {
         server.enqueue(new MockResponse().setResponseCode(200));
 

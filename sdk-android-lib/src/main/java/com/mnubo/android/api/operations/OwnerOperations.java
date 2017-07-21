@@ -33,6 +33,8 @@ import com.mnubo.android.models.SmartObject;
  */
 public interface OwnerOperations extends OwnerService {
 
+    void deleteAsync(CompletionCallback<Void> callback);
+
     void updateAsync(Owner owner, CompletionCallback<Void> callback);
 
     void createAsync(String password, Owner owner, CompletionCallback<Void> callback);
