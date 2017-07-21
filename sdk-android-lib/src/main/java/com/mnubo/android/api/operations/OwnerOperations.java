@@ -40,4 +40,6 @@ public interface OwnerOperations extends OwnerService {
     void createAsync(String password, Owner owner, CompletionCallback<Void> callback);
 
     void createObjectAsync(String deviceId, String objectType, SmartObject smartObject, CompletionCallback<Void> callback);
+
+    void deleteObjectAsync(String deviceId, CompletionCallback<Void> callback);
 }

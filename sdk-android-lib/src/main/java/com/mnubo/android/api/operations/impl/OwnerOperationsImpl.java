@@ -107,4 +107,20 @@ public class OwnerOperationsImpl implements OwnerOperations {
             }
         }, callback);
     }
+
+    @Override
+    public void deleteObject(String deviceId) throws MnuboException {
+        ownerService.deleteObject(deviceId);
+    }
+
+    @Override
+    public void deleteObjectAsync(final String deviceId, CompletionCallback<Void> callback) {
+        executeAsync(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                ownerService.deleteObject(deviceId);
+                return null;
+            }
+        }, callback);
+    }
 }

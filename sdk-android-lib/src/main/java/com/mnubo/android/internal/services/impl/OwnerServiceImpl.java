@@ -30,7 +30,6 @@ import com.mnubo.android.models.SmartObject;
 
 import lombok.NonNull;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 import static com.mnubo.android.models.Owner.OWNERS_PATH;
@@ -95,6 +94,16 @@ public class OwnerServiceImpl extends AbstractMnuboService implements OwnerServi
                 requestBuilder()
                         .url(addPathVariables(getUrl(), getUsername(), SmartObject.OBJECTS_PATH))
                         .post(buildBody(toCreate))
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
+    public void deleteObject(@NonNull String deviceId) throws MnuboException {
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl(), getUsername(), SmartObject.OBJECTS_PATH, deviceId))
+                        .delete()
                         .build();
         executeAndThrowOnFailure(getOkHttpClient(), request);
     }

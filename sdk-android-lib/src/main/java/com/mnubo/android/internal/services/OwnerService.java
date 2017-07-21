@@ -37,4 +37,6 @@ public interface OwnerService {
     void create(String password, Owner owner) throws MnuboException;
 
     void createObject(String deviceId, String objectType, SmartObject smartObject) throws MnuboException;
+
+    void deleteObject(String deviceId) throws MnuboException;
 }

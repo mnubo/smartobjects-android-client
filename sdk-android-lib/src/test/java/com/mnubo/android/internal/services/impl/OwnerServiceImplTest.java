@@ -161,4 +161,18 @@ public class OwnerServiceImplTest {
         assertThat(request.getMethod(), is(equalTo("POST")));
         assertThat(request.getBody().readUtf8(), is(equalTo(expectedPayload)));
     }
+
+    @Test
+    public void testDeleteObject() throws Exception {
+        server.enqueue(new MockResponse().setResponseCode(200));
+
+        final String deviceId = "deviceId";
+
+        ownerService.deleteObject(deviceId);
+
+        RecordedRequest request = server.takeRequest();
+        assertThat(request.getHeader("Authorization"), is(equalTo("Bearer " + "token")));
+        assertThat(request.getPath(), is(equalTo(String.format("/rest/owners/%s/objects/%s", username, deviceId))));
+        assertThat(request.getMethod(), is(equalTo("DELETE")));
+    }
 }

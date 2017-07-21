@@ -164,6 +164,8 @@ public class EndtoEndTesting {
                 .attribute(REG_DATE, timestamp)
                 .build();
         Mnubo.getApi().getOwnerOperations().createObject(newValue, objectType, objectBody);
+
+        Mnubo.getApi().getOwnerOperations().deleteObject(newValue);
     }
 
     @Test
