@@ -125,11 +125,18 @@ public class EndtoEndTesting {
     }
 
     @Test
-    public void testSendEvents() throws Exception {
+    public void testCreateObjectAndSendEventsOnIt() throws Exception {
         assertTrue("Test was not initialized.", initialized);
 
         final UUID eventId1 = UUID.randomUUID();
         final UUID eventId2 = UUID.randomUUID();
+
+        final String newValue = UUID.randomUUID().toString();
+        SmartObject objectBody = SmartObject.builder()
+                .attribute(OBJECT_TEXT_ATTR, newValue)
+                .attribute(REG_DATE, timestamp)
+                .build();
+        Mnubo.getApi().getOwnerOperations().createObject(newValue, objectType, objectBody);
 
         final String value1 = "value-" + eventId1.toString();
         final String value2 = "value-" + eventId2.toString();
@@ -138,7 +145,7 @@ public class EndtoEndTesting {
             add(Event.builder().eventType(eventType).timeserie(TIMESTAMP, timestamp).timeserie(EVENT_ID, eventId1.toString()).timeserie(TIMESERIES_TEXT_ATTR, value1).build());
             add(Event.builder().eventType(eventType).timeserie(TIMESTAMP, timestamp).timeserie(EVENT_ID, eventId2.toString()).timeserie(TIMESERIES_TEXT_ATTR, value2).build());
         }};
-        Mnubo.getApi().getEventOperations().sendEvents(deviceId, events);
+        Mnubo.getApi().getEventOperations().sendEvents(newValue, events);
     }
 
     @Test
@@ -152,20 +159,6 @@ public class EndtoEndTesting {
                 .attribute(REG_DATE, timestamp)
                 .build();
         Mnubo.getApi().getSmartObjectOperations().update(deviceId, objectBody);
-    }
-
-    @Test
-    public void testCreateOwnersObject() throws Exception {
-        assertTrue("Test was not initialized.", initialized);
-
-        final String newValue = UUID.randomUUID().toString();
-        SmartObject objectBody = SmartObject.builder()
-                .attribute(OBJECT_TEXT_ATTR, newValue)
-                .attribute(REG_DATE, timestamp)
-                .build();
-        Mnubo.getApi().getOwnerOperations().createObject(newValue, objectType, objectBody);
-
-        Mnubo.getApi().getOwnerOperations().deleteObject(newValue);
     }
 
     @Test
@@ -185,13 +178,20 @@ public class EndtoEndTesting {
         assertTrue("Test was not initialized.", initialized);
 
         final String newValue = UUID.randomUUID().toString();
-        Owner ownerBody = Owner.builder()
+        final Owner ownerBody = Owner.builder()
                 .attribute(OWNER_TEXT_ATTR, newValue)
                 .attribute(REG_DATE, timestamp)
                 .build();
-        Mnubo.getApi().getOwnerOperations().create(newValue, ownerBody);
 
-        Mnubo.getApi().getOwnerOperations().delete();
+        // This is because the owner is created by the test to get credentials
+        ThrowableAssert assertable = ThrowableAssert.assertThrown(new ThrowableAssert.Thrower() {
+            @Override
+            public void throwing() throws Exception {
+                Mnubo.getApi().getOwnerOperations().create(newValue, ownerBody);
+            }
+        });
+        assertable.assertClass(MnuboException.class);
+        assertable.assertMessage(String.format("The response code [409] was not in the 2xx family. The error message was: The username %s is already in use.", username));
     }
 
     @Test
