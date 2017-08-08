@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,7 @@ package com.mnubo.android.api.operations;
 import com.mnubo.android.api.CompletionCallback;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
 
 /**
  * The OwnerOperations interface allows you to query the mnubo API the user resources of the mnubo
@@ -32,5 +33,13 @@ import com.mnubo.android.models.Owner;
  */
 public interface OwnerOperations extends OwnerService {
 
-    void updateAsync(String username, Owner owner, CompletionCallback<Void> callback);
+    void deleteAsync(CompletionCallback<Void> callback);
+
+    void updateAsync(Owner owner, CompletionCallback<Void> callback);
+
+    void createAsync(String password, Owner owner, CompletionCallback<Void> callback);
+
+    void createObjectAsync(String deviceId, String objectType, SmartObject smartObject, CompletionCallback<Void> callback);
+
+    void deleteObjectAsync(String deviceId, CompletionCallback<Void> callback);
 }

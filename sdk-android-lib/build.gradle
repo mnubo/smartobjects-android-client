@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,11 @@ version = VERSION_NAME
 android {
     compileSdkVersion 24
     //https://developer.android.com/studio/releases/build-tools.html
-    buildToolsVersion "24.0.3" // make sure this number matches .travis.yml
+    buildToolsVersion '25.0.0' // make sure this number matches .travis.yml
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode = VERSION_CODE
         versionName = getVersionName()
     }
@@ -57,8 +57,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     provided 'org.projectlombok:lombok:1.16.10'
-    compile 'com.squareup.okio:okio:1.11.0'
-    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.okio:okio:1.13.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 
     compile 'joda-time:joda-time:2.9.4'
 
@@ -66,7 +66,7 @@ dependencies {
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.4'
 
     testCompile "junit:junit:4.12"
-    testCompile 'com.squareup.okhttp3:mockwebserver:3.1.2'
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.8.1'
     testCompile("org.mockito:mockito-core:1.9.5")
 
     testCompile "org.powermock:powermock-module-junit4:1.6.1"

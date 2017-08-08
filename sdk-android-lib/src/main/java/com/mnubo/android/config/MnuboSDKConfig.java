@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,12 +42,10 @@ public class MnuboSDKConfig {
 
     public static String CONFIG_URL = "mnubo.url";
     public static String CONFIG_INGESTION_URL = "mnubo.url.ingestion";
-    public static String CONFIG_RESTITUTION_URL = "mnubo.url.restitution";
     public static String CONFIG_OAUTH_URL = "mnubo.url.oauth";
 
     private final static String defaultIngestionPath = "/api/v3";
     private final static String defaultOAuthPath = "/oauth/token";
-    private final static String defaultRestitutionPath = "/search";
 
     @NonNull
     private final String key;
@@ -55,16 +53,13 @@ public class MnuboSDKConfig {
     private final HttpUrl oauthUrl;
     @NonNull
     private final HttpUrl ingestionUrl;
-    @NonNull
-    private final HttpUrl restitutionUrl;
 
-    MnuboSDKConfig(String key, HttpUrl oauthUrl, HttpUrl ingestionUrl, HttpUrl restitutionUrl) {
+    MnuboSDKConfig(String key, HttpUrl oauthUrl, HttpUrl ingestionUrl) {
         ValidationUtils.notNullOrEmpty(key, "consumerKey must not be empty");
 
         this.key = key;
         this.oauthUrl = oauthUrl;
         this.ingestionUrl = ingestionUrl;
-        this.restitutionUrl = restitutionUrl;
     }
 
     public static MnuboSDKConfig withProperties(@NonNull Properties properties) {
@@ -75,17 +70,15 @@ public class MnuboSDKConfig {
 
         final String oauthUrl = properties.getProperty(CONFIG_OAUTH_URL, defaultUrl + defaultOAuthPath);
         final String ingestionUrl = properties.getProperty(CONFIG_INGESTION_URL, defaultUrl + defaultIngestionPath);
-        final String restitutionUrl = properties.getProperty(CONFIG_RESTITUTION_URL, defaultUrl + defaultRestitutionPath);
 
-        return new MnuboSDKConfig(key, parseIfValid(oauthUrl), parseIfValid(ingestionUrl), parseIfValid(restitutionUrl));
+        return new MnuboSDKConfig(key, parseIfValid(oauthUrl), parseIfValid(ingestionUrl));
     }
 
     public static MnuboSDKConfig withUrlAndKey(String hostname,
                                                String key) {
         return new MnuboSDKConfig(key,
                 parseIfValid(hostname + defaultOAuthPath),
-                parseIfValid(hostname + defaultIngestionPath),
-                parseIfValid(hostname + defaultRestitutionPath));
+                parseIfValid(hostname + defaultIngestionPath));
     }
 
     private static HttpUrl parseIfValid(@NonNull String url) {

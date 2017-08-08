@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@ import android.util.Log;
 
 import com.mnubo.android.api.AuthenticationProblemCallback;
 import com.mnubo.android.config.MnuboSDKConfig;
+import com.mnubo.android.config.SupportedIsp;
 import com.mnubo.android.internal.connect.interceptor.AccessTokenAuthenticationInterceptor;
 import com.mnubo.android.utils.TimeUtils;
 
@@ -91,7 +92,6 @@ public class MnuboConnectionManagerTest {
                 .key("key")
                 .ingestionUrl(server.url("/rest"))
                 .oauthUrl(server.url("/oauth/token"))
-                .restitutionUrl(server.url("/rest"))
                 .build();
 
         authenticationProblemCallback = mock(AuthenticationProblemCallback.class);
@@ -226,6 +226,21 @@ public class MnuboConnectionManagerTest {
         assertThat(request.getPath(), equalTo("/oauth/token"));
         assertThat(request.getMethod(), equalTo("POST"));
         assertThat(request.getBody().readUtf8(), equalTo("client_id=key&username=username&password=password&grant_type=password"));
+    }
+
+    @Test
+    public void testLogInWithIsp_whenNotConnected() throws Exception {
+        initNotConnected();
+        server.enqueue(new MockResponse().setResponseCode(200).setBody(tokenPayload));
+
+        boolean success = testee.logIn("username", "mytoken", SupportedIsp.FACEBOOK);
+
+        assertThat(success, equalTo(true));
+
+        RecordedRequest request = server.takeRequest();
+        assertThat(request.getPath(), equalTo("/oauth/token"));
+        assertThat(request.getMethod(), equalTo("POST"));
+        assertThat(request.getBody().readUtf8(), equalTo("client_id=key&isp_token=mytoken&isp=facebook&grant_type=isp_token"));
     }
 
     @Test

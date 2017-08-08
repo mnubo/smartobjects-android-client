@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,10 @@ import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.internal.connect.MnuboConnectionManager;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
 
 import lombok.NonNull;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 import static com.mnubo.android.models.Owner.OWNERS_PATH;
@@ -45,11 +45,65 @@ public class OwnerServiceImpl extends AbstractMnuboService implements OwnerServi
     }
 
     @Override
-    public void update(@NonNull String username,@NonNull Owner owner) throws MnuboException {
+    public void delete() throws MnuboException {
         Request request =
                 requestBuilder()
-                        .url(addPathVariables(getUrl(), username))
+                        .url(addPathVariables(getUrl(), getUsername()))
+                        .delete()
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
+    public void update(@NonNull Owner owner) throws MnuboException {
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl(), getUsername()))
                         .put(buildBody(owner))
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
+    public void create(String password, Owner owner) throws MnuboException {
+        final Owner toCreate =
+                Owner.builder()
+                .attributes(owner.getAttributes())
+                .attribute("username", getUsername())
+                .attribute("x_password", password)
+                .build();
+
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl()))
+                        .post(buildBody(toCreate))
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
+    public void createObject(@NonNull String deviceId, @NonNull String objectType, @NonNull SmartObject smartObject) throws MnuboException {
+        final SmartObject toCreate =
+                SmartObject.builder()
+                        .attributes(smartObject.getAttributes())
+                        .attribute("x_device_id", deviceId)
+                        .attribute("x_object_type", objectType)
+                        .build();
+
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl(), getUsername(), SmartObject.OBJECTS_PATH))
+                        .post(buildBody(toCreate))
+                        .build();
+        executeAndThrowOnFailure(getOkHttpClient(), request);
+    }
+
+    @Override
+    public void deleteObject(@NonNull String deviceId) throws MnuboException {
+        Request request =
+                requestBuilder()
+                        .url(addPathVariables(getUrl(), getUsername(), SmartObject.OBJECTS_PATH, deviceId))
+                        .delete()
                         .build();
         executeAndThrowOnFailure(getOkHttpClient(), request);
     }

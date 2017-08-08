@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     //https://developer.android.com/studio/releases/build-tools.html
-    buildToolsVersion "24.0.3"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.mnubo.android_sdk_v3"
         minSdkVersion 22
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -66,10 +66,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     // https://developer.android.com/topic/libraries/support-library/features.html
-    compile 'com.android.support:support-compat:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:support-compat:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     // This is where you'd typically add the dependency like:
     //compile 'com.mnubo:sdk-android-lib:2.+'
     compile project(':sdk-android-lib')
+
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     testCompile 'junit:junit:4.12'
 }

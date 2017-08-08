@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.mnubo.android.api.AuthenticationProblemCallback;
 import com.mnubo.android.config.MnuboSDKConfig;
+import com.mnubo.android.config.SupportedIsp;
 import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.exceptions.MnuboNotLoggedInException;
 import com.mnubo.android.internal.connect.interceptor.AccessTokenAuthenticationInterceptor;
@@ -110,7 +111,13 @@ public class MnuboConnectionManager {
 
     public boolean logIn(String username, String password) {
         this.logOut();
-        this.currentConnection = this.fetchAccessToken(username, password);
+        this.currentConnection = this.logWithOwnerPassword(username, password);
+        return currentConnection != null;
+    }
+
+    public boolean logIn(String username, String token, SupportedIsp isp) {
+        this.logOut();
+        this.currentConnection = this.logWithIspToken(username, token, isp);
         return currentConnection != null;
     }
 
@@ -131,7 +138,7 @@ public class MnuboConnectionManager {
 
     }
 
-    MnuboConnection fetchAccessToken(@NonNull String username, @NonNull String password) {
+    MnuboConnection logWithOwnerPassword(@NonNull String username, @NonNull String password) {
 
         RequestBody body = new FormBody.Builder()
                 .add("client_id", config.getKey())
@@ -148,6 +155,29 @@ public class MnuboConnectionManager {
         try {
             MnuboConnection.Token token = executeForBodyAsObject(okHttpClient, request, MnuboConnection.Token.class);
             return new MnuboConnection(username, token);
+        } catch (MnuboException e) {
+            Log.d(TAG, "A error occurred while authenticating.", e);
+            return null;
+        }
+    }
+
+    MnuboConnection logWithIspToken(@NonNull String username, @NonNull String token, @NonNull SupportedIsp isp) {
+
+        RequestBody body = new FormBody.Builder()
+                .add("client_id", config.getKey())
+                .add("isp_token", token)
+                .add("isp", isp.name().toLowerCase())
+                .add("grant_type", "isp_token")
+                .build();
+
+        Request request = new Request.Builder()
+                .url(config.getOauthUrl())
+                .post(body)
+                .build();
+
+        try {
+            MnuboConnection.Token mnuboToken = executeForBodyAsObject(okHttpClient, request, MnuboConnection.Token.class);
+            return new MnuboConnection(username, mnuboToken);
         } catch (MnuboException e) {
             Log.d(TAG, "A error occurred while authenticating.", e);
             return null;

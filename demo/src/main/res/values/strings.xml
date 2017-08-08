@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016 Mnubo. Released under MIT License.
+  ~ Copyright (c) 2017 Mnubo. Released under MIT License.
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,9 @@
   -->
 
 <resources>
+    <string name="facebook_app_id">329520327505976</string>
+    <string name="fb_login_protocol_scheme">fb329520327505976</string>
+
     <string name="app_name">android-sdk-v3</string>
     <string name="app_name_windturbine">Wind Turbine</string>
     <string name="app_name_tennis">Tennis</string>
@@ -31,7 +34,9 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
 
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_facebook_sign_in">Facebook Sign In</string>
+    <string name="action_username_password_sign_in">Sign in w/ email</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -65,4 +70,8 @@
     <string name="menu_logout">Log out</string>
 
     <string name="title_activity_owner_with_menu">OwnerWithMenuActivity</string>
+    <string name="title_activity_token_login">Sign in</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>

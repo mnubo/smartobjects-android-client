@@ -19,21 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.mnubo.android.config;
 
-package com.mnubo.android.api;
 
-import com.mnubo.android.exceptions.MnuboException;
-
-/**
- * Interface definition for a callback to be invoked when an action an request to mnubo API as
- * returned, successful or not.
- *
- * @param <Type> The type of <code>result</code>result that will be sent in the {link CompletionCallback#onSuccess} method
- */
-public interface CompletionCallback<Type> {
-
-    void onSuccess(Type result);
-
-    void onFailure(MnuboException exception);
+public enum SupportedIsp {
+    GOOGLE, MICROSOFT, FACEBOOK
 }
-

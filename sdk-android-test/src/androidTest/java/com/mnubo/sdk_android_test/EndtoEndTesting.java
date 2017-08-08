@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -125,11 +125,18 @@ public class EndtoEndTesting {
     }
 
     @Test
-    public void testSendEvents() throws Exception {
+    public void testCreateObjectAndSendEventsOnIt() throws Exception {
         assertTrue("Test was not initialized.", initialized);
 
         final UUID eventId1 = UUID.randomUUID();
         final UUID eventId2 = UUID.randomUUID();
+
+        final String newValue = UUID.randomUUID().toString();
+        SmartObject objectBody = SmartObject.builder()
+                .attribute(OBJECT_TEXT_ATTR, newValue)
+                .attribute(REG_DATE, timestamp)
+                .build();
+        Mnubo.getApi().getOwnerOperations().createObject(newValue, objectType, objectBody);
 
         final String value1 = "value-" + eventId1.toString();
         final String value2 = "value-" + eventId2.toString();
@@ -138,31 +145,7 @@ public class EndtoEndTesting {
             add(Event.builder().eventType(eventType).timeserie(TIMESTAMP, timestamp).timeserie(EVENT_ID, eventId1.toString()).timeserie(TIMESERIES_TEXT_ATTR, value1).build());
             add(Event.builder().eventType(eventType).timeserie(TIMESTAMP, timestamp).timeserie(EVENT_ID, eventId2.toString()).timeserie(TIMESERIES_TEXT_ATTR, value2).build());
         }};
-        Mnubo.getApi().getEventOperations().sendEvents(deviceId, events);
-
-        eventually(new Runnable() {
-            @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchEvent(eventId1, EVENT_ID, TIMESERIES_TEXT_ATTR, TIMESTAMP);
-
-                assertEquals(eventId1.toString(), objectAfterUpdate.get(text(EVENT_ID)));
-                assertEquals(timestamp.toString(), objectAfterUpdate.get(datetime(TIMESTAMP)));
-                assertEquals(value1, objectAfterUpdate.get(text(TIMESERIES_TEXT_ATTR)));
-            }
-        });
-
-        eventually(new Runnable() {
-            @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchEvent(eventId2, EVENT_ID, TIMESERIES_TEXT_ATTR, TIMESTAMP);
-
-                assertEquals(eventId2.toString(), objectAfterUpdate.get(text(EVENT_ID)));
-                assertEquals(timestamp.toString(), objectAfterUpdate.get(datetime(TIMESTAMP)));
-                assertEquals(value2, objectAfterUpdate.get(text(TIMESERIES_TEXT_ATTR)));
-            }
-        });
+        Mnubo.getApi().getEventOperations().sendEvents(newValue, events);
     }
 
     @Test
@@ -176,18 +159,6 @@ public class EndtoEndTesting {
                 .attribute(REG_DATE, timestamp)
                 .build();
         Mnubo.getApi().getSmartObjectOperations().update(deviceId, objectBody);
-
-        eventually(new Runnable() {
-            @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchObject(deviceId, DEVICE_ID, OBJECT_TYPE, OBJECT_TEXT_ATTR, REG_DATE);
-
-                assertEquals(deviceId, objectAfterUpdate.get(text(DEVICE_ID)));
-                assertEquals(newValue, objectAfterUpdate.get(text(OBJECT_TEXT_ATTR)));
-                assertEquals(objectType, objectAfterUpdate.get(text(OBJECT_TYPE)));
-            }
-        });
     }
 
     @Test
@@ -199,18 +170,28 @@ public class EndtoEndTesting {
                 .attribute(OWNER_TEXT_ATTR, newValue)
                 .attribute(REG_DATE, timestamp)
                 .build();
-        Mnubo.getApi().getOwnerOperations().update(username, ownerBody);
+        Mnubo.getApi().getOwnerOperations().update(ownerBody);
+    }
 
-        eventually(new Runnable() {
+    @Test
+    public void testCreateOwner() throws Exception {
+        assertTrue("Test was not initialized.", initialized);
+
+        final String newValue = UUID.randomUUID().toString();
+        final Owner ownerBody = Owner.builder()
+                .attribute(OWNER_TEXT_ATTR, newValue)
+                .attribute(REG_DATE, timestamp)
+                .build();
+
+        // This is because the owner is created by the test to get credentials
+        ThrowableAssert assertable = ThrowableAssert.assertThrown(new ThrowableAssert.Thrower() {
             @Override
-            public void run() {
-                Map<SearchResultColumn, Object> objectAfterUpdate =
-                        mnuboTestHelper.searchOwner(username, USERNAME, OWNER_TEXT_ATTR, REG_DATE);
-
-                assertEquals(username, objectAfterUpdate.get(text(USERNAME)));
-                assertEquals(newValue, objectAfterUpdate.get(text(OWNER_TEXT_ATTR)));
+            public void throwing() throws Exception {
+                Mnubo.getApi().getOwnerOperations().create(newValue, ownerBody);
             }
         });
+        assertable.assertClass(MnuboException.class);
+        assertable.assertMessage(String.format("The response code [409] was not in the 2xx family. The error message was: The username %s is already in use.", username));
     }
 
     @Test
@@ -246,28 +227,6 @@ public class EndtoEndTesting {
             @Override
             public void throwing() throws Exception {
                 Mnubo.getApi().getSmartObjectOperations().update("unknown_device", objectBody);
-            }
-        });
-        assertable.assertClass(MnuboException.class);
-        assertable.assertMessage("The response code [403] was not in the 2xx family. The error message was: Access Denied");
-    }
-
-    @Test
-    public void testAttemptToUpdateAnotherOwner() throws Exception {
-        assertTrue("Test was not initialized.", initialized);
-
-        final String unknownUsername = "unknownOwner@mnubo.com";
-        final String firstName = "firstnameAt" + DateTime.now();
-        final Owner ownerBody = Owner.builder()
-                .attribute("x_registration_date", timestamp)
-                .attribute("firstname", firstName)
-                .build();
-
-        //Update owner
-        ThrowableAssert assertable = ThrowableAssert.assertThrown(new ThrowableAssert.Thrower() {
-            @Override
-            public void throwing() throws Exception {
-                Mnubo.getApi().getOwnerOperations().update(unknownUsername, ownerBody);
             }
         });
         assertable.assertClass(MnuboException.class);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -51,6 +51,10 @@ abstract class AbstractMnuboService {
         this.url = platformBaseUrl.newBuilder()
                 .addPathSegment(path)
                 .build();
+    }
+
+    protected String getUsername() {
+        return mnuboConnectionManager.getUsername();
     }
 
     protected Request.Builder requestBuilder() {

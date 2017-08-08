@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -60,7 +60,6 @@ public class MnuboTest {
             .key("key")
             .ingestionUrl(HttpUrl.parse("http://example.com"))
             .oauthUrl(HttpUrl.parse("http://example.com"))
-            .restitutionUrl(HttpUrl.parse("http://example.com"))
             .build();
 
     @Before

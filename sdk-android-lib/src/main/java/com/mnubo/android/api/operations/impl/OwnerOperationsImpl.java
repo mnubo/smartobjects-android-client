@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import com.mnubo.android.internal.connect.MnuboConnectionManager;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.internal.services.impl.OwnerServiceImpl;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
 
 import java.util.concurrent.Callable;
 
@@ -45,17 +46,81 @@ public class OwnerOperationsImpl implements OwnerOperations {
     }
 
     @Override
-    public void updateAsync(final String username, final Owner owner, CompletionCallback<Void> callback) {
+    public void delete() throws MnuboException {
+        ownerService.delete();
+    }
+
+    @Override
+    public void deleteAsync(CompletionCallback<Void> callback) {
         executeAsync(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                ownerService.update(username, owner);
+                ownerService.delete();
+                return null;
+            }
+        }, callback);
+    }
+
+    @Override
+    public void updateAsync(final Owner owner, CompletionCallback<Void> callback) {
+        executeAsync(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                ownerService.update(owner);
                 return null;
             }
         }, callback);
     }
     @Override
-    public void update(String username, Owner owner) throws MnuboException {
-        ownerService.update(username, owner);
+    public void update(Owner owner) throws MnuboException {
+        ownerService.update(owner);
+    }
+
+    @Override
+    public void create(String password, Owner owner) throws MnuboException {
+        ownerService.create(password, owner);
+    }
+
+    @Override
+    public void createAsync(final String password, final Owner owner, CompletionCallback<Void> callback) {
+        executeAsync(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                ownerService.create(password, owner);
+                return null;
+            }
+        }, callback);
+    }
+
+    @Override
+    public void createObject(final String deviceId, final String objectType, final SmartObject smartObject) throws MnuboException {
+        ownerService.createObject(deviceId, objectType, smartObject);
+    }
+
+    @Override
+    public void createObjectAsync(final String deviceId, final String objectType, final SmartObject smartObject, CompletionCallback<Void> callback) {
+        executeAsync(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                ownerService.createObject(deviceId, objectType, smartObject);
+                return null;
+            }
+        }, callback);
+    }
+
+    @Override
+    public void deleteObject(String deviceId) throws MnuboException {
+        ownerService.deleteObject(deviceId);
+    }
+
+    @Override
+    public void deleteObjectAsync(final String deviceId, CompletionCallback<Void> callback) {
+        executeAsync(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                ownerService.deleteObject(deviceId);
+                return null;
+            }
+        }, callback);
     }
 }

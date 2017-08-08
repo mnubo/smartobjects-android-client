@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -58,7 +58,6 @@ public class MnuboSDKConfigTest {
         completeProps.put(MnuboSDKConfig.CONFIG_KEY, "key");
         completeProps.put(MnuboSDKConfig.CONFIG_URL, "http://valid.com");
         completeProps.put(MnuboSDKConfig.CONFIG_INGESTION_URL, "http://valid.com/ingestion");
-        completeProps.put(MnuboSDKConfig.CONFIG_RESTITUTION_URL, "http://valid.com/restitution");
         completeProps.put(MnuboSDKConfig.CONFIG_OAUTH_URL, "http://valid.com/oauth/token");
     }
 
@@ -74,7 +73,6 @@ public class MnuboSDKConfigTest {
 
         assertThat(actual.getOauthUrl().toString(), equalTo("http://valid.com/oauth/token"));
         assertThat(actual.getIngestionUrl().toString(), equalTo("http://valid.com/api/v3"));
-        assertThat(actual.getRestitutionUrl().toString(), equalTo("http://valid.com/search"));
 
     }
 
@@ -111,7 +109,6 @@ public class MnuboSDKConfigTest {
 
         assertThat(actual.getOauthUrl().toString(), equalTo("http://valid.com/oauth/token"));
         assertThat(actual.getIngestionUrl().toString(), equalTo("http://valid.com/api/v3"));
-        assertThat(actual.getRestitutionUrl().toString(), equalTo("http://valid.com/search"));
     }
 
     @Test
@@ -121,6 +118,5 @@ public class MnuboSDKConfigTest {
 
         assertThat(actual.getOauthUrl().toString(), equalTo("http://valid.com/oauth/token"));
         assertThat(actual.getIngestionUrl().toString(), equalTo("http://valid.com/ingestion"));
-        assertThat(actual.getRestitutionUrl().toString(), equalTo("http://valid.com/restitution"));
     }
 }

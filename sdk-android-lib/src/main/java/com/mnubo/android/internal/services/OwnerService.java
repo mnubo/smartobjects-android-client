@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,19 @@ package com.mnubo.android.internal.services;
 
 import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.models.Owner;
+import com.mnubo.android.models.SmartObject;
+
+import lombok.NonNull;
 
 public interface OwnerService {
 
-    void update(String username, Owner owner) throws MnuboException;
+    void delete() throws MnuboException;
 
+    void update(Owner owner) throws MnuboException;
+
+    void create(String password, Owner owner) throws MnuboException;
+
+    void createObject(String deviceId, String objectType, SmartObject smartObject) throws MnuboException;
+
+    void deleteObject(String deviceId) throws MnuboException;
 }

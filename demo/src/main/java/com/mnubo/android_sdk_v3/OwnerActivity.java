@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -66,14 +66,13 @@ public class OwnerActivity extends AbstractLoggedInActivity {
     private void updateOwner() {
         String attribute1 = mAttribute1.getText().toString();
 
-        String username = "PgMKqC";
         Owner owner =
                 Owner.builder()
                         .attribute("attribute1", attribute1)
                         .build();
 
         showProgress(true, mProgressView, mUpdateOwnerView);
-        Mnubo.getApi().getOwnerOperations().updateAsync(username, owner,
+        Mnubo.getApi().getOwnerOperations().updateAsync(owner,
                 new CompletionCallback<Void>() {
                     @Override
                     public void onSuccess(Void result) {

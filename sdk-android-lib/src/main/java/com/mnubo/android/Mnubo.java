@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Mnubo. Released under MIT License.
+ * Copyright (c) 2017 Mnubo. Released under MIT License.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@ import com.mnubo.android.api.AuthenticationProblemCallback;
 import com.mnubo.android.api.MnuboApi;
 import com.mnubo.android.api.MnuboStore;
 import com.mnubo.android.config.MnuboSDKConfig;
+import com.mnubo.android.config.SupportedIsp;
 import com.mnubo.android.exceptions.MnuboAlreadyInitializedException;
 import com.mnubo.android.exceptions.MnuboNotInitializedException;
 import com.mnubo.android.internal.connect.MnuboConnectionManager;
@@ -119,6 +120,21 @@ public class Mnubo {
             throw new MnuboNotInitializedException();
         }
         return instance.mnuboConnectionManager.logIn(username, password);
+    }
+
+    /**
+     * Perform a login operation, you should run this asynchronously as it performs Network IO
+     * @param username username from the service provider used
+     * @param token token from the service provider used, the token should belong to the username
+     * @param isp identity service provider you used to fetch the token
+     * @return true if succeed and a connection was acquired, false if it failed
+     * @throws MnuboNotInitializedException if Mnubo.init was not called prior to this call
+     */
+    public static boolean logIn(String username, String token, SupportedIsp isp) throws MnuboNotInitializedException {
+        if (instance == null) {
+            throw new MnuboNotInitializedException();
+        }
+        return instance.mnuboConnectionManager.logIn(username, token, isp);
     }
 
     /**
