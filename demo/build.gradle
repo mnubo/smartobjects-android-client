@@ -25,7 +25,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     //https://developer.android.com/studio/releases/build-tools.html
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.mnubo.android_sdk_v3"
