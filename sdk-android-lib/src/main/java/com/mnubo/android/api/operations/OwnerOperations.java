@@ -23,6 +23,7 @@
 package com.mnubo.android.api.operations;
 
 import com.mnubo.android.api.CompletionCallback;
+import com.mnubo.android.exceptions.MnuboException;
 import com.mnubo.android.internal.services.OwnerService;
 import com.mnubo.android.models.Owner;
 import com.mnubo.android.models.SmartObject;
@@ -34,6 +35,12 @@ import com.mnubo.android.models.SmartObject;
 public interface OwnerOperations extends OwnerService {
 
     void deleteAsync(CompletionCallback<Void> callback);
+
+    @Deprecated
+    void updateAsync(String username, Owner owner, CompletionCallback<Void> callback);
+
+    @Deprecated
+    void update(String username, Owner owner) throws MnuboException;
 
     void updateAsync(Owner owner, CompletionCallback<Void> callback);
 
