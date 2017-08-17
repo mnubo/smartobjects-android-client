@@ -1,3 +1,7 @@
+# Version 3.0.1
+
+- Support login with a third party access token. Supported third parties are Google, Facebook, Microsoft
+
 # Version 2.1.0
 
 ## Breaking changes
