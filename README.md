@@ -14,28 +14,14 @@ The library can be picked up from Github or MavenCentral. Add the aar to your pr
 or add this Gradle dependency to your build file :
 
 ```
-// Using gradle and maven dependency resolution
-compile('com.mnubo:sdk-android:3.0.0@aar') {
-    transitive = true
-}
+compile 'com.mnubo:sdk-android:[3,4)@aar'
 ```
 
-You also need to exclude the following files from the packaging to avoid duplicate exception during
-build :
+You also need to exclude the following files from the packaging to avoid duplicate exception during build :
 ```
 packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/ASL2.0'
     }
 ```
 

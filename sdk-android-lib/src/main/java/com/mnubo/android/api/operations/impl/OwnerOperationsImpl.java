@@ -77,6 +77,17 @@ public class OwnerOperationsImpl implements OwnerOperations {
     }
 
     @Override
+    @Deprecated
+    public void updateAsync(final String username, final Owner owner, CompletionCallback<Void> callback) {
+        updateAsync(owner, callback);
+    }
+
+    @Deprecated
+    public void update(String username, Owner owner) throws MnuboException {
+        update(owner);
+    }
+
+    @Override
     public void create(String password, Owner owner) throws MnuboException {
         ownerService.create(password, owner);
     }
